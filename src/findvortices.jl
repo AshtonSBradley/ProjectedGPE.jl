@@ -1,5 +1,5 @@
 """
- ## findvortices(ψ,slice)
+ ## findvortices(ψ,normal)
  Locates vortices as 2π phase windings around plaquettes on a cartesian spatial field.
 
 If the field is 2D then returns vortex coordinates.
