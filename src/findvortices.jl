@@ -1,17 +1,10 @@
 """
- `xp,yp,xn,yn = findvortices(x,y,ψ,normal)`
+ `x,y = findvortices(ψ,normal)`
  Locates vortices as 2π phase windings around plaquettes on a cartesian spatial field.
- Coorindates are returned of positive (xp,yp) and negative (xn,yn) vortices.
-
- ## Arguments
-  * Spatial vectors x and y correspond to the column and row directsions of ψ, respectively.
-  * ψ is the wavefunction on a cartesian grid.
-  * `normal` refers the direction of the normal vector to the slice plane. 
-  The normal vector to slice plane can point along `slice = x,y,z`.
 
 If the field is 2D then returns vortex coordinates.
 If the field is 3D then returns 2D slices of coordinates normal to direction
-`slice`.
+`slice`. The normal vector to slice plane can point along `slice = x,y,z`.
 """
 
 function findvortices(x,y,ψ,normal="z")
@@ -27,20 +20,20 @@ Y = ones(x)*y
 vortexgrid = zeros(Nx,Ny)
 
 for i = 1:Nx-1
-    for j = 1:Nx-1
+    for j = 1:Ny-1
 
             m = 0;
             Δ = phase[i+1,j]-phase[i,j]
-            abs(Δ) > π ? m += sign(Δ) : nothing
+            abs(Δ) > π ? m += sign(-Δ) : nothing
 
             Δ = phase[i+1,j+1]-phase[i+1,j]
-            abs(Δ) > π ? m += sign(Δ) : nothing
+            abs(Δ) > π ? m += sign(-Δ) : nothing
 
             Δ = phase[i,j+1]-phase[i+1,j+1]
-            abs(Δ) > π ? m += sign(Δ) : nothing
+            abs(Δ) > π ? m += sign(-Δ) : nothing
 
             Δ = phase[i,j]-phase[i,j+1]
-            abs(Δ) > π ? m += sign(Δ) : nothing
+            abs(Δ) > π ? m += sign(-Δ) : nothing
 
             vortexgrid[i,j] = m
         end
