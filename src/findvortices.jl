@@ -1,11 +1,11 @@
-```
+"""
  ## findvortices(ψ,slice)
  Locates vortices as 2π phase windings around plaquettes on a cartesian spatial field.
 
 If the field is 2D then returns vortex coordinates.
 If the field is 3D then returns 2D slices of coordinates normal to direction
 `slice`. The normal vector to slice plane can point along `slice = x,y,z`
-```
+"""
 
 function findvortices(ψ,normal="z")
 
