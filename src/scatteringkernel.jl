@@ -22,3 +22,4 @@ elseif ndims(k) == 2
 else
  return 1./abs(k)
 end
+end
