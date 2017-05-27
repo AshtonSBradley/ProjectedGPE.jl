@@ -8,8 +8,13 @@ stochastic projected Gross-Pitaevskii equation.
 ## Arguments
 * `k` - the momentum-space grid in where scattering is to be evaluated
 * `σ` - width parameter for `k`-space degrees of freedom in the case of N=1,2 spatial dimensions.
+
+
+Low dimensional SPGPE scattering kernel functions:
+[Low-D stochastic projected GPE](https://arxiv.org/abs/1507.02023)
+
 """
-scatteringkernel(k,σ=1)
+function scatteringkernel(k,σ=1)
 if ndims(k) == 1
   return erfcx(abs(k)*σ/sqrt(2))/sqrt(8*π*σ^2)
 elseif ndims(k) == 2
