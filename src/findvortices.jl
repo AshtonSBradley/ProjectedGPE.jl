@@ -1,68 +1,59 @@
 """
- ## findvortices(ψ,normal)
+ `xp,yp,xn,yn = findvortices(x,y,ψ,normal)`
  Locates vortices as 2π phase windings around plaquettes on a cartesian spatial field.
+ Coorindates are returned of positive (xp,yp) and negative (xn,yn) vortices.
+
+ ## Arguments
+  * Spatial vectors x and y correspond to the column and row directsions of ψ, respectively.
+  * ψ is the wavefunction on a cartesian grid.
+  * `normal` refers the direction of the normal vector to the slice plane. 
+  The normal vector to slice plane can point along `slice = x,y,z`.
 
 If the field is 2D then returns vortex coordinates.
 If the field is 3D then returns 2D slices of coordinates normal to direction
-`slice`. The normal vector to slice plane can point along `slice = x,y,z`
+`slice`.
 """
 
-function findvortices(ψ,normal="z")
+function findvortices(x,y,ψ,normal="z")
 
-Phase = angle(ψ);
+phase = angle(ψ)
+Nx,Ny = size(ψ)
 
-grid_length = size(ψ);
-X = grid_length[1] - 1
-Y = grid_length[2] - 1
+# x corresponds to column of ψ
+# y is a row vector
 
-Vortex_Grid = zeros(grid_length[1],grid_length[2]);
+X = x*ones(y)
+Y = ones(x)*y
+vortexgrid = zeros(Nx,Ny)
 
+for i = 1:Nx-1
+    for j = 1:Nx-1
 
- for ii = 1:X-1
-   for jj = 1:Y-1
+            m = 0;
+            Δ = phase[i+1,j]-phase[i,j]
+            abs(Δ) > π ? m += sign(Δ) : nothing
 
-            Alpha1 = Phase[ii,jj];
-            β_1 = Phase[ii,jj+1];
-       m = 0;
+            Δ = phase[i+1,j+1]-phase[i+1,j]
+            abs(Δ) > π ? m += sign(Δ) : nothing
 
-                if β_1 - Alpha1 > pi;
-          m = m -1;
-                    elseif β_1 - Alpha1 < -pi;
-          m = m + 1;
-       end
+            Δ = phase[i,j+1]-phase[i+1,j+1]
+            abs(Δ) > π ? m += sign(Δ) : nothing
 
-            Alpha2 = Phase[ii,jj+1];
-            Beta2 = Phase[ii+1,jj+1];
+            Δ = phase[i,j]-phase[i,j+1]
+            abs(Δ) > π ? m += sign(Δ) : nothing
 
-         if Beta2 - Alpha2 > pi;
-          m = m -1;
-       elseif Beta2 - Alpha2 < -pi;
-          m = m + 1;
-       end
-
-
-            Alpha3 = Phase[ii+1,jj+1];
-            Beta3 = Phase[ii+1,jj];
-
-         if Beta3 - Alpha3 > pi;
-          m = m -1;
-       elseif Beta3 - Alpha3 < -pi;
-          m = m + 1;
-       end
-
-
-            Alpha4 = Phase[ii+1,jj];
-            Beta4 = Phase[ii,jj];
-
-         if Beta4 - Alpha4 > pi;
-          m = m -1;
-       elseif Beta4 - Alpha4 < -pi;
-          m = m + 1;
-         end
-
-            Vortex_Grid[ii,jj] = m;
-
-   end
- end
-        return Vortex_Grid
+            vortexgrid[i,j] = m
+        end
+    end
+    X = x*ones(y)
+    Y = ones(x)*y
+    pos = vortexgrid.>0
+    neg = vortexgrid.<0
+    indp = find(pos)
+    xp = X[indp];xp = xp[:]
+    yp = Y[indp];yp = yp[:]
+    indn = find(neg)
+    xn = X[indn];xn = xn[:]
+    yn = Y[indn];yn = yn[:]
+    return xp, yp, xn, yn
 end
