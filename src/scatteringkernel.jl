@@ -1,7 +1,7 @@
 """
 
-`S(k,σ)=scatteringkernel(k,σ)`
-Evaluates the scattering kernel in momentum space.
+`scatteringkernel(k,σ)`
+Evaluates the scattering kernel in momentum space and returns on the same `k`-grid.
 This is used to construct both the energy-damping term, and noise in the energy-damped
 stochastic projected Gross-Pitaevskii equation.
 
