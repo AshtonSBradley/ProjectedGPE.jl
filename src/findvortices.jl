@@ -48,5 +48,8 @@ for i = 1:Nx-1
     indn = find(neg)
     xn = X[indn];xn = xn[:]
     yn = Y[indn];yn = yn[:]
-    return xp, yp, xn, yn
+    xv =[xp;xn];yv=[yp;yn];s=[ones(xp);-ones(xn)]
+    vortices = [xv yv s]
+    vortices = sortrows(vortices)
+    return vortices
 end
