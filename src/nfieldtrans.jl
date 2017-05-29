@@ -10,7 +10,7 @@ starting from a representation of the quantum state with respect to a particular
  - `M` number of modes in the c-field.
  - `basis` is an optional string argument denoting the basis of eigenstates representing c-field state. Default is "hermite"
  - `T` is the linear transformation matrix that affects the mapping
- 
+
 `T*c` = `` ψ(x)≡ ∑_{j=1}^{M}c_jϕ_j(x)``
 
 for a state represented by `M` coefficients, the number of modes in the c-field.
@@ -32,7 +32,7 @@ julia> M = 30;
 julia> c = randn(M)+im*randn(M);
 julia> x,w,T=nfieldtrans(2,M);
 julia> ψ = T*c;
-julia> N = sum(w*abs(ψ).^2)
+julia> N = sum(w.*abs(ψ).^2)
 73.24196674113007
 ```
 
@@ -54,7 +54,7 @@ the exact propagation of the PGPE requires repeated use of this 4-field transfor
 ```
 julia> x,w,T=nfieldtrans(4,M);
 julia> ψ = T*c;
-julia> Uint = sum(w*abs(ψ).^4)
+julia> Uint = sum(w.*abs(ψ).^4)
 552.9762736751692
 ```
 computes the integral ``U_{\int}≡∫ dx|ψ|^4`` to accuracy very close to working precision.
