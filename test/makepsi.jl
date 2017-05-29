@@ -1,8 +1,8 @@
 function makepsi(Nv)
-Lx = 150.
-Ly = 75.
-Nx = 500
-Ny = 250
+Lx = 300.
+Ly = 150.
+Nx = 1000
+Ny = 500
 x = linspace(-Lx/2,Lx/2,Nx)';x=x[:]
 y = linspace(-Ly/2,Ly/2,Ny)'
 dx = x[2]-x[1]

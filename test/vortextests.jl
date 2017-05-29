@@ -1,3 +1,3 @@
 
-@test testallpositions(20)
-@test testallcharges(20)
+@test testallpositions(5)
+@test testallcharges(5)
