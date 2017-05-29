@@ -6,6 +6,10 @@ os:
 julia:
   - 0.5
   - nightly
+  - release
+matrix:
+  allow_failures:
+    - julia: nightly
 notifications:
   email: false
 
