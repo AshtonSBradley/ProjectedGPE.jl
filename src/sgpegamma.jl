@@ -17,7 +17,6 @@ Arguments are in units of ħω, where ω is reference trap frequency.
 function sgpegamma(τ,μ,ω,ϵ)
 ## bare rate and full cutoff dependent rates.
 # requires lerch.m
-# ec is E_cut. Temperature T is dimensionless.
 
 #opts = F;
 MHz     =1e6;
@@ -29,38 +28,36 @@ nm      =1e-9;
 muK     =1e-6;
 nK      =1e-9;
 kB      =1.38e-23;
-hbar    =1.034e-34;
+ħ       =1.034e-34;
 
 amu     = 1.6605402e-27;
-m       = 87*amu;
+m       = 87*amu; #Rb87
 bohR    = 5.29177249e-11;
 as      = 100*bohR;
-T       = T*hbar*w0/kB; %T in Kelvin
+T       = τ*ħ*ω/kB;         #T in Kelvin
 
+γ0      = 4*m/π/ħ^3*(as*kB*T)^2;   #All with dimensions
 
+μ       = μ*ħ*ω;            #make μ, Ecut have dimensions
+ϵ       = ϵ*hbar*w0;
 
-gbare   = 4*m/pi/hbar^3*(as*kB*T)^2;   %All with dimensions
-
-mu      = mu*hbar*w0;        %make mu, Ecut have dimensions
-Ecut    = Ecut*hbar*w0;
-
-mu      = mu/kB/T;       %in units of kB*T (for exp(beta...))
-ec      = Ecut/kB/T;
-G1i     = log(1-exp(mu-ec))^2;
+μ       = μ/kB/T;          #in units of kB*T (for exp(beta...))
+ϵ       = ϵ/kB/T;
+G1i     = log(1-exp(μ-ϵ))^2;
 
 Nmax2 = 1000;
 NmaxLerch = 1000;
 R = 1:Nmax2;
-temp =  exp(2*(mu-ec))*exp(R*(mu-2*ec)).*lerch(exp(mu-ec),1,R+1,NmaxLerch).^2;
+temp =  exp(2*(μ-ϵ))*exp(R*(μ-2*ϵ)).*lerch(exp(μ-ϵ),1,R+1,NmaxLerch).^2;
 G2i = sum(temp);
 
 Gi = G1i + G2i;
 
-g = gbare*Gi;
+g = γ0*Gi;
 
 #Rates in computational units:
-gbareComp  = gbare*hbar/kB/T;
-gComp      = g*hbar/kB/T;
+gbareComp  = γ0*ħ/kB/T;
+gComp      = g*ħ/kB/T;
 
 #change sinfo.gamma here:
 
