@@ -29,7 +29,7 @@ notifications:
 
 ## uncomment the following lines to override the default test script
 script:
-  - julia -e 'Pkg.clone(pwd()); Pkg.add("FastGaussQuadrature")'
+  - julia -e 'Pkg.clone(pwd()); Pkg.build("ProjectedGPE")'
   - julia -e 'Pkg.test("ProjectedGPE"; coverage=true)'
 ## after_success:
   # push coverage results to Coveralls
