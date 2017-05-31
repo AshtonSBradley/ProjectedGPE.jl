@@ -64,7 +64,7 @@ as the `x` grid is non-uniformly spaced.
 Instead, use `eigmat.jl` to create a transform to a specific position grid.
 """
 
-function nfieldtrans(n::Int,M::Int,basis="hermite")
+function nfieldtrans(n,M,basis="hermite")
    (iseven(n) && n > 0) ? J = Int(n/2) : error("n must be a positive and even integer ")
     if basis=="hermite"
     x, w = gausshermite(J*M)
