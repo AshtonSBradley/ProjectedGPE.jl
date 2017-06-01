@@ -1,6 +1,6 @@
 """
 
-x,w,T = nfieldtrans(basis,M,n)
+x,w,T = nfieldtrans(basis,M,n,ω)
 
 Constructs transforms and associated arrays for precise numerical quadrature evaluation of n-field integrals,
 starting from a representation of the quantum state with respect to a particular basis of eigenstates.
@@ -64,7 +64,7 @@ as the `x` grid is non-uniformly spaced.
 Instead, use `eigmat.jl` to create a transform to a specific position grid.
 """
 
-function nfieldtrans(basis,M,n,f=1)
+function nfieldtrans(basis,M,n,ω=1)
    (iseven(n) && n > 0) ? J = Int(n/2) : error("n must be a positive and even integer ")
     if basis=="hermite"
     x, w = gausshermite(J*M)

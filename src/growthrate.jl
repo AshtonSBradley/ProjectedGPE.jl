@@ -1,6 +1,6 @@
 """
 
-`sgpegamma(τ,μ,ω,ϵ)`
+`growthrate(τ,μ,ω,ϵ)`
 
 Returns the dimensionless damping rate in the simple-growth stochastic projected Gross-Pitaevskii equation.
 Arguments are in units of ħω, where ω is reference trap frequency.
@@ -14,7 +14,7 @@ Arguments are in units of ħω, where ω is reference trap frequency.
 
 """
 
-function sgpegamma(τ,μ,ω,ϵ)
+function growthrate(τ,μ,ω,ϵ)
 ## bare rate and full cutoff dependent rates.
 # requires lerch.m
 
