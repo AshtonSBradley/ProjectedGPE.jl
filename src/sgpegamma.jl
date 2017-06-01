@@ -63,3 +63,4 @@ gComp      = g*ħ/kB/T;
 
 #sinfo.gamma =
 G = gComp;
+end

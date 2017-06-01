@@ -16,7 +16,8 @@ include("scatteringkernel.jl")
 include("unwrap.jl")
 include("findvortices.jl")
 
-export eigmat, nfieldtrans, sgpegamma, scatteringkernel, findvortices, unwrap
+export eigmat, nfieldtrans, sgpegamma, scatteringkernel, makeVtrans,
+findvortices, unwrap
 
 
 end # module

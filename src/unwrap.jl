@@ -1,3 +1,10 @@
+"""
+
+unwrap(v,inplace=false)
+
+Given an input phase `v` (an array), returns an unwrapped array.
+"""
+
 function unwrap(v, inplace=false)
   # currently assuming an array
   unwrapped = inplace ? v : copy(v)
