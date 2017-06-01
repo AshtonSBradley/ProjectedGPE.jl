@@ -9,12 +9,12 @@ abstract cField
 
 include("eigmat.jl")
 include("nfieldtrans.jl")
-include("growthrate.jl.jl")
+include("growthrate.jl")
 include("scatteringkernel.jl")
 include("makescatteringtrans.jl")
 include("makescatteringnoisetrans.jl")
 
-#putting this here for now (=> package VortexDistributions.jl)
+#putting these here for now (=> package VortexDistributions.jl)
 include("unwrap.jl")
 include("findvortices.jl")
 
