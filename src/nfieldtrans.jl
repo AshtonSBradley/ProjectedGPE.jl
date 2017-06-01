@@ -1,11 +1,11 @@
 """
 
-x,w,T = nfieldtrans(n,M,basis)
+x,w,T = nfieldtrans(basis,M,n)
 
 Constructs transforms and associated arrays for precise numerical quadrature evaluation of n-field integrals,
 starting from a representation of the quantum state with respect to a particular basis of eigenstates.
 
-# Arguments
+## Arguments
  - `n` order of the field product.
  - `M` number of modes in the c-field.
  - `basis` is an optional string argument denoting the basis of eigenstates representing c-field state. Default is "hermite"
@@ -30,7 +30,7 @@ Compute the number of particles in the C-field, for a state of `M` modes.
 ```
 julia> M = 30;
 c = randn(M)+im*randn(M);
-x,w,T=nfieldtrans(2,M);
+x,w,T=nfieldtrans(M,2);
 ψ = T*c;
 N = sum(w.*abs(ψ).^2)
 73.24196674113007
@@ -64,12 +64,12 @@ as the `x` grid is non-uniformly spaced.
 Instead, use `eigmat.jl` to create a transform to a specific position grid.
 """
 
-function nfieldtrans(n,M,basis="hermite")
+function nfieldtrans(basis,M,n,f=1)
    (iseven(n) && n > 0) ? J = Int(n/2) : error("n must be a positive and even integer ")
     if basis=="hermite"
     x, w = gausshermite(J*M)
-    T    = eigmat("hermite",M,x/sqrt(J))
-    w    = w.*exp(x.^2)/sqrt(J)
+    T    = eigmat("hermite",M,x/sqrt(J*f),J*f)
+    w    = w.*exp(x.^2)/sqrt(J*f)
     return x,w,T
     else
         error(basis," basis not implemeted yet.")

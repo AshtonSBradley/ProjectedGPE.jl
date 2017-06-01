@@ -1,6 +1,6 @@
 """
 
-T    = eigmat(basis,M,x)
+T    = eigmat(basis,M,x,f,α)
 
 Returns a matrix of mode functions of the chosen basis.
 The matrix is in a form that allows the transformation
@@ -11,9 +11,18 @@ from the mode coefficients to the spatial grid `x`:
 where `c` is a column vector of coefficients in the basis.
 
 At present `basis = "hermite"` is implemented.
+
+## Arguments
+-  `basis` is the set of eigenfunctions representing the c-field
+- `M` is the number of modes in the spatial direction denoted by
+- `x`, the spatial grid to which the coefficients are mapped.
+- `f` is the *relative* frequence, in units of the chosen reference frequency.
+- `α` is an extra input for the `laguerre` basis.
+Defaults of the last two arguments are 1.
+
 """
 
-function eigmat(basis::String,M::Int64,x::Array{Float64},f=1.0,alpha=1.0)
+function eigmat(basis,M,x,f=1.0,alpha=1.0)
 N = length(x)
 x = x[:]
 
