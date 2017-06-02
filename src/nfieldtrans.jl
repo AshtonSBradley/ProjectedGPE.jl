@@ -65,11 +65,11 @@ Instead, use `eigmat.jl` to create a transform to a specific position grid.
 """
 
 function nfieldtrans(basis,M,n,ω=1)
-   (iseven(n) && n > 0) ? J = Int(n/2) : error("n must be a positive, even integer ")
+    iseven(M)  ? nothing : error("M must be an even integer ")
     if basis=="hermite"
-    x, w = gausshermite(J*M)
-    w    = w.*exp(x.^2)/sqrt(J*ω)
-    T    = eigmat("hermite",M,x/sqrt(J*ω),J*ω)
+    x, w = gausshermite(n*M/2)
+    w    = w.*exp(x.^2)/sqrt(n*ω/2)
+    T    = eigmat("hermite",M,x/sqrt(n*ω/2),n*ω/2)
     return x,w,T
     else
         error(basis," basis not implemeted yet.")
