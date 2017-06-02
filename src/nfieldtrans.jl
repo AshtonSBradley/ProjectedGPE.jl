@@ -44,7 +44,7 @@ julia> sum(abs(c).^2)
 ```
 
 The accuracy seen in this example (10 digits) is a worst-case scenario - a random superposition of all modes is a high temperature limit.
-Accuracy will normally approach 15 digits.
+Accuracy will normally approach ~15 digits.
 
 ## Interaction energy
 The most common integral of this type involves a four-field product, `n=4`.
@@ -64,12 +64,12 @@ as the `x` grid is non-uniformly spaced.
 Instead, use `eigmat.jl` to create a transform to a specific position grid.
 """
 
-function nfieldtrans(basis,M,n,ω=1)
-    iseven(M)  ? nothing : error("M must be an even integer ")
+function nfieldtrans(basis,M,K,ω=1)
+    isodd(K*M) ? n=Int((K*M+1)/2) : n=Int(K*M/2)
     if basis=="hermite"
-    x, w = gausshermite(n*M/2)
-    w    = w.*exp(x.^2)/sqrt(n*ω/2)
-    T    = eigmat("hermite",M,x/sqrt(n*ω/2),n*ω/2)
+    x, w = gausshermite(n)
+    w    = w.*exp(x.^2)/sqrt(K*ω/2)
+    T    = eigmat("hermite",M,x/sqrt(K*ω/2),K*ω/2)
     return x,w,T
     else
         error(basis," basis not implemeted yet.")

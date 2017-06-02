@@ -21,9 +21,10 @@ x,wx,Tx = nfieldtrans(basis,M,4,ω)
 #4-field to k-space
 k,wk,Tk = nfieldtrans(basis,Nk,4,1/ω)
 #4-field aux transforms to x
-Txa = eigmat(basis,Na,x,2ω)
+xa,wxa,Txa = nfieldtrans(basis,Na,4,ω)
 #4-field aux transform to k
-Tka = diagm((-im).^(0:2Na-1))*eigmat(basis,Na,k,1/(2ω))
+ka,wka,Tka = nfieldtrans(basis,Na,4,1/ω)
+Tka = Tka*diagm((-im).^(0:2Na-1))
 #Transform from x --> k via auxiliary states.
 Txk = conj(Tka'*Txa)
 
