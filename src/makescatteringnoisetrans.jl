@@ -1,4 +1,4 @@
-function makescatteringtransnoisetrans
+function makescatteringnoisetrans()
 
 
 
