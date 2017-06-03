@@ -65,7 +65,7 @@ Instead, use `eigmat.jl` to create a transform to a specific position grid.
 """
 
 function nfieldtrans(basis,M,K,ω=1)
-    isodd(K*M) ? n=Int((K*M+1)/2) : n=Int(K*M/2)
+    iseven(K*M) ? n=Int(K*M/2) : n=Int((K*M+1)/2)
     if basis=="hermite"
     x, w = gausshermite(n)
     w    = w.*exp(x.^2)/sqrt(K*ω/2)
