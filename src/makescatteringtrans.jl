@@ -19,7 +19,7 @@ function makescatteringtrans(basis,M,Nk=M,Na=M,ω=1)
 #4-field to x-space
 x,wx,Tx = nfieldtrans(basis,M,4,ω)
 #4-field to k-space
-k,wk,Tk = nfieldtrans(basis,Nk,4,1/ω)
+k,wk,Tk = nfieldtrans(basis,M,4,1/ω)
 #4-field aux transforms to x
 xa,wxa,Txa = nfieldtrans(basis,Na,4,ω)
 #4-field aux transform to k
