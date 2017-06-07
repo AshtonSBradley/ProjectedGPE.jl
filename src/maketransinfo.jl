@@ -1,4 +1,4 @@
-function maketransinfo(Ω,M,ecut,basis="hermite")
+function maketransinfo(basis,M,ecut,Ω)
 dim=length(Ω)
   if dim==3
     ωx,ωy,ωz = Ω

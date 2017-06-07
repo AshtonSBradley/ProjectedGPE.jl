@@ -5,7 +5,16 @@ module ProjectedGPE
 #import
 using FastGaussQuadrature, DifferentialEquations, Parameters
 
-#abstract CField
+@with_kw type cfieldinfo
+  basis::String="hermite"
+  ecut::Number
+  e0::Number
+  Espec::Vector
+  N::Number
+  N1::Number
+  ω1::Number
+  Px::BitArray
+end
 
 include("eigmat.jl")
 include("nfieldtrans.jl")
