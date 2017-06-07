@@ -34,14 +34,14 @@ if basis=="hermite"
   indx0 = find(abs(hermite_nm1).<1e-6) #avoid log of zero !
   indx1 = find(abs(hermite_nm1).>=1e-6)
 
-  wfn_mat[indx1,1]=real(exp(log(hermite_nm1[indx1])-ω*(1-0/M)*x[indx1].^2/2))
+  wfn_mat[indx1,1]=real(exp(log(hermite_nm1[indx1])-ω*(1.-0./M)*x[indx1].^2/2))
   wfn_mat[indx0,1]=real(hermite_nm1[indx0].*exp(-ω*x[indx0].^2/2))
 
   if M > 1
     indx0 = find(abs(hermite_n).<1e-6)
     indx1 = find(abs(hermite_n).>=1e-6)
-    wfn_mat[indx1,2]=real(exp(log(hermite_n[indx1])-ω*(1-1/M)*x[indx1].^2/2))
-    wfn_mat[indx0,2]=real(hermite_n[indx0].*exp(-ω*(1-1/M)*x[indx0].^2/2))
+    wfn_mat[indx1,2]=real(exp(log(hermite_n[indx1])-ω*(1.-1./M)*x[indx1].^2/2))
+    wfn_mat[indx0,2]=real(hermite_n[indx0].*exp(-ω*(1.-1./M)*x[indx0].^2/2))
   end
 
   if M > 2
