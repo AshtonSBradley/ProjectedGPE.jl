@@ -21,7 +21,9 @@ include("makecfieldinfo.jl")
 include("unwrap.jl")
 include("findvortices.jl")
 
-export eigmat, nfieldtrans, anisotrans, growthrate, scatteringkernel, makescatteringtrans, makescatteringnoisetrans, makecfieldinfo, findvortices, unwrap
+export eigmat, nfieldtrans, anisotrans, growthrate,
+scatteringkernel, makescatteringtrans, makescatteringnoisetrans,
+makecfieldinfo, gausshermite, findvortices, unwrap
 
 
 end # module
