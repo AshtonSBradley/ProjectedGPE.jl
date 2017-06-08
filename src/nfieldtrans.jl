@@ -36,15 +36,14 @@ N = sum(w.*abs(ψ).^2)
 73.24196674113007
 ```
 
-Compuates the integral ``N = ∫dx |ψ(x)|^2`` as may be checked by direct summation:
+Computes the integral ``N = ∫dx |ψ(x)|^2`` as may be checked by direct summation:
 
 ```
 julia> sum(abs(c).^2)
 73.24196675017353
 ```
 
-The accuracy seen in this example (10 digits) is a worst-case scenario - a random superposition of all modes is a high temperature limit.
-Accuracy will normally approach ~15 digits.
+ Relative error of numerical integrals will usually be smaller than ~1e-10.
 
 ## Interaction energy
 The most common integral of this type involves a four-field product, `n=4`.
