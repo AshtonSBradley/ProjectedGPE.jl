@@ -10,10 +10,10 @@ if basis=="hermite"
   ex = ω1*(collect(0:(N1-1))+0.5);ex=ex[:]
   Px = ex .< ecut
   Espec= ex.*Px;
-  Espec = Espec'
-  Px = Px.'
+  Espec = Espec[:]
+  Px = Px[:]
   N = length(ex)
-  cinfo = cfieldinfo(basis=basis,ecut=ecut,e0=e0,Espec=Espec[:],N=N,N1=N1,ω1=ω1,Px=Px[:])
+  cinfo = cfieldinfo(basis=basis,ecut=ecut,e0=e0,Espec=Espec,N=N,N1=N1,ω1=ω1,Px=Px)
   return cinfo
   #return basis, ecut, e0, Espec, N, N1, ω1, Px
   elseif dim==2
