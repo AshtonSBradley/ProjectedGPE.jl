@@ -1,32 +1,50 @@
 using ProjectedGPE, ApproxFun, PyPlot, Combinatorics
-M=50
+M=350
 tol = 1e-14
 #c=Vector{BigFloat}(randn(M))+im*Vector{BigFloat}(randn(M))
-#c=randn(M)+im*randn(M)
-c=zeros(M)
-c[end]=1.
+c=randn(M)+im*randn(M)
+#c=zeros(M)
+#c[end]=1.
 N1=sum(abs(c).^2)
+
+#evaluate modes using BigFloats
+#can then use ApproxFun.jl for polynomials, applying correct normalization.
+#Combinatorics.jl needed to evaluate factorial of Vector.
+
 n=0:BigFloat(M)-1;
 Hnorm = sqrt(BigFloat(π))*BigFloat(2).^n.*factorial.(n)
 
-#use ApproxFun to evaluate hermite polynomials, inserting norm.
+#Inserting norm.
 f=Fun(Hermite(),c./sqrt(Hnorm));
 
-#put onto specific x grid
-#S=Hermite(-10..10);
-#x=points(S,100);
-
-x=linspace(-1.5sqrt(2M),1.5sqrt(2M),500)
+x=linspace(-1.5sqrt(2M),1.5sqrt(2M),1000)
 plot(x,abs(f.(x)).^2.*exp.(-x.^2))
 
 x,w=gausshermite(M)
 
 N2=sum(w.*abs(f.(x)).^2)
 
+Float64(N2)
+
 abs((N1-N2)/N1)
 
 3*M*tol
 
-typeof(f)
+#block to create T matrix
+M=70
+x,w=gausshermite(M)
+htrans=zeros(x*ones(1,M))
+n=0:BigFloat(M)-1;
+Hnorm = sqrt(BigFloat(π))*BigFloat(2).^n.*factorial.(n)
 
-g=Fun(Fourier())
+for j = 0:M-1
+  c=zeros(M)
+  c[j+1]=1.
+  Hn=Fun(Hermite(),c./sqrt(Hnorm));
+  T[:,j+1]=Hn.(x).*exp(-x.^2/2)
+end
+
+x1,y1,T1=nfieldtrans("hermite",M,2)
+
+mind = 30
+maximum(abs(T1[:,mind]-htrans[:,mind]))
