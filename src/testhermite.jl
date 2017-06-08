@@ -1,10 +1,10 @@
 using ProjectedGPE, ApproxFun, PyPlot, Combinatorics
-M=350
+M=100
 tol = 1e-14
 #c=Vector{BigFloat}(randn(M))+im*Vector{BigFloat}(randn(M))
-c=randn(M)+im*randn(M)
-#c=zeros(M)
-#c[end]=1.
+#c=randn(M)+im*randn(M)
+c=zeros(M)
+c[end]=1.
 N1=sum(abs(c).^2)
 
 #evaluate modes using BigFloats
@@ -28,12 +28,13 @@ Float64(N2)
 
 abs((N1-N2)/N1)
 
+
 3*M*tol
 
 #block to create T matrix
-M=70
+M=100
 x,w=gausshermite(M)
-htrans=zeros(x*ones(1,M))
+T=zeros(x*ones(1,M))
 n=0:BigFloat(M)-1;
 Hnorm = sqrt(BigFloat(π))*BigFloat(2).^n.*factorial.(n)
 
@@ -46,5 +47,5 @@ end
 
 x1,y1,T1=nfieldtrans("hermite",M,2)
 
-mind = 30
-maximum(abs(T1[:,mind]-htrans[:,mind]))
+mind = M
+maximum(abs(T1[:,mind]-T[:,mind]))
