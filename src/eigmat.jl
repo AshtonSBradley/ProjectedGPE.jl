@@ -13,18 +13,18 @@ where `c` is a column vector of coefficients in the basis.
 At present `basis = "Hermite"` is implemented.
 
 ## Arguments
--  `basis` is the set of eigenfunctions representing the c-field
+- `basis` is the set of eigenfunctions representing the c-field
 - `M` is the number of modes in the spatial direction denoted by
 - `x`, the spatial grid to which the coefficients are mapped.
 - `ω` is the *relative* frequency, in units of the chosen reference frequency.
 - `α` is an extra input for the `laguerre` basis.
-Defaults of the last two arguments are 1.
+Defaults of the last two arguments are 1. and 0. respectively.
 
 """
 
-function eigmat(basis,M,x,ω=1.0,α=1.0)
+function eigmat(basis,M,x,ω=1.0,α=0.0)
   if basis=="Hermite"
-    x,w=gausshermite(M)
+    #x,w=gausshermite(M)
     T=zeros(x*ones(1,M))
     n=0:BigFloat(M)-1;
     Hnorm = sqrt(BigFloat(π)/ω)*BigFloat(2).^n.*factorial.(n)
@@ -37,16 +37,16 @@ function eigmat(basis,M,x,ω=1.0,α=1.0)
     end
 
   elseif basis=="Laguerre"
-    x,w=gausslaguerre(M)
+    #x,w=gausslaguerre(M,α)
     T=zeros(x*ones(1,M))
     n=0:BigFloat(M)-1;
-    Hnorm = sqrt(BigFloat(π)/ω)*BigFloat(2).^n.*factorial.(n)
+    Lnorm = exp.(lgamma.(n+α+1)-lgamma.(n+1))/ω
 
     for j = 0:M-1
-    c=zeros(M)
-    c[j+1]=1.
-    Hn=Fun(Hermite(),c./sqrt(Hnorm));
-    T[:,j+1]=Hn.(sqrt(ω)*x).*exp(-ω*x.^2/2)
+      c=zeros(M)
+      c[j+1]=1.
+      Lna=Fun(Laguerre(α),c./sqrt(Lnorm));
+      T[:,j+1]=Lna.(sqrt(ω)*x).*exp(-sqrt(ω)*x/2).*(sqrt(ω)*x).^(α/2)
     end
   else
     error("basis not implemented")

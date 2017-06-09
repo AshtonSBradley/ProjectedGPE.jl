@@ -58,15 +58,15 @@ maximum(abs(T1[:,mind]-T2[:,mind]))
 
 
 #Make and test Laguerre transform and quadrature
-M=20
-α = 3.
+M=27
+α = 0.
 ω = 1.
 x,w=gausslaguerre(M,α)
 T=zeros(x*ones(1,M))
-n=0:BigFloat(M)-1;
+n=0:M-1;
 Lnorm = exp.(lgamma.(n+α+1)-lgamma.(n+1))/ω
 
-for j = 0
+for j = 0:M-1
   c=zeros(M)
   c[j+1]=1.
   Lna=Fun(Laguerre(α),c./sqrt(Lnorm));
@@ -74,14 +74,16 @@ for j = 0
 end
 
 c=zeros(M);
-c[end]=1.
+c[end]=BigFloat(1.)
 
 #Gauss Laguerre quadrature can absorb the factor x^α/2 using associated Laguerre
 #c=randn(M)+im*rand(M)
 N1 = sum(abs(c).^2)
-L=Fun(Laguerre(α),c./sqrt(Lnorm));
+L=Fun(Laguerre(α),c./sqrt(Lnorm))
 
 N2=sum(w.*abs(L.(sqrt(ω)*x)).^2)
 
 x=linspace(0,20sqrt(M),1000)
 plot(x,abs(L.(x)).^2.*exp.(-x).*x.^α)
+
+Lnorm
