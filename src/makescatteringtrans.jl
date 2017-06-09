@@ -8,7 +8,7 @@ evaluation of the scattering potential Vϵ
 [SPGPE](https://arxiv.org/abs/1507.02023)
 
 # Arguments
- - `basis` the basis of eigenstates representing c-field state. Default is "hermite"
+ - `basis` the basis of eigenstates representing c-field state. Default is "Hermite"
  - `M` number of modes in the c-field.
  - `Nk` number of `k` points.
  - `Na` number of auxiliary oscillator states.

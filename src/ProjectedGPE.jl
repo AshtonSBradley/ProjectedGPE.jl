@@ -3,10 +3,10 @@ __precompile__()
 module ProjectedGPE
 
 #import
-using FastGaussQuadrature, DifferentialEquations, Parameters
+using FastGaussQuadrature, DifferentialEquations, ApproxFun, Parameters
 
 @with_kw type cfieldinfo
-  basis::String="hermite"
+  basis::String="Hermite"
   ecut::Number
   e0::Number
   Espec::Vector

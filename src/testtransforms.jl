@@ -45,7 +45,43 @@ for j = 0:M-1
   T[:,j+1]=Hn.(x).*exp(-x.^2/2)
 end
 
-x1,y1,T1=nfieldtrans("hermite",M,2)
+x1,y1,T1=nfieldtrans("Hermite",M,2,2)
 
 mind = M
 maximum(abs(T1[:,mind]-T[:,mind]))
+
+T2=eigmat("Hermite",M,x,2)
+maximum(abs(T1[:,mind]-T2[:,mind]))
+#test new nfieldtrans and eigmat
+
+#T3=eigmatold("Hermite",M,x,2)
+
+
+#Make and test Laguerre transform and quadrature
+M=20
+α = 3.
+ω = 1.
+x,w=gausslaguerre(M,α)
+T=zeros(x*ones(1,M))
+n=0:BigFloat(M)-1;
+Lnorm = exp.(lgamma.(n+α+1)-lgamma.(n+1))/ω
+
+for j = 0
+  c=zeros(M)
+  c[j+1]=1.
+  Lna=Fun(Laguerre(α),c./sqrt(Lnorm));
+  T[:,j+1]=Lna.(sqrt(ω)*x).*exp(-sqrt(ω)*x/2).*(sqrt(ω)*x).^(α/2)
+end
+
+c=zeros(M);
+c[end]=1.
+
+#Gauss Laguerre quadrature can absorb the factor x^α/2 using associated Laguerre
+#c=randn(M)+im*rand(M)
+N1 = sum(abs(c).^2)
+L=Fun(Laguerre(α),c./sqrt(Lnorm));
+
+N2=sum(w.*abs(L.(sqrt(ω)*x)).^2)
+
+x=linspace(0,20sqrt(M),1000)
+plot(x,abs(L.(x)).^2.*exp.(-x).*x.^α)

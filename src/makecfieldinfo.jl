@@ -1,6 +1,6 @@
 function makecfieldinfo(basis,ecut,Ω)
 
-if basis=="hermite"
+if basis=="Hermite"
   dim=length(Ω)
   if dim==1
   ω1 = Ω

@@ -16,7 +16,7 @@ starting from a representation of the quantum state with respect to a particular
 for a state represented by `M` coefficients, the number of modes in the c-field.
  - `x` is the quadrature grid onto which ``ψ(x)`` is mapped
  - `w` are weights such that the an exact integral may be carreid out.
-The integral must be a product of order `n` in the field ``ψ``, and it is assumed that `n` is even.
+The integral must be a product of order `n` in the field ``ψ``.
 
 The integrals is performed by
 1. Transforming to the quadrature grid using `T`
@@ -30,7 +30,7 @@ Compute the number of particles in the C-field, for a state of `M` modes.
 ```
 julia> M = 30;
 c = randn(M)+im*randn(M);
-x,w,T=nfieldtrans("hermite",M,2);
+x,w,T=nfieldtrans("Hermite",M,2);
 ψ = T*c;
 N = sum(w.*abs(ψ).^2)
 73.24196674113007
@@ -51,7 +51,7 @@ The PGPE interaction energy is of this form, as is the nonlinear term in the PGP
 the exact propagation of the PGPE requires repeated use of this 4-field transformation:
 
 ```
-julia> x,w,T=nfieldtrans("hermite",M,4);
+julia> x,w,T=nfieldtrans("Hermite",M,4);
 ψ = T*c;
 Uint = sum(w.*abs(ψ).^4)
 552.9762736751692
@@ -65,12 +65,14 @@ Instead, use `eigmat.jl` to create a transform to a specific position grid.
 
 function nfieldtrans(basis,M,K,ω=1)
     iseven(K*M) ? n=Int(K*M/2) : n=Int((K*M+1)/2)
-    if basis=="hermite"
+    if basis=="Hermite"
     x, w = gausshermite(n)
     w    = w.*exp(x.^2)/sqrt(K*ω/2)
-    T    = eigmat("hermite",M,x/sqrt(K*ω/2),ω)
-    return x,w,T
+    T    = eigmat("Hermite",M,x/sqrt(K*ω/2),ω)
+    elseif basis=="Laguerre"
+
     else
         error(basis," basis not implemeted yet.")
     end
+    return x,w,T
 end
