@@ -24,7 +24,6 @@ Defaults of the last two arguments are 1. and 0. respectively.
 
 function eigmat(basis,M,x,ω=1.0,α=0.0)
   if basis=="Hermite"
-    #x,w=gausshermite(M)
     T=zeros(x*ones(1,M))
     n=0:BigFloat(M)-1;
     Hnorm = sqrt(BigFloat(π)/ω)*BigFloat(2).^n.*factorial.(n)
@@ -37,7 +36,8 @@ function eigmat(basis,M,x,ω=1.0,α=0.0)
     end
 
   elseif basis=="Laguerre"
-    #x,w=gausslaguerre(M,α)
+    M>26 && error("recursion unstable for M >=27")
+    #alternate approach using ApproxFun.jl
     T=zeros(x*ones(1,M))
     n=0:BigFloat(M)-1;
     Lnorm = exp.(lgamma.(n+α+1)-lgamma.(n+1))/ω
@@ -48,6 +48,29 @@ function eigmat(basis,M,x,ω=1.0,α=0.0)
       Lna=Fun(Laguerre(α),c./sqrt(Lnorm));
       T[:,j+1]=Lna.(sqrt(ω)*x).*exp(-sqrt(ω)*x/2).*(sqrt(ω)*x).^(α/2)
     end
+    #==
+    #old approach uses log-space but is also unstable for M>=27
+    T=zeros(x*ones(1,M))
+    x=complex(x,0)
+  	laguerre_nm1 = real(exp((α*log(x)-lgamma(α+1))/2))
+	  norm12 = exp((+lgamma(1+α)-lgamma(α+2))/2)
+  	laguerre_n = norm12*(1+α-sqrt(ω)*x).*laguerre_nm1.*exp(-sqrt(ω)*x/(2*M))
+
+  	T[:,1] = laguerre_nm1.*exp(0*sqrt(ω)*x/(2*M)-sqrt(ω)*x/2)
+  	T[:,2] = laguerre_n.*exp(1*sqrt(ω)*x/(2*M)-sqrt(ω)*x/2)
+
+	if M > 2
+  		for nn = 1:M-2
+			norm12 = exp((log(nn+1)+lgamma(nn+1+α)-lgamma(nn+α+2))/2)
+			norm13 = exp((log((nn+1)*nn)+lgamma(nn+α)-lgamma(nn+α+2))/2)
+	 		laguerre_np1 = (norm12.*exp(-sqrt(ω)*x/(2*M)).*(2*nn+1+α-sqrt(ω)*x)./(nn+1).*laguerre_n - norm13*exp(-2*sqrt(ω)*x/(2*M)).*((nn+α)/(nn+1)).*laguerre_nm1)
+			laguerre_nm1 = laguerre_n
+			laguerre_n   = laguerre_np1
+			T[:,nn+2]=laguerre_np1.*exp((nn+1)*sqrt(ω)*x/(2*M)-sqrt(ω)*x/2)
+  		end
+  	end
+	T = T*ω
+==#
   else
     error("basis not implemented")
   end

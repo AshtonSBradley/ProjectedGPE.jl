@@ -63,14 +63,18 @@ as the `x` grid is non-uniformly spaced.
 Instead, use `eigmat.jl` to create a transform to a specific position grid.
 """
 
-function nfieldtrans(basis,M,K,ω=1)
+function nfieldtrans(basis,M,K,ω=1.,α=0.)
     iseven(K*M) ? n=Int(K*M/2) : n=Int((K*M+1)/2)
     if basis=="Hermite"
     x, w = gausshermite(n)
     w    = w.*exp(x.^2)/sqrt(K*ω/2)
     T    = eigmat("Hermite",M,x/sqrt(K*ω/2),ω)
     elseif basis=="Laguerre"
-
+      M>26 && error("recursion unstable for M >=27")
+      #needs proper testing
+      x, w = gausslaguerre(n)
+      w    = w.*exp(x)/(K*ω/2)./x.^α #careful wieght check needed for order K
+      T    = eigmat("Laguerre",M,x/(K*ω/2),ω,α)
     else
         error(basis," basis not implemeted yet.")
     end

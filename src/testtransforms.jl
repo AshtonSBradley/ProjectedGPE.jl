@@ -1,4 +1,4 @@
-using ProjectedGPE, ApproxFun, PyPlot, Combinatorics
+using ProjectedGPE, ApproxFun, FastGaussQuadrature, PyPlot, Combinatorics
 M=100
 tol = 1e-14
 #c=Vector{BigFloat}(randn(M))+im*Vector{BigFloat}(randn(M))
@@ -52,11 +52,8 @@ maximum(abs(T1[:,mind]-T[:,mind]))
 
 T2=eigmat("Hermite",M,x,2)
 maximum(abs(T1[:,mind]-T2[:,mind]))
-#test new nfieldtrans and eigmat
 
-#T3=eigmatold("Hermite",M,x,2)
-
-
+#-------------------------------
 #Make and test Laguerre transform and quadrature
 M=27
 α = 0.
@@ -87,3 +84,22 @@ x=linspace(0,20sqrt(M),1000)
 plot(x,abs(L.(x)).^2.*exp.(-x).*x.^α)
 
 Lnorm
+
+#------------------------------------
+#test Laguerre
+M=21
+α = 1.
+ω = 2.
+x,w=gausslaguerre(M,α)
+
+T = eigmat("Laguerre",M,x/ω,ω,α)
+#norm test
+
+c=zeros(M);
+c[end]=1.
+N1 = sum(abs(c).^2)
+
+Ln = T*c
+
+
+N2=sum(w.*abs(Ln).^2.*exp(x)./(x).^α)
