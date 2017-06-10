@@ -18,8 +18,8 @@ function timeevolution()
 
   #Initialize CField
   basis = "Hermite"
-  ecut = 30ωx
-  Ω = [ωx]
+  ecut = 30 #units of ωx
+  Ω = [1.]
   cinfo = makecinfo(basis,ecut,Ω)
   @unpack en,P,M = cinfo; Mx=M[1]
   x,wx,Tx = maketransinfo(basis,M,Ω)
@@ -41,7 +41,7 @@ function nlin!(c,dc)
     #ψ[:] = wx.*abs(ψ).^2.*ψ
     #dc[:] = sum(anisotrans(ψ,Tx'),2)
     ψ = Tx*c
-    dc[:] = sum(Tx'*(wx.*abs(ψ).^2.*ψ),2)
+    dc[:] .= sum(Tx'*(wx.*abs(ψ).^2.*ψ),2)
 end
 
 #dPGPE in reservoir frame
