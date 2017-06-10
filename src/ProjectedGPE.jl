@@ -10,9 +10,9 @@ using FastGaussQuadrature, DifferentialEquations, ApproxFun, Parameters
   Ω::Vector=[1]
   ecut::Number=10
   e0::Number=0.5
-  Nmax::Number=10
-  N::Vector=[10]
-  Espec::Array=collect(1:10)-0.5
+  Mmax::Number=10
+  M::Vector=[10]
+  en::Array=collect(1:10)-0.5
   P::BitArray=[true]
 end
 
@@ -25,7 +25,7 @@ include("makescatteringtrans.jl")
 include("makescatteringnoisetrans.jl")
 include("makecinfo.jl")
 include("maketransinfo.jl")
-#include("timeevolution.jl")
+include("timeevolution.jl")
 #include("evalues.jl")
 #putting these here for now (=> package VortexDistributions.jl)
 include("unwrap.jl")
@@ -33,7 +33,7 @@ include("findvortices.jl")
 
 export eigmat, nfieldtrans, anisotrans, growthrate,
 scatteringkernel, makescatteringtrans, makescatteringnoisetrans,
-makecinfo, maketransinfo, gausshermite, @pack, @unpack,
+makecinfo, maketransinfo, gausshermite, @pack, @unpack, timeevolution,
 findvortices, unwrap
 
 end # module
