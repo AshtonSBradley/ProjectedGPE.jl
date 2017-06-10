@@ -1,20 +1,20 @@
-function makecfieldinfo(basis,ecut,Ω)
-
+function makecinfo(basis,ecut,Ω)
+cinfo = CInfo()
 if basis=="Hermite"
   dim=length(Ω)
   if dim==1
-  ω1 = Ω
-  e0 = 0.5*ω1
+  ωx = Ω[1]
+  e0 = 0.5*ωx
   ecut < e0 && error("ecut is smaller than the zero point energy!")
-  N1 = floor((ecut - e0)/ω1)+1
-  ex = ω1*(collect(0:(N1-1))+0.5);ex=ex[:]
-  Px = ex .< ecut
-  Espec= ex.*Px;
-  Espec = Espec[:]
-  Px = Px[:]
-  N = length(ex)
-  cinfo = cfieldinfo(basis=basis,ecut=ecut,e0=e0,Espec=Espec,N=N,N1=N1,ω1=ω1,Px=Px)
-  return cinfo
+  Nx = floor((ecut - e0)/ωx)+1;N=[Nx]
+  nx = collect(0:(Nx-1))
+  ex = ωx*(nx+0.5)
+  P = ex .< ecut
+  Espec = ex.*P
+  Nmax = length(ex)
+  @pack cinfo = basis, Ω, ecut, e0, Nmax, N, Espec, P
+
+  return cinfo,Espec,P
   #return basis, ecut, e0, Espec, N, N1, ω1, Px
   elseif dim==2
   throw(DomainError())

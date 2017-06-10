@@ -89,7 +89,7 @@ N2=sum(w.*abs(L.(sqrt(ω)*x)).^2)
 
 
 
-N3=sum(w.*abs(L2.(sqrt(ω)*x).*exp(sqrt(ω)*x/2)./(sqrt(ω)x).^(α/2)).^2)
+N3=sum(w.*abs(L2.(sqrt(ω)*x).*exp(sqrt(ω)*x)./(sqrt(ω)x).^(α/2)).^2)
 x=linspace(0,20sqrt(M),1000)
 plot(x,abs(L.(x)).^2.*exp.(-x).*x.^α)
 

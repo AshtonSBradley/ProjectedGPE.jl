@@ -5,15 +5,15 @@ module ProjectedGPE
 #import
 using FastGaussQuadrature, DifferentialEquations, ApproxFun, Parameters
 
-@with_kw type cfieldinfo
+@with_kw type CInfo
   basis::String="Hermite"
-  ecut::Number
-  e0::Number
-  Espec::Vector
-  N::Number
-  N1::Number
-  ω1::Number
-  Px::BitArray
+  Ω::Vector=[1]
+  ecut::Number=10
+  e0::Number=0.5
+  Nmax::Number=10
+  N::Vector=[10]
+  Espec::Array=collect(1:10)-0.5
+  P::BitArray=[true]
 end
 
 include("eigmat.jl")
@@ -23,7 +23,7 @@ include("growthrate.jl")
 include("scatteringkernel.jl")
 include("makescatteringtrans.jl")
 include("makescatteringnoisetrans.jl")
-include("makecfieldinfo.jl")
+include("makecinfo.jl")
 #include("maketransinfo.jl")
 #include("evalues.jl")
 #putting these here for now (=> package VortexDistributions.jl)
@@ -32,7 +32,7 @@ include("findvortices.jl")
 
 export eigmat, nfieldtrans, anisotrans, growthrate,
 scatteringkernel, makescatteringtrans, makescatteringnoisetrans,
-makecfieldinfo, gausshermite, findvortices, unwrap
+makecinfo, gausshermite, findvortices, unwrap, @pack, @unpack
 
 
 end # module

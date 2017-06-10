@@ -37,7 +37,7 @@ function eigmat(basis,M,x,ω=1.0,α=0.0)
 
   elseif basis=="Laguerre"
     M>26 && error("recursion unstable for M >=27")
-    #alternate approach using ApproxFun.jl
+    #alternate approach using ApproxFun.jl -same instability as previous approach 
     T=zeros(x*ones(1,M))
     n=0:BigFloat(M)-1;
     Lnorm = exp.(lgamma.(n+α+1)-lgamma.(n+1))/ω
