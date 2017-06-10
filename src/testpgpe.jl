@@ -1,4 +1,5 @@
-ecut = 20
+using ProjectedGPE
+ecut = 50
 
 ωx = 1
 ωy = π
@@ -6,7 +7,20 @@ ecut = 20
 Ω = [ωx,ωy,ωz]
 
 #check 1D
-cinfo, Espec, P = makecinfo("Hermite",ecut,[ωx])
+cinfo, Espec, P = makecinfo("Hermite",ecut,[ωx,ωy])
+#@step makecinfo("Hermite",ecut,[ωx,ωz])
 
-#pack a 3d vector of frequencies?
-@pack cinfo = Ω
+#test 1D
+Ω=[ωx]
+M=[5]
+x,wx,Tx=maketransinfo("Hermite",M,Ω)
+
+#test 2D
+Ω=[ωx, ωy]
+M=[5,10]
+x,wx,Tx,y,wy,Ty=maketransinfo("Hermite",M,Ω)
+
+#test 2D
+Ω=[ωx, ωy, ωz]
+M=[25,17,33]
+x,wx,Tx,y,wy,Ty,z,wz,Tz=maketransinfo("Hermite",M,Ω)

@@ -20,16 +20,6 @@ sa = size(A);sx = size(Tx);sy = size(Ty);sz = size(Tz)
   Az = reshape(Tz*Ay[:,:],(sz[1],sa[2],sa[3]))
   Az = permutedims(Az,(2,3,1))
 
-#=
-#naieve method using loop. Factor of 10 slower than above
 #todo: preallocate sized arrays to avoid any memory allocations
-
-  @inbounds for j=1:sz[1]
-    @inbounds for i = 1:sz[2]
-      B[:,:,j] = Tz[j,i]*anisotrans(A[:,:,i],Tx,Ty)
-    end
-  end
-=#
-
 return Az
 end
