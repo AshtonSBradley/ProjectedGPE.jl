@@ -1,6 +1,6 @@
 function timeevolution2()
   #definition of the C-region
-  siminfo = SimParams()
+  siminfo = Params()
   #system params
 
   ωx = 2π
@@ -44,7 +44,7 @@ end
 
 function nlin!(c,dc)
     ψ = Tx*c*Ty'
-    dc[:,:] = Tx'*(Wxy.*abs(ψ).^2.*ψ)*Ty
+    dc.= Tx'*(Wxy.*abs(ψ).^2.*ψ)*Ty
 end
 
 #dPGPE in reservoir frame
@@ -55,8 +55,8 @@ end
 
 #in place
 function Lgp!(t,c,dc)
-    dc[:] = nlin!(c,dc)
-    dc[:] = -im*(1-im*Γ̄)*((en - μ).*c .+ g*dc)
+    dc = nlin!(c,dc)
+    dc.= -im*(1-im*Γ̄)*((en - μ).*c .+ g*dc)
 end
 
 c0    = randn(Mx,My) + im*randn(Mx,My); #create new random initial state
