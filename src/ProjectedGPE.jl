@@ -20,7 +20,7 @@ using Parameters
   P::BitArray=[true]
 end
 
-@with_kw type SimParams @deftype Float64
+@with_kw type Params @deftype Float64
   ωx = 2π
   ωy = 0.
   ωz = 0.

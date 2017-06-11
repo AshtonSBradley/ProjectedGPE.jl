@@ -2,14 +2,15 @@ function timeevolution2()
   #definition of the C-region
   siminfo = SimParams()
   #system params
-  g = 0.1
+
   ωx = 2π
   ωy = 4ωx
   ωz = 0.0
+  t0 = 1/ωy  #choose time unit as largest ω
+  g = 0.1
   Γ̄ = 0.07
   M̄ = 0.0
-  t0 = 1/ωy  #choose time unit as largest ω
-  μ  = 20.0 
+  μ  = 20.0
 
   #Time grid
   ti = 0.0              #initial time
@@ -23,8 +24,8 @@ function timeevolution2()
 
   #Initialize CField
   basis = "Hermite"
-  ecut = 30 #units of ωy
-  Ω = [ωx; ωy]/ωy
+  ecut = 30 #units of ħ*ωy
+  Ω = [ωx; ωy]*t0
   cinfo = makecinfo(basis,ecut,Ω)
   @unpack en,P,M = cinfo ;Mx=M[1];My=M[2]
   x,wx,Tx,y,wy,Ty = maketransinfo(basis,M,Ω)

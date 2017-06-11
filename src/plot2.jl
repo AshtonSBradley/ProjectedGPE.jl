@@ -1,11 +1,11 @@
 #plot solution for 2d
 ## Transform to cartesian grid
-using Interact
-R = sqrt(2μ)
-xMax=1.5*R
+@unpack ωx,ωy,ωz,Γ̄,M̄,g,t0,μ,ti,tf,Nt,t,dt = siminfo
+R = sqrt(2μ/ωx^2)
+xMax=1.5R
 Nx = 500
 x = collect(linspace(-xMax,xMax,Nx))
-Tx = eigmat("hermite",M,x,1.0,1.0)
+Tx = eigmat("hermite",M,x)
 
 #Plot
 f=figure(figsize=(9,2))
