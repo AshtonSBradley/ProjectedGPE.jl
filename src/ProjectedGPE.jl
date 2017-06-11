@@ -2,8 +2,12 @@ __precompile__()
 
 module ProjectedGPE
 
+#using Reexport
 #import
-using FastGaussQuadrature, DifferentialEquations, ApproxFun, Parameters
+using DifferentialEquations
+using FastGaussQuadrature
+using ApproxFun
+using Parameters
 
 @with_kw type CInfo
   basis::String="Hermite"
@@ -14,6 +18,22 @@ using FastGaussQuadrature, DifferentialEquations, ApproxFun, Parameters
   M::Vector=[10]
   en::Array=collect(1:10)-0.5
   P::BitArray=[true]
+end
+
+@with_kw type SimParams @deftype Float64
+  ωx = 2π
+  ωy = 0.
+  ωz = 0.
+  t0 = 1/ωx
+  Γ̄  = 1e-4; @assert Γ̄<=1.0
+  M̄  = 0.0;  @assert M̄<=1.0
+  g  = 0.1
+  μ  = 10.0
+  ti = 0.0
+  tf = 100t0
+  Nt::Int64 = 50
+  t::Vector = collect(linspace(ti,tf,Nt))
+  dt = 0.1π/μ
 end
 
 include("eigmat.jl")
