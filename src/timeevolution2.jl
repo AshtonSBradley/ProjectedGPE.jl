@@ -1,11 +1,12 @@
-function timeevolution()
+function timeevolution2()
   #definition of the C-region
 
   #system params
   g = 0.1
-  ωx = 2*pi
+  ωx = 2pi
+  ωy = 4ωx
   γ = 0.07
-  t0 = 1/ωx
+  t0 = 1/ωy  #choose time unit as largest ω
   μ = 20
 
   #Time grid
@@ -18,27 +19,27 @@ function timeevolution()
 
   #Initialize CField
   basis = "Hermite"
-  ecut = 30 #units of ωx
-  Ω = [1.]
+  ecut = 30 #units of ωy
+  Ω = [ωx; ωy]/ωy
   cinfo = makecinfo(basis,ecut,Ω)
-  @unpack en,P,M = cinfo; Mx=M[1]
-  x,wx,Tx = maketransinfo(basis,M,Ω)
+  @unpack en,P,M = cinfo ;Mx=M[1];My=M[2]
+  x,wx,Tx,y,wy,Ty = maketransinfo(basis,M,Ω)
 
 #test transform
-  c0   = randn(Mx)+im*randn(Mx);
-  ψ0   = Tx*c0
-  ψ    = Tx*c0  #a field to write to in place if needed
+  c0   = randn(Mx,My)+im*randn(Mx,My);
+  ψ0   = Tx*c0*Ty'
+  ψ    = Tx*c0*Ty' #a field to write to in place if needed
 
 #PGPE nonlinearity 1D
 #out of place
 function nlin(c)
-    ψ = Tx*c
-    Tx'*(wx.*abs(ψ).^2.*ψ)
+    ψ = Tx*c*Ty'
+    Tx'*((wx.*wy').*abs(ψ).^2.*ψ)*Ty
 end
 
 function nlin!(c,dc)
-    ψ = Tx*c
-    dc[:] = Tx'*(wx.*abs(ψ).^2.*ψ)
+    ψ = Tx*c*Ty'
+    dc[:,:] = Tx'*((wx.*wy').*abs(ψ).^2.*ψ)*Ty
 end
 
 
@@ -54,7 +55,7 @@ function Lgp!(t,c,dc)
     dc[:] = -im*(1-im*γ)*((en - μ).*c .+ g*dc)
 end
 
-c0    = randn(Mx) + im*randn(Mx); #create new random initial state
+c0    = randn(Mx,My) + im*randn(Mx,My); #create new random initial state
 tspan = (t[1],t[end])
 prob = ODEProblem(Lgp!,c0,tspan)
 alg = Tsit5()

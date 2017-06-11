@@ -26,6 +26,7 @@ include("makescatteringnoisetrans.jl")
 include("makecinfo.jl")
 include("maketransinfo.jl")
 include("timeevolution.jl")
+include("timeevolution2.jl")
 #include("evalues.jl")
 #putting these here for now (=> package VortexDistributions.jl)
 include("unwrap.jl")
@@ -34,6 +35,6 @@ include("findvortices.jl")
 export eigmat, nfieldtrans, anisotrans, growthrate,
 scatteringkernel, makescatteringtrans, makescatteringnoisetrans,
 makecinfo, maketransinfo, gausshermite, @pack, @unpack, timeevolution,
-findvortices, unwrap
+timeevolution2, findvortices, unwrap
 
 end # module
