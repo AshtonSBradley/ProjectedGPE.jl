@@ -2,12 +2,12 @@ __precompile__()
 
 module ProjectedGPE
 
-#using Reexport
+using Reexport
 #import
-using DifferentialEquations
-using FastGaussQuadrature
-using ApproxFun
-using Parameters
+@reexport using DifferentialEquations
+@reexport using FastGaussQuadrature
+@reexport using ApproxFun
+@reexport using Parameters
 
 @with_kw type CInfo
   basis::String="Hermite"
@@ -21,19 +21,30 @@ using Parameters
 end
 
 @with_kw type Params @deftype Float64
+#Rb87 mass and scattering length
+  ħ = 1.05457e-34
+  m = 1.419e-25
+  a = 5e-9
+#trap frequencies
   ωx = 2π
   ωy = 0.
   ωz = 0.
+#choice of time and length units
   t0 = 1/ωx
+  x0 = sqrt(ħ/m/ωx)
+#interactions
+  g  = 4*pi*ħ^2*a/m
+#damping parameters (dimensionless)
   Γ̄  = 1e-4; @assert Γ̄<=1.0
   M̄  = 0.0;  @assert M̄<=1.0
-  g  = 0.1
+#chemical potential (dimensionless)
   μ  = 10.0
+#time evolution parameters
   ti = 0.0
   tf = 100t0
   Nt::Int64 = 50
   t::Vector = collect(linspace(ti,tf,Nt))
-  dt = 0.1π/μ
+  dt = 0.1π/μ #integrate step size [ - should have dt ≪ 2π/μ]
 end
 
 include("eigmat.jl")
@@ -55,6 +66,6 @@ include("findvortices.jl")
 export eigmat, nfieldtrans, anisotrans, growthrate,
 scatteringkernel, makescatteringtrans, makescatteringnoisetrans,
 makecinfo, maketransinfo, gausshermite, @pack, @unpack, timeevolution,
-timeevolution2, findvortices, unwrap
+timeevolution2, findvortices, unwrap, CInfo, Params
 
 end # module

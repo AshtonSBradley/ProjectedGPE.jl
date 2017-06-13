@@ -1,24 +1,29 @@
 function timeevolution2()
   #definition of the C-region
   siminfo = Params()
-  #system params
-
-  ωx = 2π
-  ωy = 4ωx
-  ωz = 0.0
-  t0 = 1/ωy  #choose time unit as largest ω
-  g = 0.1
-  Γ̄ = 0.07
-  M̄ = 0.0
-  μ  = 12.0
-
-  #Time grid
-  ti = 0.0              #initial time
-  tf = 120*t0          #final time
-  Nt = 40             #size of time vector
-  t  = collect(linspace(ti,tf,Nt))
-
-  dt = 0.1*t0    #integrate step size [ - should have dt ≪ 2π/μ]
+  #Rb87 mass and scattering length
+    ħ = 1.05457e-34
+    m = 1.419e-25
+    a = 5e-9
+  #trap frequencies
+    ωx = 2π
+    ωy = 0.
+    ωz = 0.
+  #choice of time and length units
+    t0 = 1/ωx
+    x0 = sqrt(ħ/m/ωx)
+    g  = (4*pi*ħ^2*a/m)*x0^3/(ħ*ωy)
+  #damping parameters (dimensionless)
+    Γ̄  = 1e-4; @assert Γ̄<=1.0
+    M̄  = 0.0;  @assert M̄<=1.0
+  #chemical potential (dimensionless)
+    μ  = 10.0
+  #time evolution parameters
+    ti = 0.0
+    tf = 100t0
+    Nt::Int64 = 50
+    t::Vector = collect(linspace(ti,tf,Nt))
+    dt = 0.1π/μ #integrate step size [ - should have dt ≪ 2π/μ]
 
   @pack siminfo = ωx,ωy,ωz,Γ̄,M̄,g,t0,μ,ti,tf,Nt,t,dt
 
