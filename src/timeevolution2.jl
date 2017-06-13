@@ -10,7 +10,7 @@ function timeevolution2()
   g = 0.1
   Γ̄ = 0.07
   M̄ = 0.0
-  μ  = 20.0
+  μ  = 12.0
 
   #Time grid
   ti = 0.0              #initial time

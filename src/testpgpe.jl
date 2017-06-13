@@ -4,10 +4,10 @@ ecut = 50
 ωx = 1
 ωy = π
 ωz = 5
-Ω = [ωx,ωy,ωz]
+Ω = [ωx;ωy;ωz]
 
 #check 1D
-cinfo, Espec, P = makecinfo("Hermite",ecut,[ωx,ωy])
+cinfo = makecinfo("Hermite",ecut,Ω)
 #@step makecinfo("Hermite",ecut,[ωx,ωz])
 
 #test 1D
