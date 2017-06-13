@@ -70,11 +70,15 @@ function nfieldtrans(basis,M,K,ω=1.,α=0.)
     w    = w.*exp(x.^2)/sqrt(K*ω/2)
     T    = eigmat("Hermite",M,x/sqrt(K*ω/2),ω)
     elseif basis=="Laguerre"
+      error(basis,"basis not implemented yet.")
+      #=
+      #sort out stable recursion for Laguerre
       M>26 && error("recursion unstable for M >=27")
       #needs proper testing
       x, w = gausslaguerre(n)
       w    = w.*exp(x)/(K*ω/2)./x.^α #careful wieght check needed for order K
       T    = eigmat("Laguerre",M,x/(K*ω/2),ω,α)
+      =#
     else
         error(basis," basis not implemeted yet.")
     end

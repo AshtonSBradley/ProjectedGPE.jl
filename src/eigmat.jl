@@ -24,21 +24,34 @@ Defaults of the last two arguments are 1. and 0. respectively.
 
 function eigmat(basis,M,x,ω=1.0,α=0.0)
   if basis=="Hermite"
+    #=
+    #More stable evaluation, needs testing
+    x=x[:]
     T=zeros(x*ones(1,M))
-    n=0:BigFloat(M)-1;
+    T[:,1]=exp(-ω*x.^2/2)/π^(1/4)
+    T[:,2]=sqrt(2)*exp(-ω*x.^2/2).*sqrt(ω).*x/π^(1/4)
+    for n=1:M-2
+      T[:,n+2]=sqrt(2/(n+2))*sqrt(ω).*x.*T[:,n+1]-sqrt((n+1)/(n+2))T[:,n]
+    end
+    =#
+    #
+    T=zeros(x*ones(1,M))
+    n=0:BigFloat(M)-1
     Hnorm = sqrt(BigFloat(π)/ω)BigFloat(2).^n.*factorial.(n)
 
     for j = 0:M-1
     c=zeros(M)
     c[j+1]=1.
-    Hn=Fun(Hermite(),c./sqrt(Hnorm));
+    Hn=Fun(Hermite(),c./sqrt(Hnorm))
     T[:,j+1]=Hn.(sqrt(ω)x).*exp(-ω*x.^2/2)
     end
-
+    #
   elseif basis=="Laguerre"
-    M>26 && error("recursion unstable for M >=27")
+    error(basis," basis not implemented")
+    #M>26 && error("recursion unstable for M >=27")
     #alternate approach using ApproxFun.jl -same instability as
     #previous approach in logspace
+    #=
     T=zeros(x*ones(1,M))
     n=0:BigFloat(M)-1;
     Lnorm = exp.(lgamma.(n+α+1)-lgamma.(n+1))/ω
@@ -49,8 +62,9 @@ function eigmat(basis,M,x,ω=1.0,α=0.0)
       Lna=Fun(Laguerre(α),c./sqrt(Lnorm));
       T[:,j+1]=Lna.(ω*x).*exp(-ω*x/2).*(ω*x).^(α/2)
     end
+    =#
   else
-    error("Basis not implemented")
+    error(basis," basis not implemented")
   end
   return T
 end

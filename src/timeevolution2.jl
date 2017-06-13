@@ -14,7 +14,7 @@ function timeevolution2()
 
   #Time grid
   ti = 0.0              #initial time
-  tf = 80*t0          #final time
+  tf = 120*t0          #final time
   Nt = 40             #size of time vector
   t  = collect(linspace(ti,tf,Nt))
 
