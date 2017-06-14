@@ -1,31 +1,36 @@
 function timeevolution2()
-  #definition of the C-region
-  siminfo = Params()
-  #Rb87 mass and scattering length
-    ħ = 1.05457e-34
-    m = 1.419e-25
-    a = 5e-9
-  #trap frequencies
-    ωx = 2π
-    ωy = 0.
-    ωz = 0.
-  #choice of time and length units
-    t0 = 1/ωx
-    x0 = sqrt(ħ/m/ωx)
-    g  = (4*pi*ħ^2*a/m)*x0^3/(ħ*ωy)
-  #damping parameters (dimensionless)
-    Γ̄  = 1e-4; @assert Γ̄<=1.0
-    M̄  = 0.0;  @assert M̄<=1.0
-  #chemical potential (dimensionless)
-    μ  = 10.0
-  #time evolution parameters
-    ti = 0.0
-    tf = 100t0
-    Nt::Int64 = 50
-    t::Vector = collect(linspace(ti,tf,Nt))
-    dt = 0.1π/μ #integrate step size [ - should have dt ≪ 2π/μ]
+siminfo = Params()
 
-  @pack siminfo = ωx,ωy,ωz,Γ̄,M̄,g,t0,μ,ti,tf,Nt,t,dt
+#== start template ==#
+#Rb87 mass and scattering length
+  ħ = 1.05457e-34
+  m = 1.419e-25
+  a = 5e-9
+#trap frequencies
+  ωx = 2π
+  ωy = 4ωx
+  ωz = 0.
+#choice of time, length, energy units
+  t0 = 1.0/ωy
+  x0 = sqrt(ħ*t0/m)
+  E0 = ħ/t0
+#interactions
+  #g  = (4*pi*ħ^2*a/m)*x0^3/E0 #dimensionless 3D
+  g = 0.1 #test 2D
+#damping parameters (dimensionless)
+  Γ̄  = 0.1
+  M̄  = 0.0
+#chemical potential (dimensionless)
+  μ  = 12.0
+#time evolution parameters
+  ti = 0.0
+  tf = 10.0/Γ̄  #evolve for 10 damping times
+  Nt = 50
+  t = collect(linspace(ti,tf,Nt))
+  dt = 0.01π/μ #integrate step size [ - should have dt ≪ 2π/μ]
+#== end template ==#
+
+  @pack siminfo = ωx,ωy,ωz,Γ̄,M̄,g,t0,E0,x0,μ,ti,tf,Nt,t,dt
 
   #Initialize CField
   basis = "Hermite"
@@ -37,6 +42,7 @@ function timeevolution2()
   Wxy = wx.*wy'
 #test transform
   c0   = randn(Mx,My)+im*randn(Mx,My);
+  c0=P.*c0;   #Project
   ψ0   = Tx*c0*Ty'
   ψ    = Tx*c0*Ty' #a field to write to in place if needed
 
@@ -62,6 +68,7 @@ end
 function Lgp!(t,c,dc)
     dc = nlin!(c,dc)
     dc.= -im*(1-im*Γ̄)*((en - μ).*c .+ g*dc)
+    dc.= P.*dc
 end
 
 c0    = randn(Mx,My) + im*randn(Mx,My); #create new random initial state

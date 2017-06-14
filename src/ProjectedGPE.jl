@@ -21,6 +21,7 @@ using Reexport
 end
 
 @with_kw type Params @deftype Float64
+#== paste this template into timeevolution and modify ==#
 #Rb87 mass and scattering length
   ħ = 1.05457e-34
   m = 1.419e-25
@@ -30,21 +31,23 @@ end
   ωy = 0.
   ωz = 0.
 #choice of time and length units
-  t0 = 1/ωx
-  x0 = sqrt(ħ/m/ωx)
+  t0 = 1.0/ωx
+  x0 = sqrt(ħ*t0/m)
+  E0 = ħ/t0
 #interactions
-  g  = 4*pi*ħ^2*a/m
+  g  = (4*pi*ħ^2*a/m)*x0^3/E0 #dimensionless 3D
 #damping parameters (dimensionless)
   Γ̄  = 1e-4; @assert Γ̄<=1.0
   M̄  = 0.0;  @assert M̄<=1.0
 #chemical potential (dimensionless)
-  μ  = 10.0
+  μ  = 12.0
 #time evolution parameters
   ti = 0.0
   tf = 100t0
   Nt::Int64 = 50
   t::Vector = collect(linspace(ti,tf,Nt))
-  dt = 0.1π/μ #integrate step size [ - should have dt ≪ 2π/μ]
+  dt = 0.01π/μ #integrate step size [ - should have dt ≪ 2π/μ]
+#== end template ==#
 end
 
 include("eigmat.jl")
