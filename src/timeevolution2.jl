@@ -24,7 +24,7 @@ siminfo = Params()
   μ  = 12.0
 #time evolution parameters
   ti = 0.0
-  tf = 10.0/Γ̄  #evolve for 10 damping times
+  tf = 2.0/Γ̄  #evolve for 2 damping times
   Nt = 50
   t = collect(linspace(ti,tf,Nt))
   dt = 0.01π/μ #integrate step size [ - should have dt ≪ 2π/μ]
@@ -42,7 +42,7 @@ siminfo = Params()
   Wxy = wx.*wy'
 #test transform
   c0   = randn(Mx,My)+im*randn(Mx,My);
-  c0=P.*c0;   #Project
+  c0   = P.*c0;   #Project
   ψ0   = Tx*c0*Ty'
   ψ    = Tx*c0*Ty' #a field to write to in place if needed
 
