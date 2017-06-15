@@ -19,22 +19,25 @@ At present `basis = "Hermite"` is implemented.
 - `ω` is the *relative* frequency, in units of the chosen reference frequency.
 - `α` is an extra input for the `laguerre` basis.
 Defaults of the last two arguments are 1. and 0. respectively.
-
 """
 
 function eigmat(basis,M,x,ω=1.0,α=0.0)
   if basis=="Hermite"
-    #=
-    #More stable evaluation, needs testing
-    x=x[:]
+    M > 371 && error("Quadrature does not converge for M > 371.")
+    x = convert(Vector{BigFloat},x)
+    ψ0 = exp(-(√ω*x).^2/2)*BigFloat((ω/π)^(1/4))
+    ψ1 = BigFloat(sqrt(2))*exp(-(√ω*x).^2/2).*(√ω*x)*BigFloat((ω/π)^(1/4))
     T=zeros(x*ones(1,M))
-    T[:,1]=exp(-ω*x.^2/2)/π^(1/4)
-    T[:,2]=sqrt(2)*exp(-ω*x.^2/2).*sqrt(ω).*x/π^(1/4)
-    for n=1:M-2
-      T[:,n+2]=sqrt(2/(n+2))*sqrt(ω).*x.*T[:,n+1]-sqrt((n+1)/(n+2))T[:,n]
+    n=convert(Vector{BigFloat},collect(0:M-1))
+    T[:,1] = ψ0
+    T[:,2] = ψ1
+    for m=1:M-2
+      T[:,m+2]=sqrt(2/(n[m+2]))*(√ω*x).*T[:,m+1]-sqrt(n[m+1]/n[m+2])T[:,m]
     end
-    =#
-    #
+    x = convert(Vector{Float64},x)
+    T = convert(Matrix{Float64},T)
+
+    #=
     T=zeros(x*ones(1,M))
     n=0:BigFloat(M)-1
     Hnorm = sqrt(BigFloat(π)/ω)BigFloat(2).^n.*factorial.(n)
@@ -45,7 +48,7 @@ function eigmat(basis,M,x,ω=1.0,α=0.0)
     Hn=Fun(Hermite(),c./sqrt(Hnorm))
     T[:,j+1]=Hn.(sqrt(ω)x).*exp(-ω*x.^2/2)
     end
-    #
+    =#
   elseif basis=="Laguerre"
     error(basis," basis not implemented")
     #M>26 && error("recursion unstable for M >=27")
