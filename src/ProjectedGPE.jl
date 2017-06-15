@@ -15,6 +15,7 @@ using Reexport
   ecut::Number=10
   e0::Number=0.5
   Mmax::Number=10
+  Mult::Number=10
   M::Vector=[10]
   en::Array=collect(1:10)-0.5
   P::BitArray=[true]
