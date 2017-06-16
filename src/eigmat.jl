@@ -37,18 +37,6 @@ function eigmat(basis,M,x,ω=1.0,α=0.0)
     x = convert(Vector{Float64},x)
     T = convert(Matrix{Float64},T)
 
-    #=
-    T=zeros(x*ones(1,M))
-    n=0:BigFloat(M)-1
-    Hnorm = sqrt(BigFloat(π)/ω)BigFloat(2).^n.*factorial.(n)
-
-    for j = 0:M-1
-    c=zeros(M)
-    c[j+1]=1.
-    Hn=Fun(Hermite(),c./sqrt(Hnorm))
-    T[:,j+1]=Hn.(sqrt(ω)x).*exp(-ω*x.^2/2)
-    end
-    =#
   elseif basis=="Laguerre"
     error(basis," basis not implemented")
     #M>26 && error("recursion unstable for M >=27")

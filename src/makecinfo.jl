@@ -6,43 +6,33 @@ if basis=="Hermite"
     ωx = Ω[1]
     e0 = 0.5*ωx
     ecut < e0 && error("ecut is smaller than the zero point energy!")
-    Mx = floor((ecut - e0)/ωx)+1;Mx=Int(Mx)
-    M  = [Mx]
-    nx = collect(0:(Mx-1))
-    ex = ωx*(nx+0.5);en=ex
-    P  = en .< ecut
-    en = P.*en
+    Mx,nx,en = nenergy("Hermite",ecut,e0,ωx)
     Mmax = Mx
-    Mult = sum(P)
+    P  = en .< ecut; Mult = sum(P)
+    en = P.*en
+    M  = [Mx]
   elseif dim==2
     ωx,ωy = Ω
     e0 = 0.5(ωx+ωy)
     ecut < e0 && error("ecut is smaller than the zero point energy!")
-    Mx = floor((ecut - e0)/ωx)+1;Mx=Int(Mx)
-    My = floor((ecut - e0)/ωy)+1;My=Int(My)
-    M  = [Mx,My]
-    nx = collect(0:(Mx-1));ny = collect(0:(My-1))
-    ex = (nx+0.5)ωx;ey = (ny+0.5)ωy
+    Mx,nx,ex = nenergy("Hermite",ecut,e0,ωx)
+    My,ny,ey = nenergy("Hermite",ecut,e0,ωy)
+    M  = [Mx,My]; Mmax = maximum(M)
     en = [ex[i+1]+ey[j+1] for i=nx, j=ny]
-    P  = en .< ecut
+    P  = en .< ecut; Mult = sum(P)
     en = P.*en
-    Mmax = maximum(M)
-    Mult = sum(P)
+    M  = [Mx,My]
   elseif dim==3
     ωx,ωy,ωz = Ω
     e0 = 0.5(ωx+ωy+ωz)
     ecut < e0 && error("ecut is smaller than the zero point energy!")
-    Mx = floor((ecut - e0)/ωx)+1;Mx=Int(Mx)
-    My = floor((ecut - e0)/ωy)+1;My=Int(My)
-    Mz = floor((ecut - e0)/ωz)+1;Mz=Int(Mz)
-    M  = [Mx,My,Mz]
-    nx = collect(0:(Mx-1));ny = collect(0:(My-1));nz = collect(0:(Mz-1))
-    ex = (nx+0.5)ωx;ey = (ny+0.5)ωy;ez = (nz+0.5)ωz
+    Mx,nx,ex = nenergy("Hermite",ecut,e0,ωx)
+    My,ny,ey = nenergy("Hermite",ecut,e0,ωy)
+    Mz,nz,ez = nenergy("Hermite",ecut,e0,ωz)
+    M  = [Mx,My,Mz]; Mmax = maximum(M)
     en = [ex[i+1]+ey[j+1]+ez[k+1] for i=nx, j=ny, k=nz]
-    P  = en .< ecut
+    P  = en .< ecut; Mult = sum(P)
     en = P.*en
-    Mmax = maximum(M)
-    Mult = sum(P)
 else error("Spatial dimension must be 1, 2, or 3.")
   end
 end

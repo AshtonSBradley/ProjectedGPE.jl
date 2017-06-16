@@ -10,9 +10,10 @@ evaluation of the scattering potential Vϵ
 # Arguments
  - `basis` the basis of eigenstates representing c-field state. Default is "Hermite"
  - `M` number of modes in the c-field.
+ - `ω` is the trap frequency relative to the chosen reference frequency.
+ - `n` is the field product that will be integrated exactly.
  - `Nk` number of `k` points.
  - `Na` number of auxiliary oscillator states.
- - `ω` is the trap frequency relative to the chosen reference frequency.
 """
 
 function makescatteringtrans(basis,M,ω=1,n=2,Nk=M,Na=M)

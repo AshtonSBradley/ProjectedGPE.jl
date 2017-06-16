@@ -55,6 +55,9 @@ end
 #== end template ==#
 end
 include("eigmat.jl")
+include("makespecops.jl")
+include("nenergy.jl")
+include("makeladderops.jl")
 include("nfieldtrans.jl")
 include("anisotrans.jl")
 include("growthrate.jl")
@@ -73,7 +76,7 @@ include("findvortices.jl")
 
 export eigmat, nfieldtrans, anisotrans, growthrate,
 scatteringkernel, makescatteringtrans, makescatteringnoisetrans,
-makecinfo, makealltrans, makespecops, gausshermite,
-@pack, @unpack, timeevolution, timeevolution2, findvortices, unwrap, CInfo, Params
+makecinfo, makealltrans, makespecops, makeladderops, nenergy,
+gausshermite, timeevolution, timeevolution2, findvortices, unwrap, CInfo, Params
 
 end # module
