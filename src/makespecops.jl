@@ -17,6 +17,7 @@ if basis=="Hermite"
     ax = sqrt(1/ωx) #in dimensionless units
     X  = [δ(n,m+1)*√n + δ(n,m-1)*√(n+1) for n in nx, m in nx]ax/√2
     Px = [δ(n,m-1)*√(n+1) - δ(n,m+1)*√n for n in nx, m in nx]im/(√2ax)
+    return P,en,X,Px
   elseif dim==2
     ωx,ωy = Ω
     e0 = 0.5(ωx+ωy)
@@ -33,10 +34,11 @@ if basis=="Hermite"
     Mult = sum(P)
     ax = sqrt(1/ωx) #in dimensionless units
     ay = sqrt(1/ωy)
-    X  = [δ(n,m+1)*√n + δ(n,m-1)*√(n+1) for n in nx, m in nx]ax/√2;
+    X  = [δ(n,m+1)*√n + δ(n,m-1)*√(n+1) for n in nx, m in nx]ax/√2; X = P.*X
     Px = [δ(n,m-1)*√(n+1) - δ(n,m+1)*√n for n in nx, m in nx]im/(√2ax);
     Y  = [δ(n,m+1)*√n + δ(n,m-1)*√(n+1) for n in ny, m in ny]ay/√2;
     Py = [δ(n,m-1)*√(n+1) - δ(n,m+1)*√n for n in ny, m in ny]im/(√2ay);
+    return P,en,X,Px,Y,Py
   elseif dim==3
     ωx,ωy,ωz = Ω
     e0 = 0.5(ωx+ωy+ωz)
@@ -61,6 +63,7 @@ if basis=="Hermite"
     Py = [δ(n,m-1)*√(n+1) - δ(n,m+1)*√n for n in ny, m in ny]im/(√2ay);
     Z  = [δ(n,m+1)*√n + δ(n,m-1)*√(n+1) for n in nz, m in nz]az/√2;
     Pz = [δ(n,m-1)*√(n+1) - δ(n,m+1)*√n for n in nz, m in nz]im/(√2az);
+    return P,en,X,Px,Y,Py,Z,Pz
   end
 
 end

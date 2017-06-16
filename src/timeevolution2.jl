@@ -2,10 +2,14 @@ function timeevolution2()
 siminfo = Params()
 
 #== start template ==#
+#fundamental constants/units
+  ħ = 1.0545718e-34
+  kB = 1.38064852e-23
+  amu = 1.660339040e-27
+  Bohr = 5.29e-11
 #Rb87 mass and scattering length
-  ħ = 1.05457e-34
-  m = 1.419e-25
-  a = 5e-9
+  m = 86.909180527*amu
+  as = 100*Bohr
 #trap frequencies
   ωx = 2π
   ωy = 4ωx
@@ -15,7 +19,7 @@ siminfo = Params()
   x0 = sqrt(ħ*t0/m)
   E0 = ħ/t0
 #interactions
-  #g  = (4*pi*ħ^2*a/m)*x0^3/E0 #dimensionless 3D
+  #g  = (4*pi*ħ^2*as/m)*x0^3/E0 #dimensionless 3D
   g = 0.1 #test 2D
 #damping parameters (dimensionless)
   Γ̄  = 0.1
@@ -39,7 +43,6 @@ siminfo = Params()
   cinfo = makecinfo(basis,ecut,Ω)
   @unpack en,P,M = cinfo ;Mx=M[1];My=M[2]
   x,wx,Tx,y,wy,Ty = maketransinfo(basis,M,Ω)
-  Wxy = wx.*wy'
 #test transform
   c0   = randn(Mx,My)+im*randn(Mx,My);
   c0   = P.*c0;   #Project
@@ -50,12 +53,12 @@ siminfo = Params()
 #out of place
 function nlin(c)
     ψ = Tx*c*Ty'
-    Tx'*(Wxy.*abs(ψ).^2.*ψ)*Ty
+    Tx'*(abs(ψ).^2.*ψ)*Ty
 end
 
 function nlin!(c,dc)
     ψ = Tx*c*Ty'
-    dc.= Tx'*(Wxy.*abs(ψ).^2.*ψ)*Ty
+    dc.= Tx'*(abs(ψ).^2.*ψ)*Ty
 end
 
 #dPGPE in reservoir frame

@@ -15,16 +15,16 @@ evaluation of the scattering potential Vϵ
  - `ω` is the trap frequency relative to the chosen reference frequency.
 """
 
-function makescatteringtrans(basis,M,Nk=M,Na=M,ω=1)
+function makescatteringtrans(basis,M,ω=1,n=2,Nk=M,Na=M)
 #4-field to x-space
-x,wx,Tx = nfieldtrans(basis,M,4,ω)
+x,wx,Tx = nfieldtrans(basis,M,n,ω)
 #4-field to k-space
-k,wk,Tk = nfieldtrans(basis,M,4,1/ω)
+k,wk,Tk = nfieldtrans(basis,M,n,1/ω)
 #4-field aux transforms to x
-xa,wxa,Txa = nfieldtrans(basis,Na,4,ω)
+xa,wxa,Txa = nfieldtrans(basis,Na,n,ω)
 #4-field aux transform to k
-ka,wka,Tka = nfieldtrans(basis,Na,4,1/ω)
-Tka = Tka*diagm((-im).^(0:2Na-1))
+ka,wka,Tka = nfieldtrans(basis,Na,n,1/ω)
+Tka = Tka*diagm((-im).^(0:Na-1))
 #Transform from x --> k via auxiliary states.
 Txk = conj(Tka'*Txa)
 

@@ -1,4 +1,4 @@
-function maketransinfo(basis,N,Ω,n=4)
+function makealltrans(basis,N,Ω,n=4)
 dim=length(N)
 if dim==1
   Nx = N[1]
