@@ -9,7 +9,7 @@ if basis=="Hermite"
     P  = en .< ecut
     en = P.*en
     ax = sqrt(1/ωx) #in dimensionless units
-    X,Px = makeladderops(Mx,ax)
+    X,Px = ladderops(Mx,ax)
     return P,en,X,Px
   elseif dim==2
     ωx,ωy = Ω
@@ -21,8 +21,8 @@ if basis=="Hermite"
     P  = en .< ecut
     en = P.*en
     ax = sqrt(1/ωx);ay = sqrt(1/ωy)
-    X,Px = makeladderops(Mx,ax)
-    Y,Py = makeladderops(My,ay)
+    X,Px = ladderops(Mx,ax)
+    Y,Py = ladderops(My,ay)
     return P,en,X,Px,Y,Py
   elseif dim==3
     ωx,ωy,ωz = Ω
@@ -35,9 +35,9 @@ if basis=="Hermite"
     P  = en .< ecut
     en = P.*en
     ax = sqrt(1/ωx);ay = sqrt(1/ωy);az = sqrt(1/ωz)
-    X,Px = makeladderops(Mx,ax)
-    Y,Py = makeladderops(My,ay)
-    Z,Pz = makeladderops(Mz,az)
+    X,Px = ladderops(Mx,ax)
+    Y,Py = ladderops(My,ay)
+    Z,Pz = ladderops(Mz,az)
     return P,en,X,Px,Y,Py,Z,Pz
   end
 
