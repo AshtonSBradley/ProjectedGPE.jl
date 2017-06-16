@@ -6,7 +6,7 @@ Returns the dimensionless damping rate in the simple-growth stochastic projected
 Arguments are in units of ħω, where ω is reference trap frequency.
 
 ## Arguments
-* `τ` - Reservoir temperature.
+* `τ` -  Reservoir temperature.
 * `μ` - Reservoir chemical potential.
 * `ω` - Frequency unit of simulation.
 * `ϵ` - Cutoff energy above which modes comprise an incoherent reservoir.
