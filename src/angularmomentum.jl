@@ -16,7 +16,7 @@ if basis=="Hermite"
     X,Px = ladderops(Mx,ax)
     Y,Py = ladderops(My,ay)
     Z,Pz = ladderops(My,ay)
-    Lx = -im*(Ŷ.*P̂z - Ẑ.*P̂y)
+    Lx = -im*(Y.*Pz - Z.*P̂y)
     Ly = -im*(Ẑ.*P̂x - X̂.*P̂z)
     Lz = -im*(X̂.*P̂y - Ŷ.*P̂x)
     return Lx,Ly,Lz
