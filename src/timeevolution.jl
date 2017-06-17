@@ -35,12 +35,12 @@ function timeevolution()
 #out of place
 function nlin(c)
     ψ = Tx*c
-    Tx'*(wx.*abs(ψ).^2.*ψ)
+    Tx'*(wx.*abs.(ψ).^2.*ψ)
 end
 
 function nlin!(c,dc)
     ψ = Tx*c
-    dc[:] = Tx'*(wx.*abs(ψ).^2.*ψ)
+    dc[:] = Tx'*(wx.*abs.(ψ).^2.*ψ)
 end
 
 

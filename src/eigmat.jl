@@ -25,8 +25,8 @@ function eigmat(basis,M,x,ω=1.0,α=0.0)
   if basis=="Hermite"
     M > 371 && error("Quadrature does not converge for M > 371.")
     x = convert(Vector{BigFloat},x)
-    ψ0 = exp(-(√ω*x).^2/2)*BigFloat((ω/π)^(1/4))
-    ψ1 = BigFloat(sqrt(2))*exp(-(√ω*x).^2/2).*(√ω*x)*BigFloat((ω/π)^(1/4))
+    ψ0 = exp.(-(√ω*x).^2/2)*BigFloat((ω/π)^(1/4))
+    ψ1 = BigFloat(sqrt(2))*exp.(-(√ω*x).^2/2).*(√ω*x)*BigFloat((ω/π)^(1/4))
     T=zeros(x*ones(1,M))
     n=convert(Vector{BigFloat},collect(0:M-1))
     T[:,1] = ψ0

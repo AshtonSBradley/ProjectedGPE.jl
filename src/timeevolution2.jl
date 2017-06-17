@@ -54,12 +54,12 @@ siminfo = Params()
 #out of place
 function nlin(c)
     ψ = Tx*c*Ty'
-    Tx'*(Wxy.*abs(ψ).^2.*ψ)*Ty
+    Tx'*(Wxy.*abs.(ψ).^2.*ψ)*Ty
 end
 
 function nlin!(c,dc)
     ψ = Tx*c*Ty'
-    dc.= Tx'*(Wxy.*abs(ψ).^2.*ψ)*Ty
+    dc.= Tx'*(Wxy.*abs.(ψ).^2.*ψ)*Ty
 end
 
 #dPGPE in reservoir frame
