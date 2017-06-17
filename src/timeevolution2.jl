@@ -42,7 +42,7 @@ siminfo = Params()
   Ω = [ωx; ωy]*t0
   cinfo = makecinfo(basis,ecut,Ω)
   @unpack en,P,M = cinfo ;Mx=M[1];My=M[2]
-  x,wx,Tx,y,wy,Ty = maketransinfo(basis,M,Ω)
+  x,wx,Tx,y,wy,Ty = makealltrans(basis,M,Ω)
   Wxy = wx.*wy'
 #test transform
   c0   = randn(Mx,My)+im*randn(Mx,My);
