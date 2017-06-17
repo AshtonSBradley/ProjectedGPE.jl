@@ -2,8 +2,9 @@ __precompile__()
 
 module ProjectedGPE
 
-using Reexport
+using Reexport, Iterators, Combinatorics
 #import
+
 @reexport using DifferentialEquations
 @reexport using FastGaussQuadrature
 @reexport using ApproxFun
