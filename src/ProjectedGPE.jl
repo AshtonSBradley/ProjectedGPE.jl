@@ -68,6 +68,7 @@ include("makescatteringnoisetrans.jl")
 include("makecinfo.jl")
 include("makealltrans.jl")
 include("makespecops.jl")
+include("pgpe.jl")
 include("timeevolution.jl")
 include("timeevolution2.jl")
 #include("evalues.jl")
@@ -75,10 +76,10 @@ include("timeevolution2.jl")
 include("unwrap.jl")
 include("findvortices.jl")
 
-export eigmat, nfieldtrans, anisotrans, growthrate,
+export eigmat, nfieldtrans, anisotrans!, growthrate,
 scatteringkernel, makescatteringtrans, makescatteringnoisetrans,
 makecinfo, makealltrans, makespecops, ladderops, nenergy,
 gausshermite, timeevolution, timeevolution2, CInfo, Params,
-findvortices, unwrap
+nlin!, Lgp!,findvortices, unwrap
 
 end # module

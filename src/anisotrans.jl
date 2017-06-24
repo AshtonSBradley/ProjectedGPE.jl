@@ -1,25 +1,22 @@
-function anisotrans(A,Tx)
-return Tx*A
+function anisotrans!(c::Array{Complex{Float64},1},Tx,ψ::Array{Complex{Float64},1})
+    ψ .= Tx*c
 end
 
-function anisotrans(A,Tx,Ty)
-return Tx*A*Ty.'
+function anisotrans!(c::Array{Complex{Float64},2},Tx,Ty,ψ::Array{Complex{Float64},2})
+    ψ .= Tx*c*Ty'
 end
 
-function anisotrans(A,Tx,Ty,Tz)
-sa = size(A);sx = size(Tx);sy = size(Ty);sz = size(Tz)
-#!isdefined(Ax) ? Ax = complex(zeros(sx[1],sa[2],sa[3])) : nothing
-  Ax = reshape(Tx*A[:,:],(sx[1],sa[2],sa[3]))
-  Ax = permutedims(Ax,(2,3,1))
-  sa = size(Ax)
-  #!isdefined(Ay) ? Ay = complex(zeros(sy[1],sa[2],sa[3])) : nothing
-  Ay = reshape(Ty*Ax[:,:],(sy[1],sa[2],sa[3]))
-  Ay = permutedims(Ay,(2,3,1))
-  sa = size(Ay)
-  #!isdefined(Az) ? Az = complex(zeros(sz[1],sa[2],sa[3])) : nothing
-  Az = reshape(Tz*Ay[:,:],(sz[1],sa[2],sa[3]))
-  Az = permutedims(Az,(2,3,1))
+function anisotrans!(c::Array{Complex{Float64},3},Tx,Ty,Tz,ψ::Array{Complex{Float64},3})
+    sa = size(c);sx = size(Tx);sy = size(Ty);sz = size(Tz)
+    Ax = reshape(c,(sa[1],sa[2]*sa[3]))
+    Ax = reshape(Tx*Ax,(sx[1],sa[2],sa[3]))
+    Ax = permutedims(Ax,(2,3,1));sa = size(Ax)
 
-#todo: preallocate sized arrays to avoid any memory allocations
-return Az
+    Ay = reshape(Ax,(sa[1],sa[2]*sa[3]))
+    Ay = reshape(Ty*Ay,(sy[1],sa[2],sa[3]))
+    Ay = permutedims(Ay,(2,3,1));sa = size(Ay)
+
+    Az = reshape(Ay,(sa[1],sa[2]*sa[3]))
+    Az = reshape(Tz*Az,(sz[1],sa[2],sa[3]))
+    ψ .= permutedims(Az,(2,3,1))
 end
