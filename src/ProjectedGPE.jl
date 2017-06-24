@@ -2,7 +2,7 @@ __precompile__()
 
 module ProjectedGPE
 
-using Reexport, Iterators, Combinatorics
+using Reexport, Combinatorics
 #import
 
 @reexport using DifferentialEquations
