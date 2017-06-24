@@ -23,6 +23,7 @@ using Reexport, Combinatorics
   Tx::Array{Float64,2}
   Ty::Array{Float64,2}
   Tz::Array{Float64,2}
+  W::Array{Float64,2}
 end
 
 @with_kw type Params @deftype Float64
