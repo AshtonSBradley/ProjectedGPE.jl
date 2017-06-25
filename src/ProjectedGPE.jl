@@ -20,10 +20,10 @@ using Reexport, Combinatorics
   M::Vector=[10]
   en::Array=collect(1:10)-0.5
   P::BitArray=[true]
-  Tx::Array{Float64,2}
-  Ty::Array{Float64,2}
-  Tz::Array{Float64,2}
-  W::Array{Float64,2}
+  Tx::Array{Float64,2}=eye(2,2)
+  Ty::Array{Float64,2}=eye(2,2)
+  Tz::Array{Float64,2}=eye(2,2)
+  W::Array=randn(2,2,2)
 end
 
 @with_kw type Params @deftype Float64
