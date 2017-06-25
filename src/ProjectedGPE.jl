@@ -11,6 +11,10 @@ using Reexport, Combinatorics
 @reexport using Parameters
 
 @with_kw type CInfo
+  Γ̄::Float64=1e-4
+  M̄::Float64=0.0
+  g::Float64=0.1
+  μ::Float64=12.0
   basis::String="Hermite"
   Ω::Vector=[1]
   ecut::Number=10
@@ -24,6 +28,7 @@ using Reexport, Combinatorics
   Ty::Array{Float64,2}=eye(2,2)
   Tz::Array{Float64,2}=eye(2,2)
   W::Array=randn(2,2,2)
+  ψ::Array=randn(2,2,2)
 end
 
 @with_kw type Params @deftype Float64
