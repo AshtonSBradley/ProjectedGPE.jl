@@ -2,12 +2,10 @@ __precompile__()
 
 module ProjectedGPE
 
-using Reexport, Combinatorics
-#import
+using Reexport
 
 @reexport using DifferentialEquations
 @reexport using FastGaussQuadrature
-#@reexport using ApproxFun
 @reexport using Parameters
 
 @with_kw type CInfo
