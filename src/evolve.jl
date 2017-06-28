@@ -1,4 +1,4 @@
-function timeevolution()
+function evolve()
   #definition of the C-region
 
   #system params

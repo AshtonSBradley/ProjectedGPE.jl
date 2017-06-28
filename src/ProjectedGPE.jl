@@ -76,8 +76,8 @@ include("makecinfo.jl")
 include("makealltrans.jl")
 include("makespecops.jl")
 include("pgpe.jl")
-include("timeevolution.jl")
-include("timeevolution2.jl")
+include("evolve.jl")
+include("evolve2.jl")
 #include("evalues.jl")
 #putting these here for now (=> package VortexDistributions.jl)
 include("unwrap.jl")
@@ -86,7 +86,7 @@ include("findvortices.jl")
 export eigmat, nfieldtrans, anisotrans!, growthrate,
 scatteringkernel, makescatteringtrans, makescatteringnoisetrans,
 makecinfo, makealltrans, makespecops, ladderops, nenergy,
-gausshermite, timeevolution, timeevolution2, CInfo, Params,
+gausshermite, evolve, evolve2, CInfo, Params,
 nlin!, Lgp!,findvortices, unwrap
 
 end # module

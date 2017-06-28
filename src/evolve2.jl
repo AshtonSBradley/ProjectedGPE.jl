@@ -1,4 +1,4 @@
-function timeevolution2()
+function evolve2()
 siminfo = Params()
 
 #== start template ==#
