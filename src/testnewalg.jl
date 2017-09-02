@@ -131,7 +131,7 @@ f=figure(figsize=(9,2))
 @manipulate for i=1:length(t) withfig(f,clear=true) do
         ψ = Txp*Tx'*(wx.*sol[i]);
         θ = unwrap(angle(ψ));
-        subplot(1,2,1);plot(xp/R,g*abs(ψ).^2,xp/R,ones(xp)*μ,"g:");
+        subplot(1,2,1);plot(xp/R,g*abs.(ψ).^2,xp/R,ones(xp)*μ,"g:");
         xlim(-xMax/R,xMax/R);#ylim(-1,1.5*μ);
         xlabel(L"x/R");ylabel(L"g|ψ|^2")
         subplot(1,2,2);plot(xp/R,θ);

@@ -40,7 +40,7 @@ end
 
 function nlin!(c,dc)
     ψ = Tx*c
-    dc[:] = Tx'*(wx.*abs.(ψ).^2.*ψ)
+    dc.= Tx'*(wx.*abs.(ψ).^2.*ψ)
 end
 
 
@@ -52,8 +52,8 @@ end
 
 #in place
 function Lgp!(t,c,dc)
-    dc[:] = nlin!(c,dc)
-    dc[:] = -im*(1-im*Γ̄)*((en - μ).*c .+ g*dc)
+    dc.= nlin!(c,dc)
+    dc.= -im*(1-im*Γ̄)*((en - μ).*c .+ g*dc)
 end
 
 c0    = randn(Mx) + im*randn(Mx); #create new random initial state

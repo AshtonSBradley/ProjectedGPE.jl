@@ -48,7 +48,7 @@ G1i     = log(1-exp(μ-ϵ))^2;
 Nmax2 = 1000;
 NmaxLerch = 1000;
 R = 1:Nmax2;
-temp =  exp(2*(μ-ϵ))*exp(R*(μ-2*ϵ)).*lerch(exp(μ-ϵ),1,R+1,NmaxLerch).^2;
+temp =  exp.(2*(μ-ϵ))*exp.(R*(μ-2*ϵ)).*lerch.(exp.(μ-ϵ),1,R+1,NmaxLerch).^2;
 G2i = sum(temp);
 
 Gi = G1i + G2i;
