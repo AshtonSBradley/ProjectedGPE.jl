@@ -4,6 +4,6 @@ x,w,T = nfieldtrans(basis,N,2,ω)
 Normtest = T'*(T.*(w.*ones(N)))
 
 #check orthonormality is close to identity matrix for the basis
-maxerr = maximum(abs(Normtest-eye(Normtest)))
+maxerr = maximum(abs.(Normtest-eye(Normtest)))
 maxerr < err
 end

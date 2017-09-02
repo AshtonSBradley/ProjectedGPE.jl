@@ -5,7 +5,7 @@ tol = 1e-14
 #c=randn(M)+im*randn(M)
 c=zeros(M)
 c[end]=1.
-N1=sum(abs(c).^2)
+N1=sum(abs.(c).^2)
 
 #evaluate modes using BigFloats
 #can then use ApproxFun.jl for polynomials, applying correct normalization.
@@ -16,14 +16,14 @@ Hnorm = sqrt(BigFloat(π))*BigFloat(2).^n.*factorial.(n)
 
 #Inserting norm.
 f=Fun(Hermite(),c./sqrt(Hnorm))
-f2=Fun(GaussWeight(Hermite()),c./sqrt(Hnorm))
+f2=Fun(GaussWeight(Hermite()),c./sqrt.(Hnorm))
 x=linspace(-1.5sqrt(2M),1.5sqrt(2M),1000)
-plot(x,abs(f.(x)).^2.*exp.(-x.^2))
+plot(x,abs.(f.(x)).^2.*exp.(-x.^2))
 
 x,w=gausshermite(M)
 
-N2=sum(w.*abs(f.(x)).^2)
-N3=sum(w.*abs(f2.(x).*exp(x.^2)).^2)
+N2=sum(w.*abs.(f.(x)).^2)
+N3=sum(w.*abs.(f2.(x).*exp.(x.^2)).^2)
 
 Float64(N2)
 
@@ -37,7 +37,7 @@ M=10
 x,w=gausshermite(M)
 T=zeros(x*ones(1,M))
 n=0:BigFloat(M)-1;
-Hnorm = sqrt(BigFloat(π))*BigFloat(2).^n.*factorial.(n)
+Hnorm = sqrt.(BigFloat(π))*BigFloat(2).^n.*factorial.(n)
 
 for j = 0:M-1
   c=zeros(M)
@@ -45,16 +45,16 @@ for j = 0:M-1
   #Hn=Fun(Hermite(),c./sqrt(Hnorm));
   #T[:,j+1]=Hn.(x).*exp(-x.^2/2)
   Hn=Fun(GaussWeight(Hermite()),c)
-  T[:,j+1]=Hn.(x).*exp(x.^2/2)
+  T[:,j+1]=Hn.(x).*exp.(x.^2/2)
 end
 
 x1,y1,T1=nfieldtrans("Hermite",M,2,2)
 
 mind = M
-maximum(abs(T1[:,mind]-T[:,mind]))
+maximum(abs.(T1[:,mind]-T[:,mind]))
 
 T2=eigmat("Hermite",M,x,2)
-maximum(abs(T1[:,mind]-T2[:,mind]))
+maximum(abs.(T1[:,mind]-T2[:,mind]))
 
 #-------------------------------
 #Make and test Laguerre transform and quadrature
@@ -70,7 +70,7 @@ for j = 0:M-1
   c=zeros(M)
   c[j+1]=1.
   Lna=Fun(Laguerre(α),c./sqrt(Lnorm));
-  T[:,j+1]=Lna.(sqrt(ω)*x).*exp(-sqrt(ω)*x/2).*(sqrt(ω)*x).^(α/2)
+  T[:,j+1]=Lna.(sqrt(ω)*x).*exp.(-sqrt(ω)*x/2).*(sqrt(ω)*x).^(α/2)
 end
 
 c=zeros(M);
@@ -78,7 +78,7 @@ c[end]=BigFloat(1.)
 
 #Gauss Laguerre quadrature can absorb the factor x^α/2 using associated Laguerre
 #c=randn(M)+im*rand(M)
-N1 = sum(abs(c).^2)
+N1 = sum(abs.(c).^2)
 L=Fun(Laguerre(α),c./sqrt(Lnorm))
 
 
@@ -89,9 +89,9 @@ N2=sum(w.*abs(L.(sqrt(ω)*x)).^2)
 
 
 
-N3=sum(w.*abs(L2.(sqrt(ω)*x).*exp(sqrt(ω)*x)./(sqrt(ω)x).^(α/2)).^2)
+N3=sum(w.*abs(L2.(sqrt(ω)*x).*exp.(sqrt(ω)*x)./(sqrt(ω)x).^(α/2)).^2)
 x=linspace(0,20sqrt(M),1000)
-plot(x,abs(L.(x)).^2.*exp.(-x).*x.^α)
+plot(x,abs.(L.(x)).^2.*exp.(-x).*x.^α)
 
 Lnorm
 

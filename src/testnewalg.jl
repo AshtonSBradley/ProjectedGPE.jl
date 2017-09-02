@@ -4,7 +4,7 @@ using ProjectedGPE, DifferentialEquations
 
 using PyPlot, Interact
 
-import ProjectedGPE.Lgp!
+#import ProjectedGPE.Lgp!
 #definition of the C-region
 M = 30
 
@@ -26,7 +26,9 @@ dt = 0.01*t0    #initial step size [ - should have dt ≪ 2π/μ]
 function makexktrans2(basis,M,ω=1.0)
 #n-field to x-space
 #x,wx,Tx = nfieldtrans(basis,M,nx,ω)
-x,wx = gausshermite(2M) #rule order should be set based on terms in eq
+#2M rule but with no variable changes - suitable for doing 2field integrals on a 4 field grid
+#actually any linear operator may be computed spectrally this way
+x,wx = gausshermite(2M) #rule order set by terms in eq
 wx = wx.*exp.(x.^2)/√ω
 Tx = eigmat("Hermite",M,x/√ω,ω) #take grid to spectral
 #n-field to k-space
@@ -41,10 +43,11 @@ end
 
 x,wx,Tx,k,wk,Tk,Txk = makexktrans2("Hermite",M)
 
-#M modes on 4-field grid, gives 2M points
+#M modes on 4-field grid, gives 2M points with correct weight for 4-field product
 x4,wx4,Tx4 = nfieldtrans("Hermite",M,4)
 
-Tx24 = Tx4*(Tx'.*wx')
+#create transform from 2-field grid (at 2M-rule precision) to 4-field grid
+Tx24 = Tx4*Tx'
 
 #PGPE kinetic term
 #out of place
@@ -57,15 +60,16 @@ function kinetic!(ψ,dψ)
     dψ .= Txk'*(0.5*wk.*k.^2.*(Txk*(wx.*ψ)))
 end
 
+#initialize fields
 #ψ0=randn(size(x))+im*randn(size(x)) #create new random initial state
 c0=zeros(M)+im*zeros(M) #zero pad to length 2M
 c0[25]=sqrt(100) # initial state
 ψ0=Tx*c0
-ϕ = Tx24*ψ0
+ϕ = Tx24*(wx.*ψ0)
 
 function nlin(ψ)
     #Tx*(P.*Tx'*(wx.*abs.(ψ).^2.*ψ))  #right weight??
-    ϕ = Tx24*ψ
+    ϕ = Tx24*(wx.*ψ)
     return Tx24'*(wx4.*abs.(ϕ).^2.*ϕ)
 end
 
@@ -82,7 +86,7 @@ function Lgp(t,ψ)
 end
 
 #in place
-function Lgp!(t,ψ,dψ)
+function Lgp2!(t,ψ,dψ)
     kinetic!(ψ,dψ)
     #dψ[:] = -im*(1-im*γ)*((g*abs.(ψ).^2  .+ 0.5.*x.^2 .- μ).*ψ .+ dψ) #2 field to 2 field (non-linear works...?)
     #maybe we just need a function for nonlinear term specific to grids (aswell as potential)
@@ -93,10 +97,11 @@ function Lgp!(t,ψ,dψ)
     dψ .= -im*(1-im*γ)*((0.5.*x.^2 .- μ).*ψ .+ g*nlin(ψ) .+ dψ)
 end
 
-
+Lgp2!(0.,ψ0,ψ0)
 
 tspan = (t[1],t[end])
-prob = ODEProblem(Lgp!,ψ0,tspan,callback=CallbackSet(),mass_matrix=I)
+#prob = ODEProblem(Lgp!,ψ0,tspan,callback=CallbackSet(),mass_matrix=I)
+prob = ODEProblem(Lgp2!,ψ0,tspan)
 alg = Tsit5()
 #alg = DP5()
 #abstol = 1e-12

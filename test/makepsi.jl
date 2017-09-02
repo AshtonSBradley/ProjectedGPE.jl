@@ -28,10 +28,10 @@ testvort = sortrows(testvort)
 #construct phase
 phase = zeros(Nx,Ny)
 for j=1:Nv
-    phase += testvort[j,3]*atan2(ones(x)*(y-testvort[j,2]),(x-testvort[j,1])*ones(y))
+    phase += testvort[j,3]*atan2.(ones(x)*(y-testvort[j,2]),(x-testvort[j,1])*ones(y))
 end
 
-psi = ones(x*y).*exp(im*phase)
+psi = ones(x*y).*exp.(im*phase)
 return x,y,psi,testvort
 
 #imshow(phase)
