@@ -9,7 +9,7 @@ If the field is 3D then returns 2D slices of coordinates normal to direction
 
 function findvortices(x,y,ψ,normal="z")
 
-phase = angle(ψ)
+phase = angle.(ψ)
 Nx,Ny = size(ψ)
 
 # x corresponds to column of ψ
