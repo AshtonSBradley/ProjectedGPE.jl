@@ -79,14 +79,14 @@ include("pgpe.jl")
 include("evolve.jl")
 include("evolve2.jl")
 #include("evalues.jl")
-#putting these here for now (=> package VortexDistributions.jl)
-include("unwrap.jl")
-include("findvortices.jl")
+
+
+
 
 export eigmat, nfieldtrans, anisotrans!, growthrate,
 scatteringkernel, makescatteringtrans, makescatteringnoisetrans,
 makecinfo, makealltrans, makespecops, ladderops, nenergy,
 gausshermite, evolve, evolve2, CInfo, Params,
-nlin!, Lgp!,findvortices, unwrap
+nlin!, Lgp! 
 
 end # module
