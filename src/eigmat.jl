@@ -15,9 +15,9 @@ where `c` is a column vector of coefficients in the basis.
 
 `x`: spatial grid to which the coefficients are mapped.
 
-`ω`: mode frequency, in units of the chosen reference frequency.
+`ω`: mode angular frequency, in units of the chosen reference frequency.
 
-`α`: extra input for the `laguerre` basis.
+`α`: extra input for the `"Laguerre"` basis.
 
 `basis`: set of eigenfunctions representing the c-field. At present `basis = "Hermite"` is implemented.
 

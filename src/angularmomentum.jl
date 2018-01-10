@@ -20,20 +20,21 @@ if basis=="Hermite"
   elseif dim==2
     ax,ay = a
     Mx,My = M
-    X,Px = ladderops(Mx,ax)
-    Y,Py = ladderops(My,ay)
+    X,Px = ladderops(Mx,ax,basis)
+    Y,Py = ladderops(My,ay,basis)
     Lz = -im*(X*c*Py - Px*c*Y)
     return Lz
   elseif dim==3
     ax,ay,az = a
     Mx,My,Mz = M
-    X,Px = ladderops(Mx,ax)
-    Y,Py = ladderops(My,ay)
-    Z,Pz = ladderops(My,ay)
+    X,Px = ladderops(Mx,ax,basis)
+    Y,Py = ladderops(My,ay,basis)
+    Z,Pz = ladderops(My,ay,basis)
     Lx = -im*(Y.*Pz - Z.*P̂y)
     Ly = -im*(Ẑ.*P̂x - X̂.*P̂z)
     Lz = -im*(X̂.*P̂y - Ŷ.*P̂x)
     return Lx,Ly,Lz
   end
+else error("basis not implemented")
 end
 end

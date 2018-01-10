@@ -24,8 +24,8 @@ Tc = \\psi(x) \\equiv \\sum_{j=1}^{M}c_j\\phi_j(x)
 
 for a state represented by `M` coefficients, the number of modes in the c-field.
 
- - `x` is the quadrature grid onto which ``\\psi(x)`` is mapped
- - `w` are weights such that the an exact integral may be carreid out.
+ * `x` is the quadrature grid onto which ``\\psi(x)`` is mapped
+ * `w` are weights such that the an exact integral may be carreid out.
 
 The integral must be a product of order `n` in the field ``\\psi``.
 
