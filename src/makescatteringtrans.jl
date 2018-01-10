@@ -1,16 +1,16 @@
 """
-    k, wk, Tkx = makescatteringtrans(basis,M,Nk,Na,ω)
+    k, wk, Tkx = makescatteringtrans(M,basis,Nk,Na,ω)
 
 Construct transforms and associated arrays for precise numerical quadrature
 evaluation of the scattering potential ``V_\\epsilon``
-
- `basis`: basis of eigenstates representing c-field state. Default is `"Hermite"`.
 
  `M`: number of modes in the c-field.
 
  `ω`: trap frequency relative to the chosen reference frequency.
 
- `n`: field product that will be integrated exactly.
+ `basis`: name of orthonormal eigenbasis representing c-field state. Currently `"Hermite"` is implemented.
+
+ `n`: field product that will be integrated to machine precision.
 
  `Nk`: number of `k` points.
 
@@ -22,15 +22,15 @@ evaluation of the scattering potential ``V_\\epsilon``
 
 """
 
-function makescatteringtrans(basis,M,ω=1,n=2,Nk=M,Na=M)
+function makescatteringtrans(M,ω=1,basis="Hermite",n=2,Nk=M,Na=M)
 #4-field to x-space
-x,wx,Tx = nfieldtrans(basis,M,n,ω)
+x,wx,Tx = nfieldtrans(M,n,ω,basis)
 #4-field to k-space
-k,wk,Tk = nfieldtrans(basis,M,n,1/ω)
+k,wk,Tk = nfieldtrans(M,n,1/ω,basis)
 #4-field aux transforms to x
-xa,wxa,Txa = nfieldtrans(basis,Na,n,ω)
+xa,wxa,Txa = nfieldtrans(Na,n,ω,basis)
 #4-field aux transform to k
-ka,wka,Tka = nfieldtrans(basis,Na,n,1/ω)
+ka,wka,Tka = nfieldtrans(Na,n,1/ω,basis)
 Tka = Tka*diagm((-im).^(0:Na-1))
 #Transform from x --> k via auxiliary states.
 Txk = conj(Tka'*Txa)

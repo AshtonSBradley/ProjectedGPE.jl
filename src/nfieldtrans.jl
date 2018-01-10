@@ -1,9 +1,10 @@
 """
-    x,w,T = nfieldtrans(basis,M,n,ω=1)
+    x,w,T = nfieldtrans(M,n,ω=1,basis="Hermite",α=0.0)
 
 Construct transforms and associated arrays for numerical quadrature evaluation of n-field integrals,
 starting from a representation of the quantum state with respect to a particular basis of eigenstates.
 
+### Arguments
 `basis`: string argument denoting the basis of eigenstates representing c-field state.
 
 `M`: number of modes in the c-field.
@@ -12,6 +13,9 @@ starting from a representation of the quantum state with respect to a particular
 
 `ω`: frequency of the oscillator states in given direction, relative to chosen reference frequency.
 
+`basis`: name of orthonormal eigenstate basis. Currently `"Hermite"` is implemented.
+
+### Outputs
 `T`: linear transformation matrix that takes spectral state coefficienets to a quadrature grid
 
 ```math
@@ -34,9 +38,9 @@ The integral is performed by
 \\sum_jw_j*\\psi(x_j)^n = sum(w.*\\psi.^n)
 ```
 
-# Examples
+## Examples
 
-## C-field population
+### C-field population
 Compute the number of particles in the C-field, for a state of `M` modes:
 
 ```julia
@@ -57,13 +61,13 @@ sum(abs(c).^2)
 
 Relative error of numerical integrals will usually be smaller than ~1e-10.
 
-## Interaction energy
+### Interaction energy
 The most common integral of this type involves a four-field product, `n=4`.
 The PGPE interaction energy is of this form, as is the nonlinear term in the PGPE;
 the exact propagation of the PGPE requires repeated use of this 4-field transformation:
 
 ```julia
-x,w,T = nfieldtrans("Hermite",M,4)
+x,w,T = nfieldtrans(M,4,"Hermite")
 ψ = T*c
 Uint = sum(w.*abs(ψ).^4)
 552.9762736751692
@@ -72,12 +76,12 @@ computes the integral ``U_{\\rm int}\\equiv \\int dx|\\psi(x)|^4`` to accuracy v
 
 """
 
-function nfieldtrans(basis,M,K,ω=1.,α=0.)
+function nfieldtrans(M,K,ω=1.0,basis="Hermite",α=0.0)
     iseven(K*M) ? n=Int(K*M/2) : n=Int((K*M+1)/2)
     if basis=="Hermite"
     x, w = gausshermite(n)
     w    = exp.(log.(w).+x.^2)/sqrt(K*ω/2)
-    T    = eigmat("Hermite",M,x/sqrt(K*ω/2),ω)
+    T    = eigmat(M,x/sqrt(K*ω/2),ω,basis)
     elseif basis=="Laguerre"
       error(basis,"basis not implemented yet.")
       #=

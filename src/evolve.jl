@@ -22,9 +22,9 @@ function evolve()
   basis = "Hermite"
   ecut = 30 #units of ωx
   Ω = [1.]
-  cinfo = makecinfo(basis,ecut,Ω)
+  cinfo = makecinfo(ecut,Ω,basis)
   @unpack en,P,M = cinfo; Mx=M[1]
-  x,wx,Tx = maketransinfo(basis,M,Ω)
+  x,wx,Tx = maketransinfo(M,Ω,basis)
 
 #test transform
   c0   = randn(Mx)+im*randn(Mx);

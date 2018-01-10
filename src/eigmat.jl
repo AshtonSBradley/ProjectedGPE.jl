@@ -1,5 +1,5 @@
 """
-    T = eigmat(basis,M,x,ω=1.0,α=1.0)
+    T = eigmat(M,x,ω=1.0,basis="Hermite",α=1.0)
 
 Create a matrix of orthonormal mode functions for the chosen basis.
 The matrix is in a form that allows the transformation
@@ -11,10 +11,6 @@ from the mode coefficients to the spatial grid `x`:
 
 where `c` is a column vector of coefficients in the basis.
 
-At present `basis = "Hermite"` is implemented.
-
-`basis`: set of eigenfunctions representing the c-field.
-
 `M`: number of modes in the basis.
 
 `x`: spatial grid to which the coefficients are mapped.
@@ -23,10 +19,11 @@ At present `basis = "Hermite"` is implemented.
 
 `α`: extra input for the `laguerre` basis.
 
-Defaults of the last two arguments are 1.0 and 0.0 respectively.
+`basis`: set of eigenfunctions representing the c-field. At present `basis = "Hermite"` is implemented.
+
 """
 
-function eigmat(basis,M,x,ω=1.0,α=0.0)
+function eigmat(M,x,ω=1.0,basis="Hermite",α=0.0)
   if basis=="Hermite"
     M > 371 && error("Quadrature does not converge for M > 371.")
     x = convert(Vector{BigFloat},x)
@@ -43,7 +40,7 @@ function eigmat(basis,M,x,ω=1.0,α=0.0)
     T = convert(Matrix{Float64},T)
 
   elseif basis=="Laguerre"
-    error(basis," basis not implemented")
+    error(basis," ","basis not implemented")
     #M>26 && error("recursion unstable for M >=27")
     #alternate approach using ApproxFun.jl -same instability as
     #previous approach in logspace
@@ -60,7 +57,7 @@ function eigmat(basis,M,x,ω=1.0,α=0.0)
     end
     =#
   else
-    error(basis," basis not implemented")
+    error(basis," ","basis not implemented")
   end
   return T
 end

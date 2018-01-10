@@ -40,9 +40,9 @@ siminfo = Params()
   basis = "Hermite"
   ecut = 30 #units of ħ*ωy
   Ω = [ωx; ωy]*t0
-  cinfo = makecinfo(basis,ecut,Ω)
+  cinfo = makecinfo(ecut,Ω,basis)
   @unpack en,P,M = cinfo ;Mx=M[1];My=M[2]
-  x,wx,Tx,y,wy,Ty = makealltrans(basis,M,Ω)
+  x,wx,Tx,y,wy,Ty = makealltrans(M,Ω,basis)
   Wxy = wx.*wy'
 #test transform
   c0   = randn(Mx,My)+im*randn(Mx,My);

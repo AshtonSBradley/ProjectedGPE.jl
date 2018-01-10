@@ -5,7 +5,7 @@ R = sqrt(2μ/ωx^2)
 xMax=1.5R
 Nx = 500
 x = collect(linspace(-xMax,xMax,Nx))
-Tx = eigmat("hermite",M,x)
+Tx = eigmat(M,x)
 
 #Plot
 f=figure(figsize=(9,2))

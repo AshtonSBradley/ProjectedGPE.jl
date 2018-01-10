@@ -1,5 +1,5 @@
 """
-    Lx,Ly,Lz = angularmomentum(c,M,a;basis="Hermite")
+    Lx,Ly,Lz = angularmomentum(c,M,a,basis="Hermite")
 
 Construct a compact representation of angular momentum operators in the given basis using step operators.
 
@@ -12,21 +12,21 @@ Construct a compact representation of angular momentum operators in the given ba
 `a`: vector of oscillator lengths, i.e. `ax,ay = a` in 2D.
 
 """
-function angularmomentum(basis,c,M,a)
+function angularmomentum(c,M,a,basis="Hermite")
 if basis=="Hermite"
   dim=length(size(c))
   if dim==1
     error("L not defined in 1D")
   elseif dim==2
-    ax,ay=a
-    Mx,My=M
+    ax,ay = a
+    Mx,My = M
     X,Px = ladderops(Mx,ax)
     Y,Py = ladderops(My,ay)
     Lz = -im*(X*c*Py - Px*c*Y)
     return Lz
   elseif dim==3
-    ax,ay,az=a
-    Mx,My,Mz=M
+    ax,ay,az = a
+    Mx,My,Mz = M
     X,Px = ladderops(Mx,ax)
     Y,Py = ladderops(My,ay)
     Z,Pz = ladderops(My,ay)

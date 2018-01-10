@@ -1,4 +1,4 @@
-function nenergy(basis,ecut,e0,ω)
+function nenergy(ecut,e0,ω=1.0,basis="Hermite")
   if basis=="Hermite"
     M = floor((ecut - e0)/ω)+1; M=Int(M)
     n = collect(0:(M-1))

@@ -1,4 +1,4 @@
-function makecinfo(basis,ecut,Ω)
+function makecinfo(ecut,Ω,basis="Hermite")
 cinfo = CInfo()
 if basis=="Hermite"
   dim=length(Ω)
@@ -6,7 +6,7 @@ if basis=="Hermite"
     ωx = Ω[1]
     e0 = 0.5*ωx
     ecut >= e0 || error("ecut must exceed the zero point energy.")
-    Mx,nx,en = nenergy("Hermite",ecut,e0,ωx)
+    Mx,nx,en = nenergy(ecut,e0,ωx,basis)
     Mmax = Mx
     P  = en .< ecut; Mult = sum(P)
     en = P.*en
@@ -15,8 +15,8 @@ if basis=="Hermite"
     ωx,ωy = Ω
     e0 = 0.5(ωx+ωy)
     ecut >= e0 || error("ecut must exceed the zero point energy.")
-    Mx,nx,ex = nenergy("Hermite",ecut,e0,ωx)
-    My,ny,ey = nenergy("Hermite",ecut,e0,ωy)
+    Mx,nx,ex = nenergy(ecut,e0,ωx,basis)
+    My,ny,ey = nenergy(ecut,e0,ωy,basis)
     M  = [Mx,My]; Mmax = maximum(M)
     en = [ex[i+1]+ey[j+1] for i=nx, j=ny]
     P  = en .< ecut; Mult = sum(P)
@@ -26,9 +26,9 @@ if basis=="Hermite"
     ωx,ωy,ωz = Ω
     e0 = 0.5(ωx+ωy+ωz)
     ecut >= e0 || error("ecut must exceed the zero point energy.")
-    Mx,nx,ex = nenergy("Hermite",ecut,e0,ωx)
-    My,ny,ey = nenergy("Hermite",ecut,e0,ωy)
-    Mz,nz,ez = nenergy("Hermite",ecut,e0,ωz)
+    Mx,nx,ex = nenergy(ecut,e0,ωx,basis)
+    My,ny,ey = nenergy(ecut,e0,ωy,basis)
+    Mz,nz,ez = nenergy(ecut,e0,ωz,basis)
     M  = [Mx,My,Mz]; Mmax = maximum(M)
     en = [ex[i+1]+ey[j+1]+ez[k+1] for i=nx, j=ny, k=nz]
     P  = en .< ecut; Mult = sum(P)
