@@ -1,3 +1,18 @@
+"""
+
+`Lx,Ly,Lz = angularmomentum(basis,c,M,a)`
+
+Construct a compact representation of angular momentum operators in the given basis using step operators.
+
+`basis` is the orthonomal mode space. Currently only `Hermite` is implemented.
+
+`c` is the c-field, a compact way to pass the dimensionality.
+
+`M` is a vector of cutoff quantum numbers, i.e. `Mx,My = M` in 2D.
+
+`a` is a vector of oscillator lengths, i.e. `ax,ay = a` in 2D.
+
+"""
 function angularmomentum(basis,c,M,a)
 if basis=="Hermite"
   dim=length(size(c))
@@ -10,7 +25,7 @@ if basis=="Hermite"
     Y,Py = ladderops(My,ay)
     Lz = -im*(X*c*Py - Px*c*Y)
     return Lz
-  elseif dim=3
+  elseif dim==3
     ax,ay,az=a
     Mx,My,Mz=M
     X,Px = ladderops(Mx,ax)
@@ -22,3 +37,4 @@ if basis=="Hermite"
     return Lx,Ly,Lz
   end
 end
+end 
