@@ -21,7 +21,7 @@ x,wx,Tx=makealltrans(M,Ω,basis)
 M=[5,10]
 x,wx,Tx,y,wy,Ty=makealltrans(M,Ω,basis)
 
-#test 2D
+#test 3D
 Ω=[ωx, ωy, ωz]
 M=[25,17,33]
 x,wx,Tx,y,wy,Ty,z,wz,Tz=makealltrans(M,Ω,basis)
