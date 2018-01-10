@@ -1,77 +1,75 @@
 """
-
-x,w,T = nfieldtrans(basis,M,n,ω=1)
+    x,w,T = nfieldtrans(basis,M,n,ω=1)
 
 Construct transforms and associated arrays for numerical quadrature evaluation of n-field integrals,
 starting from a representation of the quantum state with respect to a particular basis of eigenstates.
 
-`n` order of the field product.
+`basis`: string argument denoting the basis of eigenstates representing c-field state.
 
-`M` number of modes in the c-field.
+`M`: number of modes in the c-field.
 
-`basis` string argument denoting the basis of eigenstates representing c-field state.
+`n`: order of the field product.
 
-`T` is the linear transformation matrix that affects the mapping.
+`ω`: frequency of the oscillator states in given direction, relative to chosen reference frequency.
 
-`ω` frequency of the oscillator states in given direction, relative to chosen reference frequency.
+`T`: linear transformation matrix that takes spectral state coefficienets to a quadrature grid
 
-`T` takes spectral state coefficienets to a quadrature grid
-
-`T*c` = `` ψ(x)≡ ∑_{j=1}^{M}c_jϕ_j(x)``
+```math
+Tc = \\psi(x) \\equiv \\sum_{j=1}^{M}c_j\\phi_j(x)
+```
 
 for a state represented by `M` coefficients, the number of modes in the c-field.
 
- - `x` is the quadrature grid onto which ``ψ(x)`` is mapped
-
+ - `x` is the quadrature grid onto which ``\\psi(x)`` is mapped
  - `w` are weights such that the an exact integral may be carreid out.
 
-The integral must be a product of order `n` in the field ``ψ``.
+The integral must be a product of order `n` in the field ``\\psi``.
 
-The integrals is performed by
+The integral is performed by
 
 1. Transforming to the quadrature grid using `T`
 
-2. Constructing the product and then evaluating the sum: `∑ⱼwⱼ*ψ(xⱼ)ⁿ=sum(w*ψ^n)`
+2. Constructing the product and then evaluating the sum:
+```math
+\\sum_jw_j*\\psi(x_j)^n = sum(w.*\\psi.^n)
+```
 
 # Examples
 
 ## C-field population
-Compute the number of particles in the C-field, for a state of `M` modes.
+Compute the number of particles in the C-field, for a state of `M` modes:
 
-```
-julia> M = 30;
-c = randn(M)+im*randn(M);
-x,w,T=nfieldtrans("Hermite",M,2);
-ψ = T*c;
+```julia
+M = 30
+c = randn(M)+im*randn(M)
+x,w,T=nfieldtrans("Hermite",M,2)
+ψ = T*c
 N = sum(w.*abs(ψ).^2)
 73.24196674113007
 ```
 
-Computes the integral ``N = ∫dx |ψ(x)|^2`` as may be checked by direct summation:
+Computes the integral ``N = \\int dx |\\psi(x)|^2`` as may be checked by direct summation:
 
-```
-julia> sum(abs(c).^2)
+```julia
+sum(abs(c).^2)
 73.24196675017353
 ```
 
- Relative error of numerical integrals will usually be smaller than ~1e-10.
+Relative error of numerical integrals will usually be smaller than ~1e-10.
 
 ## Interaction energy
 The most common integral of this type involves a four-field product, `n=4`.
 The PGPE interaction energy is of this form, as is the nonlinear term in the PGPE;
 the exact propagation of the PGPE requires repeated use of this 4-field transformation:
 
-```
-julia> x,w,T=nfieldtrans("Hermite",M,4);
-ψ = T*c;
+```julia
+x,w,T = nfieldtrans("Hermite",M,4)
+ψ = T*c
 Uint = sum(w.*abs(ψ).^4)
 552.9762736751692
 ```
-computes the integral ``U_{\int}≡∫ dx|ψ|^4`` to accuracy very close to working precision.
+computes the integral ``U_{\\rm int}\\equiv \\int dx|\\psi(x)|^4`` to accuracy very close to working precision.
 
-**Warning:** Using the transform `T` for physical analysis in position space should be avoided
-as the `x` grid is non-uniformly spaced.
-Instead, use `eigmat.jl` to create a transform to a specific position grid.
 """
 
 function nfieldtrans(basis,M,K,ω=1.,α=0.)

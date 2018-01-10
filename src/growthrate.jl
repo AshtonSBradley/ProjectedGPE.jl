@@ -1,21 +1,20 @@
 """
-
-`γ = growthrate(τ,μ,ω,ϵ)`
+    γ = growthrate(τ,μ,ω,ϵ)
 
 Evaluate the number damping rate for the stochastic projected Gross-Pitaevskii equation,
 in the simple-growth formulation.
 
-Arguments are in units of ħω, where ω is the chosen reference trap frequency.
+Arguments are in units of `ħω`, where `ω` is the chosen reference trap frequency.
 
-`τ` is the reservoir temperature.
+`τ`: reservoir temperature.
 
-`μ` is the reservoir chemical potential.
+`μ`: reservoir chemical potential.
 
-`ω` is the frequency unit of simulation (usually one of the trap frequencies).
+`ω`: frequency unit of simulation (usually one of the trap frequencies).
 
-`ϵ` is the cutoff energy, above which the particles form an incoherent reservoir.
+`ϵ`: cutoff energy, above which the particles form an incoherent reservoir.
 
-This function is derived in the paper
+External links
 
 [Bose-Einstein condensation from a rotating thermal cloud: Vortex nucleation
 and lattice formation, Bradley et al, Physical Review A 77, 033616, 2008](https://arxiv.org/abs/1507.02023)

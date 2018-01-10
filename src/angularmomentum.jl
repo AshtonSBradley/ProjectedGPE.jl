@@ -1,6 +1,5 @@
 """
-
-`Lx,Ly,Lz = angularmomentum(basis,c,M,a)`
+    Lx,Ly,Lz = angularmomentum(basis,c,M,a)
 
 Construct a compact representation of angular momentum operators in the given basis using step operators.
 

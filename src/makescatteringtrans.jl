@@ -1,23 +1,24 @@
 """
+    k, wk, Tkx = makescatteringtrans(basis,M,Nk,Na,ω)
 
-k,wk,Tkx = makescatteringtrans(basis,M,Nk,Na,ω)
+Construct transforms and associated arrays for precise numerical quadrature
+evaluation of the scattering potential ``V_\\epsilon``
 
-Constructs transforms and associated arrays for precise numerical quadrature
-evaluation of the scattering potential Vϵ
+ `basis`: basis of eigenstates representing c-field state. Default is `"Hermite"`.
 
-[SPGPE](https://arxiv.org/abs/1507.02023)
+ `M`: number of modes in the c-field.
 
- `basis` the basis of eigenstates representing c-field state. Default is "Hermite".
+ `ω`: trap frequency relative to the chosen reference frequency.
 
- `M` number of modes in the c-field.
+ `n`: field product that will be integrated exactly.
 
- `ω` is the trap frequency relative to the chosen reference frequency.
+ `Nk`: number of `k` points.
 
- `n` is the field product that will be integrated exactly.
+ `Na`: number of auxiliary oscillator states.
 
- `Nk` number of `k` points.
+ External links
 
- `Na` number of auxiliary oscillator states.
+ [SPGPE](https://arxiv.org/abs/1507.02023)
 
 """
 
