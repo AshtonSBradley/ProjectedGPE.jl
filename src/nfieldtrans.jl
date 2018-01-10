@@ -2,24 +2,35 @@
 
 x,w,T = nfieldtrans(basis,M,n,ω=1)
 
-Constructs transforms and associated arrays for precise numerical quadrature evaluation of n-field integrals,
+Construct transforms and associated arrays for numerical quadrature evaluation of n-field integrals,
 starting from a representation of the quantum state with respect to a particular basis of eigenstates.
 
-## Arguments
- - `n` order of the field product.
- - `M` number of modes in the c-field.
- - `basis` string argument denoting the basis of eigenstates representing c-field state.
- - `T` is the linear transformation matrix that affects the mapping
- - `ω` frequency of the oscillator states in given direction, relative to chosen reference frequency.
+`n` order of the field product.
+
+`M` number of modes in the c-field.
+
+`basis` string argument denoting the basis of eigenstates representing c-field state.
+
+`T` is the linear transformation matrix that affects the mapping.
+
+`ω` frequency of the oscillator states in given direction, relative to chosen reference frequency.
+
+`T` takes spectral state coefficienets to a quadrature grid
+
 `T*c` = `` ψ(x)≡ ∑_{j=1}^{M}c_jϕ_j(x)``
 
 for a state represented by `M` coefficients, the number of modes in the c-field.
+
  - `x` is the quadrature grid onto which ``ψ(x)`` is mapped
+
  - `w` are weights such that the an exact integral may be carreid out.
+
 The integral must be a product of order `n` in the field ``ψ``.
 
 The integrals is performed by
+
 1. Transforming to the quadrature grid using `T`
+
 2. Constructing the product and then evaluating the sum: `∑ⱼwⱼ*ψ(xⱼ)ⁿ=sum(w*ψ^n)`
 
 # Examples

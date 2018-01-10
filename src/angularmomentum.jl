@@ -6,7 +6,7 @@ Construct a compact representation of angular momentum operators in the given ba
 
 `basis` is the orthonomal mode space. Currently only `Hermite` is implemented.
 
-`c` is the c-field, a compact way to pass the dimensionality.
+`c` is the c-field.
 
 `M` is a vector of cutoff quantum numbers, i.e. `Mx,My = M` in 2D.
 
@@ -37,4 +37,4 @@ if basis=="Hermite"
     return Lx,Ly,Lz
   end
 end
-end 
+end

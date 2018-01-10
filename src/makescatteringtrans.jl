@@ -7,13 +7,18 @@ evaluation of the scattering potential Vϵ
 
 [SPGPE](https://arxiv.org/abs/1507.02023)
 
-# Arguments
- - `basis` the basis of eigenstates representing c-field state. Default is "Hermite"
- - `M` number of modes in the c-field.
- - `ω` is the trap frequency relative to the chosen reference frequency.
- - `n` is the field product that will be integrated exactly.
- - `Nk` number of `k` points.
- - `Na` number of auxiliary oscillator states.
+ `basis` the basis of eigenstates representing c-field state. Default is "Hermite".
+
+ `M` number of modes in the c-field.
+
+ `ω` is the trap frequency relative to the chosen reference frequency.
+
+ `n` is the field product that will be integrated exactly.
+
+ `Nk` number of `k` points.
+
+ `Na` number of auxiliary oscillator states.
+
 """
 
 function makescatteringtrans(basis,M,ω=1,n=2,Nk=M,Na=M)

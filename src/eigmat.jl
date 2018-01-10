@@ -2,7 +2,7 @@
 
 T    = eigmat(basis,M,x,ω=1.0,α=1.0)
 
-Returns a matrix of mode functions of the chosen basis.
+Create a matrix of orthonormal mode functions for the chosen basis.
 The matrix is in a form that allows the transformation
 from the mode coefficients to the spatial grid `x`:
 
@@ -12,13 +12,17 @@ where `c` is a column vector of coefficients in the basis.
 
 At present `basis = "Hermite"` is implemented.
 
-## Arguments
-- `basis` is the set of eigenfunctions representing the c-field
-- `M` is the number of modes in the spatial direction denoted by
-- `x`, the spatial grid to which the coefficients are mapped.
-- `ω` is the *relative* frequency, in units of the chosen reference frequency.
-- `α` is an extra input for the `laguerre` basis.
-Defaults of the last two arguments are 1. and 0. respectively.
+`basis` is the set of eigenfunctions representing the c-field.
+
+`M` is the number of modes in the basis.
+
+`x` is the spatial grid to which the coefficients are mapped.
+
+`ω` is the mode frequency, in units of the chosen reference frequency.
+
+`α` is an extra input for the `laguerre` basis.
+
+Defaults of the last two arguments are 1.0 and 0.0 respectively.
 """
 
 function eigmat(basis,M,x,ω=1.0,α=0.0)
