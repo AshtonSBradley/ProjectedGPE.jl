@@ -3,7 +3,7 @@
 
 Create a matrix of orthonormal mode functions for the chosen basis.
 The matrix is in a form that allows the transformation
-from the mode coefficients to the spatial grid `x`:
+from the mode coefficients to the spatial grid `x`. In 1D:
 
 ```math
 \\psi(x) = \\sum_j c_j\\phi_j(x) \\equiv Tc
