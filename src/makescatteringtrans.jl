@@ -38,7 +38,7 @@ function makescatteringtrans(M;n=4,ω=1.0,basis="Hermite",Nk=M,Na=M)
     Tak = Tak*diagm((-im).^(0:Na-1))
 
     #Transform from x --> k via auxiliary states.
-    Txk = conj(Tak*(Tax'*diagm(wax)))
+    Txk = Tak*(Tax'*diagm(wax))
 
 return x,wx,Tx,k,wk,Txk
 end
