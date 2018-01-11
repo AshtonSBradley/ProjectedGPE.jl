@@ -46,16 +46,16 @@ Compute the number of particles in the C-field, for a state of `M` modes:
 ```julia
 M = 30
 c = randn(M)+im*randn(M)
-x,w,T=nfieldtrans("Hermite",M,2)
+x,w,T = nfieldtrans(M,2)
 ψ = T*c
-N = sum(w.*abs(ψ).^2)
+N = sum(w.*abs2.(ψ))
 73.24196674113007
 ```
 
 Computes the integral ``N = \\int dx |\\psi(x)|^2`` as may be checked by direct summation:
 
 ```julia
-sum(abs(c).^2)
+sum(abs2.(c))
 73.24196675017353
 ```
 
@@ -67,9 +67,9 @@ The PGPE interaction energy is of this form, as is the nonlinear term in the PGP
 the exact propagation of the PGPE requires repeated use of this 4-field transformation:
 
 ```julia
-x,w,T = nfieldtrans(M,4,"Hermite")
+x,w,T = nfieldtrans(M,4)
 ψ = T*c
-Uint = sum(w.*abs(ψ).^4)
+Uint = sum(w.*abs.(ψ).^4)
 552.9762736751692
 ```
 computes the integral ``U_{\\rm int}\\equiv \\int dx|\\psi(x)|^4`` to accuracy very close to working precision.
