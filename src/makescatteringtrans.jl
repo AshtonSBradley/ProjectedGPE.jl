@@ -2,7 +2,7 @@
     k,wk,Tkx = makescatteringtrans(M;n=4,ω=1.0,basis="Hermite",Nk=M,Na=M)
 
 Construct transforms and associated arrays for precise numerical quadrature
-evaluation of the scattering potential ``V_\\epsilon``
+evaluation of the scattering potential ``V_\\epsilon(x,t)`` of the energy-damped SPGPE.
 
  `M`: number of modes in the c-field.
 
@@ -24,21 +24,21 @@ evaluation of the scattering potential ``V_\\epsilon``
 
 function makescatteringtrans(M;n=4,ω=1.0,basis="Hermite",Nk=M,Na=M)
 
-#4-field to x-space
-x,wx,Tx = nfieldtrans(M,n,ω=ω,basis=basis)
+    #4-field to x-space
+    x,wx,Tx = nfieldtrans(M,n,ω=ω,basis=basis)
 
-#4-field to k-space
-k,wk,Tk = nfieldtrans(M,n,ω=1/ω,basis=basis)
+    #4-field to k-space
+    k,wk,Tk = nfieldtrans(M,n,ω=1/ω,basis=basis)
 
-#4-field aux transforms to x
-xa,wxa,Txa = nfieldtrans(Na,n,ω=ω,basis=basis)
+    #4-field aux transforms to x
+    xa,wax,Tax = nfieldtrans(Na,n,ω=ω,basis=basis)
 
-#4-field aux transform to k
-ka,wka,Tka = nfieldtrans(Na,n,ω=1/ω,basis=basis)
-Tka = Tka*diagm((-im).^(0:Na-1))
+    #4-field aux transform to k
+    ka,wak,Tak = nfieldtrans(Na,n,ω=1/ω,basis=basis)
+    Tak = Tak*diagm((-im).^(0:Na-1))
 
-#Transform from x --> k via auxiliary states.
-Txk = conj(Tka'*Txa)
+    #Transform from x --> k via auxiliary states.
+    Txk = conj(Tak*(Tax'*diagm(wax)))
 
 return x,wx,Tx,k,wk,Txk
 end
