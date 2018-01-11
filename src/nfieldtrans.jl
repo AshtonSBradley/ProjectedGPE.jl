@@ -16,13 +16,13 @@ starting from a representation of the quantum state with respect to a particular
 `basis`: name of orthonormal eigenstate basis. Currently `"Hermite"` is implemented.
 
 ### Outputs
-`T`: linear transformation matrix that takes spectral state coefficienets to a quadrature grid
+`T`: linear transformation matrix that takes spectral state coefficienets to a quadrature grid. In 1D:
 
 ```math
 Tc = \\psi(x) \\equiv \\sum_{j=1}^{M}c_j\\phi_j(x)
 ```
 
-for a state represented by `M` coefficients, the number of modes in the c-field.
+for a state represented by `M` coefficients, the number of modes in the c-field. 
 
  * `x` is the quadrature grid onto which ``\\psi(x)`` is mapped
  * `w` are weights such that the an exact integral may be carreid out.
