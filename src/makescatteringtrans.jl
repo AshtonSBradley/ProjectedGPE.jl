@@ -6,11 +6,11 @@ evaluation of the scattering potential ``V_\\epsilon``
 
  `M`: number of modes in the c-field.
 
+ `n`: order of field product that will be integrated to machine precision.
+
  `ω`: trap frequency relative to the chosen reference frequency.
 
  `basis`: name of orthonormal eigenbasis representing c-field state. Currently `"Hermite"` is implemented.
-
- `n`: order of field product that will be integrated to machine precision.
 
  `Nk`: number of `k`-space points.
 
@@ -18,7 +18,7 @@ evaluation of the scattering potential ``V_\\epsilon``
 
  External links
 
- [Low-Dimensional Stochastic Projected Gross-Pitaevskii Equation, Bradley, Rooney, MacDonald, Physical Review A 92, 033631 (2015)](https://arxiv.org/abs/1507.02023)
+ [Numerical method for the stochastic projected Gross-Pitaevskii equation, Physical Review E 89, 013302 (2014)](https://arxiv.org/abs/1310.0161)
 
 """
 

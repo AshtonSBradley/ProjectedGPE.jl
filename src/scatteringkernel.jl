@@ -11,7 +11,7 @@ stochastic projected Gross-Pitaevskii equation.
 
 External links
 
-[Low-D stochastic projected GPE](https://arxiv.org/abs/1507.02023)
+[Low-Dimensional Stochastic Projected Gross-Pitaevskii Equation, Bradley, Rooney, MacDonald, Physical Review A 92, 033631 (2015)](https://arxiv.org/abs/1507.02023)
 
 """
 function scatteringkernel(k,σ=1.0)
