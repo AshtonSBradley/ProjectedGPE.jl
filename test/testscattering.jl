@@ -32,18 +32,10 @@ n=4
 ω=1.
 basis="Hermite"
 Na=43
-#4-field to x-space
-x,wx,Tx = nfieldtrans(M,n,ω=ω,basis=basis)
 
-#4-field to k-space
-k,wk,Tk = nfieldtrans(M,n,ω=1/ω,basis=basis)
+x,wx,Tx,k,wk,Txk=makescatteringtrans(20,n=2)
 
-#4-field aux transforms to x
-xa,wax,Tax = nfieldtrans(Na,n,ω=ω,basis=basis)
-
-#4-field aux transform to k
-ka,wak,Tak = nfieldtrans(Na,n,ω=1/ω,basis=basis)
-Tak = Tak*diagm((-im).^(0:Na-1))
-
-#Transform from x --> k via auxiliary states.
-Txk = conj(Tak*(Tax'*diagm(wax)))
+c=randn(M)+im*randn(M)
+ψ=Tx*c
+ϕ=Txk*ψ
+ψinv=Txk'*ϕ

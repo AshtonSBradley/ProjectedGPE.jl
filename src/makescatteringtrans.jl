@@ -12,9 +12,9 @@ evaluation of the scattering potential ``V_\\epsilon(x,t)`` of the energy-damped
 
  `basis`: name of orthonormal eigenbasis representing c-field state. Currently `"Hermite"` is implemented.
 
- `Nk`: number of `k`-space points.
-
  `Na`: number of auxiliary oscillator states.
+
+ `Nk`: number of `k`-space points.
 
  External links
 
@@ -22,22 +22,22 @@ evaluation of the scattering potential ``V_\\epsilon(x,t)`` of the energy-damped
 
 """
 
-function makescatteringtrans(M;n=4,ω=1.0,basis="Hermite",Nk=M,Na=M)
+function makescatteringtrans(M;n=4,ω=1.0,basis="Hermite",Na=M,Nk=M)
 
-    #4-field to x-space
+    #n-field to x-space
     x,wx,Tx = nfieldtrans(M,n,ω=ω,basis=basis)
 
-    #4-field to k-space. To include Nk need low leavel call to eigmat
+    #n-field to k-space. To include Nk need low level call to eigmat
     k,wk,Tk = nfieldtrans(M,n,ω=1/ω,basis=basis)
 
-    #4-field aux transforms to x
+    #n-field aux transforms to x
     xa,wax,Tax = nfieldtrans(Na,n,ω=ω,basis=basis)
 
-    #4-field aux transform to k
+    #n-field aux transform to k
     ka,wak,Tak = nfieldtrans(Na,n,ω=1/ω,basis=basis)
     Tak = Tak*diagm((-im).^(0:Na-1))
 
-    #Transform from x --> k via auxiliary states.
+    #n-field transform from x --> k via auxiliary states.
     Txk = Tak*(Tax'*diagm(wax))
 
 return x,wx,Tx,k,wk,Txk
