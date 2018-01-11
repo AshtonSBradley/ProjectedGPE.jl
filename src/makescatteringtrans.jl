@@ -1,5 +1,5 @@
 """
-    k,wk,Tkx = makescatteringtrans(M,n=2,ω=1.0,basis="Hermite",Nk=M,Na=M)
+    k,wk,Tkx = makescatteringtrans(M;n=4,ω=1.0,basis="Hermite",Nk=M,Na=M)
 
 Construct transforms and associated arrays for precise numerical quadrature
 evaluation of the scattering potential ``V_\\epsilon``
@@ -22,19 +22,19 @@ evaluation of the scattering potential ``V_\\epsilon``
 
 """
 
-function makescatteringtrans(M,n=2,ω=1.0,basis="Hermite",Nk=M,Na=M)
+function makescatteringtrans(M;n=4,ω=1.0,basis="Hermite",Nk=M,Na=M)
 
 #4-field to x-space
-x,wx,Tx = nfieldtrans(M,n,ω,basis)
+x,wx,Tx = nfieldtrans(M,n,ω=ω,basis=basis)
 
 #4-field to k-space
-k,wk,Tk = nfieldtrans(M,n,1/ω,basis)
+k,wk,Tk = nfieldtrans(M,n,ω=1/ω,basis=basis)
 
 #4-field aux transforms to x
-xa,wxa,Txa = nfieldtrans(Na,n,ω,basis)
+xa,wxa,Txa = nfieldtrans(Na,n,ω=ω,basis=basis)
 
 #4-field aux transform to k
-ka,wka,Tka = nfieldtrans(Na,n,1/ω,basis)
+ka,wka,Tka = nfieldtrans(Na,n,ω=1/ω,basis=basis)
 Tka = Tka*diagm((-im).^(0:Na-1))
 
 #Transform from x --> k via auxiliary states.

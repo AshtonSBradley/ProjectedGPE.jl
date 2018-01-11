@@ -1,5 +1,5 @@
 """
-    x,w,T = nfieldtrans(M,n,ω=1,basis="Hermite",α=0.0)
+    x,w,T = nfieldtrans(M,n;ω=1.0,basis="Hermite",α=0.0)
 
 Construct transforms and associated arrays for numerical quadrature evaluation of n-field integrals,
 starting from a representation of the quantum state with respect to a particular basis of eigenstates.
@@ -15,6 +15,8 @@ starting from a representation of the quantum state with respect to a particular
 
 `basis`: name of orthonormal eigenstate basis. Currently `"Hermite"` is implemented.
 
+`α`: extra parameter for Laguerre basis.
+
 ### Outputs
 `T`: linear transformation matrix that takes spectral state coefficienets to a quadrature grid. In 1D:
 
@@ -22,7 +24,7 @@ starting from a representation of the quantum state with respect to a particular
 Tc = \\psi(x) \\equiv \\sum_{j=1}^{M}c_j\\phi_j(x)
 ```
 
-for a state represented by `M` coefficients, the number of modes in the c-field. 
+for a state represented by `M` coefficients, the number of modes in the c-field.
 
  * `x` is the quadrature grid onto which ``\\psi(x)`` is mapped
  * `w` are weights such that the an exact integral may be carreid out.
@@ -76,7 +78,7 @@ computes the integral ``U_{\\rm int}\\equiv \\int dx|\\psi(x)|^4`` to accuracy v
 
 """
 
-function nfieldtrans(M,K,ω=1.0,basis="Hermite",α=0.0)
+function nfieldtrans(M,K;ω=1.0,basis="Hermite",α=0.0)
     iseven(K*M) ? n=Int(K*M/2) : n=Int((K*M+1)/2)
     if basis=="Hermite"
     x, w = gausshermite(n)
