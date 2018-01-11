@@ -27,7 +27,7 @@ function makescatteringtrans(M;n=4,ω=1.0,basis="Hermite",Nk=M,Na=M)
     #4-field to x-space
     x,wx,Tx = nfieldtrans(M,n,ω=ω,basis=basis)
 
-    #4-field to k-space
+    #4-field to k-space. To include Nk need low leavel call to eigmat
     k,wk,Tk = nfieldtrans(M,n,ω=1/ω,basis=basis)
 
     #4-field aux transforms to x

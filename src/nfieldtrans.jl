@@ -82,7 +82,7 @@ function nfieldtrans(M,K;ω=1.0,basis="Hermite",α=0.0)
     iseven(K*M) ? n=Int(K*M/2) : n=Int((K*M+1)/2)
     if basis=="Hermite"
     x, w = gausshermite(n)
-    w    = exp.(log.(w).+x.^2)/sqrt(K*ω/2)
+    w    = @. exp(log(w)+x^2)/sqrt(K*ω/2)
     T    = eigmat(M,x/sqrt(K*ω/2),ω,basis)
     elseif basis=="Laguerre"
       error(basis,"basis not implemented yet.")

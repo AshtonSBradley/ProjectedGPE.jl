@@ -29,8 +29,8 @@ function eigmat(M,x,ω=1.0,basis="Hermite",α=0.0)
     x = convert(Vector{BigFloat},x)
     ψ0 = exp.(-(√ω*x).^2/2)*BigFloat((ω/π)^(1/4))
     ψ1 = BigFloat(sqrt(2))*exp.(-(√ω*x).^2/2).*(√ω*x)*BigFloat((ω/π)^(1/4))
-    T=zeros(x*ones(1,M))
-    n=convert(Vector{BigFloat},collect(0:M-1))
+    T = zeros(x*ones(1,M))
+    n = convert(Vector{BigFloat},collect(0:M-1))
     T[:,1] = ψ0
     T[:,2] = ψ1
     for m=1:M-2
