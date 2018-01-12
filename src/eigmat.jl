@@ -1,5 +1,5 @@
 """
-    T = eigmat(M,x,ω=1.0,basis="Hermite",α=1.0)
+    T = eigmat(M,x;ω=1.0,basis="Hermite",α=1.0)
 
 Create a matrix of orthonormal mode functions for the chosen basis.
 The matrix is in a form that allows the transformation
@@ -23,7 +23,7 @@ where `c` is a column vector of coefficients in the basis.
 
 """
 
-function eigmat(M,x,ω=1.0,basis="Hermite",α=0.0)
+function eigmat(M,x;ω=1.0,basis="Hermite",α=0.0)
   if basis=="Hermite"
     M > 371 && error("Quadrature does not converge for M > 371.")
     x = convert(Vector{BigFloat},x)

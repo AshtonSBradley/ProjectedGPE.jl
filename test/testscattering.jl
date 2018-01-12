@@ -9,8 +9,8 @@ basis = "Hermite"
 #test 3D
 Ω=[ωx, ωy, ωz]
 M=[25,17,33]
-x,wx,Tx,y,wy,Ty,z,wz,Tz=makealltrans(M,Ω,basis)
-x,wx,Tx,k,wk,Txk = makescatteringtrans(ecut,4,1.0,basis)
+x,wx,Tx,y,wy,Ty,z,wz,Tz = makealltrans(M,Ω,n=4,basis=basis)
+x,wx,Tx,k,wk,Txk = makescatteringtrans(ecut,n=4,ω=1.0,basis=basis)
 
 k = collect(linspace(0,10,200))
 plot(k,scatteringkernel(k))
@@ -35,7 +35,7 @@ Na=43
 
 x,wx,Tx,k,wk,Txk=makescatteringtrans(20,n=2)
 
-c=randn(M)+im*randn(M)
+c=randn(20)+im*randn(20)
 ψ=Tx*c
-ϕ=Txk*ψ
-ψinv=Txk'*ϕ
+ϕ=Txk*(wx.*ψ)
+ψinv=Txk'*(wk.*ϕ)
