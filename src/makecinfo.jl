@@ -5,7 +5,7 @@ if basis=="Hermite"
   if dim==1
     ωx = Ω[1]
     e0 = 0.5*ωx
-    ecut >= e0 || error("ecut must exceed the zero point energy.")
+    ecut < e0 && error("ecut must exceed the zero point energy.")
     Mx,nx,en = nenergy(ecut,e0,ωx,basis)
     Mmax = Mx
     P  = en .< ecut; Mult = sum(P)
@@ -14,7 +14,7 @@ if basis=="Hermite"
   elseif dim==2
     ωx,ωy = Ω
     e0 = 0.5(ωx+ωy)
-    ecut >= e0 || error("ecut must exceed the zero point energy.")
+    ecut < e0 && error("ecut must exceed the zero point energy.")
     Mx,nx,ex = nenergy(ecut,e0,ωx,basis)
     My,ny,ey = nenergy(ecut,e0,ωy,basis)
     M  = [Mx,My]; Mmax = maximum(M)
@@ -25,7 +25,7 @@ if basis=="Hermite"
   elseif dim==3
     ωx,ωy,ωz = Ω
     e0 = 0.5(ωx+ωy+ωz)
-    ecut >= e0 || error("ecut must exceed the zero point energy.")
+    ecut < e0 && error("ecut must exceed the zero point energy.")
     Mx,nx,ex = nenergy(ecut,e0,ωx,basis)
     My,ny,ey = nenergy(ecut,e0,ωy,basis)
     Mz,nz,ez = nenergy(ecut,e0,ωz,basis)

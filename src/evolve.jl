@@ -59,7 +59,7 @@ end
 c0    = randn(Mx) + im*randn(Mx); #create new random initial state
 tspan = (ti,tf)
 prob = ODEProblem(Lgp!,c0,tspan)
-alg = Tsit5()
+alg = DP5()
 #abstol = 1e-3!
 #reltol = 1e-3
 println("Started evolution ...")
