@@ -1,4 +1,4 @@
-function makescatteringnoisetrans(M,ω=1,basis="Hermite",Nk=M)
+function makescatteringnoisetrans(M,ω=1.,basis="Hermite",Nk=M)
 #Noise transform: 2-field quadrature to go from basis to k-space
 kn,wkn,Tkn = nfieldtrans(Nk,3,ω=1/ω,basis=basis)
 Tkn = eigmat(M,kn,ω=1/ω,basis=basis)*diagm((-im).^(0:M-1))
