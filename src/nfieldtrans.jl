@@ -1,19 +1,19 @@
 """
-    x,w,T = nfieldtrans(M,ω=1.0;n=4,basis="Hermite",α=0.0)
+    x,w,T = nfieldtrans(M,n;basis="Hermite",ω=1.0,α=0.0)
 
 Construct transforms and associated arrays for numerical quadrature evaluation of n-field integrals,
 starting from a representation of the quantum state with respect to a particular basis of eigenstates.
 
-### Arguments
-`basis`: string argument denoting the basis of eigenstates representing c-field state.
-
+# Arguments
 `M`: number of modes in the c-field.
-
-`ω`: frequency of the oscillator states in given direction, relative to chosen reference frequency.
 
 `n`: order of the field product.
 
+### keyword arguments
+
 `basis`: name of orthonormal eigenstate basis. Currently `"Hermite"` is implemented.
+
+`ω`: frequency of the oscillator states in given direction, relative to chosen reference frequency.
 
 `α`: extra parameter for Laguerre basis.
 
@@ -78,7 +78,7 @@ computes the integral ``U_{\\rm int}\\equiv \\int dx|\\psi(x)|^4`` to accuracy v
 
 """
 
-function nfieldtrans(M,ω=1.0;n=4,basis="Hermite",α=0.0)
+function nfieldtrans(M,n;basis="Hermite",ω=1.0,α=0.0)
     iseven(n*M) ? K=Int(n*M/2) : K=Int((n*M+1)/2)
     if basis=="Hermite"
     x, w = gausshermite(K)
