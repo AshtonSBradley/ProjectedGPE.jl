@@ -1,6 +1,6 @@
 function modeorthonorm(basis,N,err = 1e-9,ω=1.)
 
-x,w,T = nfieldtrans(N,2,ω,basis)
+x,w,T = nfieldtrans(N,ω,n=2,basis="Hermite")
 Normtest = T'*(T.*(w.*ones(N)))
 
 #check orthonormality is close to identity matrix for the basis
