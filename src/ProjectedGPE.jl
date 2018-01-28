@@ -77,8 +77,7 @@ include("makecinfo.jl")
 include("makealltrans.jl")
 include("pgpe.jl")
 include("evolve.jl")
-include("evolve2.jl")
-#include("evalues.jl")
+
 
 
 
@@ -86,7 +85,7 @@ include("evolve2.jl")
 export eigmat, nfieldtrans, anisotrans!, growthrate,
 scatteringkernel, makescatteringtrans, makescatteringnoisetrans,
 makecinfo, makealltrans, makespecops, ladderops, angularmomentum, nenergy,
-gausshermite, evolve, evolve2, CInfo, Params,
+gausshermite, evolve, evolve, CInfo, Params,
 nlin!, Lgp!
 
 end # module
