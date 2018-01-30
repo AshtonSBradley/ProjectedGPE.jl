@@ -1,5 +1,5 @@
 function makecinfo(ecut,Ω,basis="Hermite")
-cinfo = CInfo()
+cinfo = Cinfo()
 if basis=="Hermite"
   dim=length(Ω)
   if dim==1

@@ -8,29 +8,6 @@ using Reexport
 @reexport using FastGaussQuadrature
 @reexport using Parameters
 
-@with_kw type CInfo
-  γ::Float64=1e-4
-  ℳ::Float64=0.0
-  g::Float64=0.1
-  μ::Float64=12.0
-  basis::String="Hermite"
-  Ω::Vector=[1]
-  ecut::Number=10
-  e0::Number=0.5
-  Mmax::Number=10
-  Mult::Number=10
-  M::Vector=[10]
-  en::Array=collect(1:10)-0.5
-  P::BitArray=[true]
-  #=
-  Tx::Array{Float64,2}=eye(2,2)
-  Ty::Array{Float64,2}=eye(2,2)
-  Tz::Array{Float64,2}=eye(2,2)
-  W::Array=randn(2,2,2)
-  ψ::Array=randn(2,2,2)
-  =#
-end
-
 @with_kw type Params @deftype Float64
 #== paste this template into timeevolution and modify ==#
 #fundamental constants/units
@@ -64,6 +41,30 @@ end
   dt = 0.01π/μ #integrate step size [ - should have dt ≪ 2π/μ]
 #== end template ==#
 end
+
+@with_kw type Cinfo
+  γ::Float64=1e-4
+  ℳ::Float64=0.0
+  g::Float64=0.1
+  μ::Float64=12.0
+  basis::String="Hermite"
+  Ω::Vector=[1]
+  ecut::Number=10
+  e0::Number=0.5
+  Mmax::Number=10
+  Mult::Number=10
+  M::Vector=[10]
+  en::Array=collect(1:10)-0.5
+  P::BitArray=[true]
+end
+
+@with_kw type Tinfo
+    Tx::Array{Float64,2}=zeros(2,2)
+    Ty::Array{Float64,2}=zeros(2,2)
+    Tz::Array{Float64,2}=zeros(2,2)
+    W::Array=zeros(2,2,2)
+end
+
 include("eigmat.jl")
 include("makespecops.jl")
 include("nenergy.jl")
@@ -77,18 +78,15 @@ include("scatteringkernel.jl")
 include("makescatteringtrans.jl")
 include("makescatteringnoisetrans.jl")
 include("makecinfo.jl")
+include("maketinfo.jl")
 include("makealltrans.jl")
 include("pgpe.jl")
 include("evolve.jl")
 
-
-
-
-
 export eigmat, nfieldtrans, x2c!, c2x!, growthrate,
 scatteringkernel, makescatteringtrans, makescatteringnoisetrans,
 makecinfo, makealltrans, makespecops, ladderops, angularmomentum, nenergy,
-gausshermite, evolve, evolve, CInfo, Params,
+gausshermite, evolve, evolve, Cinfo, Params, Tinfo
 nlin!, Lgp!
 
 end # module
