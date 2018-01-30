@@ -25,8 +25,8 @@ siminfo = Params()
   #g  = (4*pi*ħ^2*as/m)*x0^3/E0 #dimensionless 3D
   g = 0.1 #test 2D
 #damping parameters (dimensionless)
-  Γ̄  = 0.05
-  M̄  = 0.0
+  γ = 0.05
+  ℳ  = 0.0
 #chemical potential (dimensionless)
   μ  = 12.0
 #time evolution parameters
@@ -37,7 +37,7 @@ siminfo = Params()
   dt = 0.01π/μ #integrate step size [ - should have dt ≪ 2π/μ]
 #== end template ==#
 
-@pack siminfo = ωx,ωy,ωz,Γ̄,M̄,g,t0,x0,E0,μ,ti,tf,Nt,t,dt
+@pack siminfo = ωx,ωy,ωz,γ,ℳ,g,t0,x0,E0,μ,ti,tf,Nt,t,dt
 
 #Initialize CField (dimensionless)
   basis = "Hermite"
@@ -56,25 +56,25 @@ siminfo = Params()
 #out of place
 function nlin(c)
     ψ = Tx*c*Ty'
-    Tx'*(Wxy.*abs.(ψ).^2.*ψ)*Ty
+    Tx'*(Wxy.*abs2.(ψ).*ψ)*Ty
 end
 
 #in place
 function nlin!(dc,c)
     ψ = Tx*c*Ty'
-    dc.= Tx'*(Wxy.*abs.(ψ).^2.*ψ)*Ty
+    dc.= Tx'*(Wxy.*abs2.(ψ).*ψ)*Ty
 end
 
 #dPGPE in reservoir "frame"
 #out of place
 function Lgp(c,p,t)
-     P.*(-im*(1-im*Γ̄)*((en - μ).*c .+ g*nlin(c)))
+     P.*(-im*(1-im*γ)*((en - μ).*c .+ g*nlin(c)))
 end
 
 #in place
 function Lgp!(dc,c,p,t)
     nlin!(dc,c)
-    dc .= P.*(-im*(1-im*Γ̄)*((en - μ).*c .+ g*dc))
+    dc .= P.*(-im*(1-im*γ)*((en - μ).*c .+ g*dc))
 end
 
 c0    = P.*(randn(Mx,My) + im*randn(Mx,My)) #create random initial state
@@ -95,7 +95,7 @@ siminfo,cinfo,sol = timeevolution2()
 
 #plot solution for 2D
 ## Transform to cartesian grid
-@unpack ħ,m,ωx,ωy,ωz,Γ̄,M̄,g,x0,t0,E0,μ,ti,tf,Nt,t,dt = siminfo
+@unpack ħ,m,ωx,ωy,ωz,γ,ℳ,g,x0,t0,E0,μ,ti,tf,Nt,t,dt = siminfo
 @unpack M,Ω,ecut,P,en = cinfo; Mx,My = M;
 
 #examine solution
@@ -119,7 +119,7 @@ Ty = eigmat("Hermite",My,y,1); #units of ωy
 f=figure(figsize=(12,3))
 @manipulate for i=1:length(t) withfig(f,clear=true) do
     ψ = Tx*sol[i]*Ty';
-    pcolormesh(x,y,g*abs(ψ').^2)
+    pcolormesh(x,y,g*abs2.(ψ'))
     xlabel("x/x0")
     ylabel("y/x0")
     colorbar()

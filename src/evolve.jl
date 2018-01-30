@@ -22,8 +22,8 @@ siminfo = Params()
   #g  = (4*pi*ħ^2*as/m)*x0^3/E0 #dimensionless 3D
   g = 0.1 #test 2D
 #damping parameters (dimensionless)
-  Γ̄  = 0.1
-  M̄  = 0.0
+  γ  = 0.1
+  ℳ  = 0.0
 #chemical potential (dimensionless)
   μ  = 12.0
 #time evolution parameters
@@ -34,7 +34,7 @@ siminfo = Params()
   dt = 0.01π/μ #integrate step size [ - should have dt ≪ 2π/μ]
 #== end template ==#
 
-  @pack siminfo = ωx,ωy,ωz,Γ̄,M̄,g,t0,E0,x0,μ,ti,tf,Nt,t,dt
+  @pack siminfo = ωx,ωy,ωz,γ,ℳ,g,t0,E0,x0,μ,ti,tf,Nt,t,dt
 
   #Initialize CField
   basis = "Hermite"
@@ -54,24 +54,24 @@ siminfo = Params()
 #out of place
 function nlin(c)
     ψ = Tx*c*Ty'
-    Tx'*(Wxy.*abs.(ψ).^2.*ψ)*Ty
+    Tx'*(Wxy.*abs2.(ψ).*ψ)*Ty
 end
 
 function nlin!(c,dc)
     ψ = Tx*c*Ty'
-    dc.= Tx'*(Wxy.*abs.(ψ).^2.*ψ)*Ty
+    dc.= Tx'*(Wxy.*abs2.(ψ).*ψ)*Ty
 end
 
 #dPGPE in reservoir frame
 #out of place
 function Lgp(t,c)
- -im*(1-im*Γ̄)*((en - μ).*c .+ g*nlin(c))
+ -im*(1-im*γ)*((en - μ).*c .+ g*nlin(c))
 end
 
 #in place
 function Lgp!(t,c,dc)
-    dc = nlin!(c,dc)
-    dc.= -im*(1-im*Γ̄)*((en - μ).*c .+ g*dc)
+    nlin!(c,dc)
+    dc.= -im*(1-im*γ)*((en - μ).*c .+ g*dc)
     dc.= P.*dc
 end
 
