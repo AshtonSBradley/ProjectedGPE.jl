@@ -46,7 +46,7 @@ siminfo = Params()
   cinfo = makecinfo(ecut,Ω,basis)
   @unpack en,P,M = cinfo ;Mx,My = M
   x,wx,Tx,y,wy,Ty = makealltrans(M,4,Ω)
-  Wxy = wx.*wy'
+  W = wx.*wy'
 #test transform
   c0   = randn(Mx,My)+im*randn(Mx,My); c0=P.*c0
   ψ0   = Tx*c0*Ty' #initial condition
@@ -56,13 +56,13 @@ siminfo = Params()
 #out of place
 function nlin(c)
     ψ = Tx*c*Ty'
-    Tx'*(Wxy.*abs2.(ψ).*ψ)*Ty
+    Tx'*(W.*abs2.(ψ).*ψ)*Ty
 end
 
 #in place
 function nlin!(dc,c)
     ψ = Tx*c*Ty'
-    dc.= Tx'*(Wxy.*abs2.(ψ).*ψ)*Ty
+    dc.= Tx'*(W.*abs2.(ψ).*ψ)*Ty
 end
 
 #dPGPE in reservoir "frame"

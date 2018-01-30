@@ -70,7 +70,8 @@ include("nenergy.jl")
 include("ladderops.jl")
 include("angularmomentum.jl")
 include("nfieldtrans.jl")
-include("anisotrans.jl")
+include("x2c!.jl")
+include("c2x!.jl")
 include("growthrate.jl")
 include("scatteringkernel.jl")
 include("makescatteringtrans.jl")
@@ -84,7 +85,7 @@ include("evolve.jl")
 
 
 
-export eigmat, nfieldtrans, anisotrans!, growthrate,
+export eigmat, nfieldtrans, x2c!, c2x!, growthrate,
 scatteringkernel, makescatteringtrans, makescatteringnoisetrans,
 makecinfo, makealltrans, makespecops, ladderops, angularmomentum, nenergy,
 gausshermite, evolve, evolve, CInfo, Params,

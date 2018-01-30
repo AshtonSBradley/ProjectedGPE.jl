@@ -1,12 +1,12 @@
-function anisotrans!(c::Array{Complex{Float64},1},Tx,ψ::Array{Complex{Float64},1})
+function c2x!(ψ::Array{Complex{Float64},1},c::Array{Complex{Float64},1},Tx)
     ψ .= Tx*c
 end
 
-function anisotrans!(c::Array{Complex{Float64},2},Tx,Ty,ψ::Array{Complex{Float64},2})
+function c2x!(ψ::Array{Complex{Float64},2},c::Array{Complex{Float64},2},Tx,Ty)
     ψ .= Tx*c*Ty'
 end
 
-function anisotrans!(c::Array{Complex{Float64},3},Tx,Ty,Tz,ψ::Array{Complex{Float64},3})
+function c2x!(ψ::Array{Complex{Float64},3},c::Array{Complex{Float64},3},Tx,Ty,Tz)
     sa = size(c);sx = size(Tx);sy = size(Ty);sz = size(Tz)
     Ax = reshape(c,(sa[1],sa[2]*sa[3]))
     Ax = reshape(Tx*Ax,(sx[1],sa[2],sa[3]))
