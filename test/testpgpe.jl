@@ -31,7 +31,7 @@ siminfo = Params()
   μ  = 12.0
 #time evolution parameters
   ti = 0.0
-  tf = 1.0/Γ̄  #evolve for 2 damping times
+  tf = 1.0/γ  #evolve for 2 damping times
   Nt = 50
   t = collect(linspace(ti,tf,Nt))
   dt = 0.01π/μ #integrate step size [ - should have dt ≪ 2π/μ]
@@ -44,13 +44,16 @@ siminfo = Params()
   ecut = 30*ħ*ωy/E0
   Ω = [ωx; ωy]*t0
   cinfo = makecinfo(ecut,Ω,basis)
+  tinfo = maketinfo(cinfo,4)
   @unpack en,P,M = cinfo ;Mx,My = M
-  x,wx,Tx,y,wy,Ty = makealltrans(M,4,Ω)
-  W = wx.*wy'
+  #x,wx,Tx,y,wy,Ty = makealltrans(M,4,Ω)
+  #W = wx.*wy'
 #test transform
   c0   = randn(Mx,My)+im*randn(Mx,My); c0=P.*c0
-  ψ0   = Tx*c0*Ty' #initial condition
-  ψ    = Tx*c0*Ty' #a field to write to in place
+  #ψ0   = Tx*c0*Ty' #initial condition
+  ψ0  = tinfo.Tx*c0*tinfo.Ty'
+  #ψ    = Tx*c0*Ty' #a field to write to in place
+  ψ = tinfo.Tx*c0*tinfo.Ty'
 
 #PGPE time evolution
 #out of place
@@ -60,9 +63,11 @@ function nlin(c)
 end
 
 #in place
-function nlin!(dc,c)
-    ψ = Tx*c*Ty'
-    dc.= Tx'*(W.*abs2.(ψ).*ψ)*Ty
+function nlin!(dc,c,tinfo)
+    #ψ = Tx*c*Ty'
+    #dc.= Tx'*(W.*abs2.(ψ).*ψ)*Ty
+    c2x!(ψ,c,tinfo)
+    x2c!(dc,abs2.(ψ).*ψ,tinfo)
 end
 
 #dPGPE in reservoir "frame"
@@ -73,7 +78,7 @@ end
 
 #in place
 function Lgp!(dc,c,p,t)
-    nlin!(dc,c)
+    nlin!(dc,c,tinfo)
     dc .= P.*(-im*(1-im*γ)*((en - μ).*c .+ g*dc))
 end
 
@@ -99,7 +104,7 @@ siminfo,cinfo,sol = timeevolution2()
 @unpack M,Ω,ecut,P,en = cinfo; Mx,My = M;
 
 #examine solution
-using Interact, PyPlot
+using PyPlot
 
 #lets be explicit about units:
 Rx = sqrt(2μ*E0/m/ωx^2)/x0
@@ -111,14 +116,15 @@ Nx = 400
 Ny = Nx
 x = collect(linspace(-xMax,xMax,Nx))
 y = collect(linspace(-yMax,yMax,Ny))
-Tx = eigmat("Hermite",Mx,x,ωx/ωy)
-Ty = eigmat("Hermite",My,y,1); #units of ωy
+Tx = eigmat(Mx,x,ω=ωx/ωy)
+Ty = eigmat(My,y,ω=1); #units of ωy
 #θ = unwrap(angle(ψ));
 
 #Plot
+using PyPlot
 f=figure(figsize=(12,3))
 @manipulate for i=1:length(t) withfig(f,clear=true) do
-    ψ = Tx*sol[i]*Ty';
+    c2x!(ψ,sol[i],tinfo);
     pcolormesh(x,y,g*abs2.(ψ'))
     xlabel("x/x0")
     ylabel("y/x0")

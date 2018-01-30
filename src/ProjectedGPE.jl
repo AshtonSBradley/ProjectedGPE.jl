@@ -85,7 +85,7 @@ include("evolve.jl")
 
 export eigmat, nfieldtrans, x2c!, c2x!, growthrate,
 scatteringkernel, makescatteringtrans, makescatteringnoisetrans,
-makecinfo, makealltrans, makespecops, ladderops, angularmomentum, nenergy,
+makecinfo, maketinfo, makealltrans, makespecops, ladderops, angularmomentum, nenergy,
 gausshermite, evolve, evolve, Cinfo, Params, Tinfo
 nlin!, Lgp!
 
