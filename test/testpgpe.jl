@@ -67,12 +67,12 @@ end
 
 #dPGPE in reservoir "frame"
 #out of place
-function Lgp(c,t)
+function Lgp(c,p,t)
      P.*(-im*(1-im*Γ̄)*((en - μ).*c .+ g*nlin(c)))
 end
 
 #in place
-function Lgp!(dc,c,t)
+function Lgp!(dc,c,p,t)
     nlin!(dc,c)
     dc .= P.*(-im*(1-im*Γ̄)*((en - μ).*c .+ g*dc))
 end
