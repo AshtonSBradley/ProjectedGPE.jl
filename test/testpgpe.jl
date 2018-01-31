@@ -121,7 +121,7 @@ Ty = eigmat(My,y,ω=1); #units of ωy
 #θ = unwrap(angle(ψ));
 
 #Plot
-using PyPlot
+using PyPlot, Interact
 f=figure(figsize=(12,3))
 @manipulate for i=1:length(t) withfig(f,clear=true) do
     c2x!(ψ,sol[i],tinfo);
