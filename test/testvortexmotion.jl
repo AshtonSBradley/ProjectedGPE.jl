@@ -46,7 +46,7 @@ sinfo = Params()
 
 #Initialize CField (dimensionless)
   basis = "Hermite"
-  ecut = 30*ħ*ωy/E0
+  ecut = 30.5*ħ*ωy/E0
   Ω = [ωx; ωy]*t0
   cinfo = makecinfo(ecut,Ω,basis)
   tinfo = maketinfo(cinfo,4)
@@ -133,7 +133,7 @@ sum(abs2.(sol[end]))
 
 sum(abs2.(c0))
 
-ψ0 = c2x(c0,tinfop);
+ψ0 = c2x(c0,tinfop)
 figure(figsize=(15,5))
 subplot(1,2,1)
 pcolormesh(x,y,g*abs2.(ψ0'))
@@ -146,8 +146,10 @@ xlabel("x/x0")
 ylabel("y/x0")
 colorbar()
 
+figure()
+plot(x,g*abs2.(ψ0[:,300]))
 #= TIME EVOLVE (real time) =#
-
+plot(x,μ*(1-x.^2/Rx^2).*vortexcore(x-xv,ξ).^2)
 
 function timeevolution2()
 sinfo = Params()
@@ -189,7 +191,7 @@ sinfo = Params()
 
 #Initialize CField (dimensionless)
   basis = "Hermite"
-  ecut = 30*ħ*ωy/E0
+  ecut = 30.5*ħ*ωy/E0
   Ω = [ωx; ωy]*t0
   cinfo = makecinfo(ecut,Ω,basis)
   tinfo = maketinfo(cinfo,4)
@@ -224,11 +226,11 @@ return sinfo,cinfo,sol
 end
 
 #should probably be careful not to write over initial state here
-sinfo,cinfo,sol = timeevolution2()
+sinfo2,cinfo2,sol2 = timeevolution2()
 
 #plot solution for 2D
 ## Transform to cartesian grid
-@unpack ħ,m,ωx,ωy,ωz,γ,ℳ,g,x0,t0,E0,μ,ti,tf,Nt,t,dt = sinfo
+@unpack ħ,m,ωx,ωy,ωz,γ,ℳ,g,x0,t0,E0,μ,ti,tf,Nt,t,dt = sinfo2
 #@unpack M,Ω,ecut,P,en = cinfo
 
 #= Plot solution =#
@@ -243,9 +245,9 @@ Nx = 600
 Ny = Nx
 x = collect(linspace(-xMax,xMax,Nx))
 y = collect(linspace(-yMax,yMax,Ny))
-tinfop = maketinfoplot(cinfo,x,y)
+tinfop = maketinfoplot(cinfo2,x,y)
 
-ψ = c2x(sol[end],tinfop)
+ψ = c2x(sol2[10],tinfop)
 figure(figsize=(15,5))
 subplot(1,2,1)
 pcolormesh(x,y,g*abs2.(ψ'))
@@ -257,3 +259,21 @@ pcolormesh(x,y,angle.(ψ'))
 xlabel("x/x0")
 ylabel("y/x0")
 colorbar()
+
+
+figure(figsize=(15,5))
+subplot(1,2,1)
+pcolormesh(x,y,g*abs2.(ψ'))
+xlabel("x/x0")
+ylabel("y/x0")
+colorbar()
+subplot(1,2,2)
+pcolormesh(x,y,angle.(ψ'))
+xlabel("x/x0")
+ylabel("y/x0")
+colorbar()
+
+figure()
+plot(x,g*abs2.(ψ[:,300]))
+#= TIME EVOLVE (real time) =#
+plot(x,μ*(1-x.^2/Rx^2).*vortexcore(x-xv,ξ).^2)
