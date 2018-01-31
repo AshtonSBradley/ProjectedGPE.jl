@@ -1,5 +1,5 @@
-function evolve2()
-siminfo = Params()
+function evolve()
+sinfo = Params()
 
 #== start template ==#
 #fundamental constants/units
@@ -28,52 +28,30 @@ siminfo = Params()
   μ  = 12.0
 #time evolution parameters
   ti = 0.0
-  tf = 2.0/Γ̄  #evolve for 2 damping times
+  tf = 1.0/γ  #evolve for 2 damping times
   Nt = 50
   t = collect(linspace(ti,tf,Nt))
   dt = 0.01π/μ #integrate step size [ - should have dt ≪ 2π/μ]
 #== end template ==#
 
-  @pack siminfo = ωx,ωy,ωz,γ,ℳ,g,t0,E0,x0,μ,ti,tf,Nt,t,dt
+  @pack sinfo = ωx,ωy,ωz,γ,ℳ,g,t0,E0,x0,μ,ti,tf,Nt,t,dt
 
   #Initialize CField
   basis = "Hermite"
   ecut = 30 #units of ħ*ωy
   Ω = [ωx; ωy]*t0
   cinfo = makecinfo(ecut,Ω,basis)
-  @unpack en,P,M = cinfo ;Mx=M[1];My=M[2]
-  x,wx,Tx,y,wy,Ty = makealltrans(M,Ω,n=4,basis=basis)
-  W = wx.*wy'
+  tinfo = maketinfo(cinfo,4)
+  @unpack en, P, M = cinfo; Mx, My = M;
+  #x,wx,Tx,y,wy,Ty = makealltrans(M,Ω,n=4,basis=basis)
+  #W = wx.*wy'
 #test transform
   c0   = randn(Mx,My)+im*randn(Mx,My);
   c0   = P.*c0;   #Project
-  ψ0   = Tx*c0*Ty'
-  ψ    = Tx*c0*Ty' #a field to write to in place if needed
+  ψ0   = c2x(c0,tinfo)
+  ψ    = simlar(ψ0) #a field to write to in place if needed
 
-#PGPE nonlinearity 1D
-#out of place
-function nlin(c)
-    ψ = Tx*c*Ty'
-    Tx'*(W.*abs2.(ψ).*ψ)*Ty
-end
 
-function nlin!(c,dc)
-    ψ = Tx*c*Ty'
-    dc.= Tx'*(W.*abs2.(ψ).*ψ)*Ty
-end
-
-#dPGPE in reservoir frame
-#out of place
-function Lgp(t,c)
- -im*(1-im*γ)*((en - μ).*c .+ g*nlin(c))
-end
-
-#in place
-function Lgp!(t,c,dc)
-    nlin!(c,dc)
-    dc.= -im*(1-im*γ)*((en - μ).*c .+ g*dc)
-    dc.= P.*dc
-end
 
 c0    = randn(Mx,My) + im*randn(Mx,My); #create new random initial state
 tspan = (t[1],t[end])
@@ -82,7 +60,7 @@ alg = DP5()
 #abstol = 1e-3!
 #reltol = 1e-3
 println("Started evolution ...")
-@time sol = solve(prob,alg,dt=dt,saveat=t,alg_hints=[:stiff],save_everystep=false,dense=false);
+@time sol = solve(prob,alg,dt=dt,saveat=t);
 println("... Finished.")
-return siminfo,cinfo,sol
+return sinfo,cinfo,sol
 end

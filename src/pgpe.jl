@@ -1,26 +1,24 @@
 #PGPE nonlinearity
-#1D
-function nlin!(c::Array{Complex{Float64},1},cinfo::ProjectedGPE.Cinfo,dc::Array{Complex{Float64},1})
-    #ψ .= Tx*c
-    #dc.= Tx'*(wx.*abs.(ψ).^2.*ψ)
-    anisotrans!(c,cinfo.Tx,cinfo.ψ)
-    anisotrans!(cinfo.W.*abs.(cinfo.ψ).^2.*cinfo.ψ,cinfo.Tx',dc)
+#out of place
+function nlin(c)
+    ψ = c2x(c,tinfo)
+    return x2c(abs2.(ψ).*ψ,tinfo)
 end
 
-#2D
-function nlin!(c::Array{Complex{Float64},2},cinfo::ProjectedGPE.Cinfo,dc::Array{Complex{Float64},2})
-    anisotrans!(c,cinfo.Tx,cinfo.Ty,cinfo.ψ)
-    anisotrans!(cinfo.W.*abs.(cinfo.ψ).^2.*cinfo.ψ,cinfo.Tx',cinfo.Ty',dc)
+#in place
+function nlin!(dc,c,tinfo)
+    c2x!(ψ,c,tinfo)
+    x2c!(dc,abs2.(ψ).*ψ,tinfo)
 end
 
-#3D
-function nlin!(c::Array{Complex{Float64},3},cinfo::ProjectedGPE.Cinfo,dc::Array{Complex{Float64},3})
-    anisotrans!(c,cinfo.Tx,cinfo.Ty,cinfo.Tz,cinfo.ψ)
-    anisotrans!(cinfo.W.*abs.(cinfo.ψ).^2.*cinfo.ψ,cinfo.Tx',cinfo.Ty',cinfo.Tz',dc)
+#dPGPE in reservoir frame
+#out of place
+function Lgp(c,p,t)
+     return P.*(-im*(1-im*γ)*((en - μ).*c .+ g*nlin(c)))
 end
 
-#dPGPE in "reservoir frame"
-function Lgp!(t,c,cinfo,dc)
-    nlin!(c,cinfo,dc)
-    dc .= cinfo.P.*(-im*(1-im*cinfo.Γ̄)*((cinfo.en - cinfo.μ).*c .+ cinfo.g*dc))
+#in place
+function Lgp!(dc,c,p,t)
+    nlin!(dc,c,tinfo)
+    dc .= P.*(-im*(1-im*γ)*((en - μ).*c .+ g*dc))
 end

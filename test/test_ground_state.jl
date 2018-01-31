@@ -15,7 +15,7 @@ sinfo = Params()
   as = 100*Bohr
 #trap frequencies
   ωx = 2π
-  ωy = 4ωx
+  ωy = ωx
   ωz = 0.
 #choice of time, length, energy units
   t0 = 1.0/ωy
@@ -25,10 +25,10 @@ sinfo = Params()
   #g  = (4*pi*ħ^2*as/m)*x0^3/E0 #dimensionless 3D
   g = 0.1 #test 2D
 #damping parameters (dimensionless)
-  γ = 0.05
+  γ = 0.5
   ℳ  = 0.0
 #chemical potential (dimensionless)
-  μ  = 12.0
+  μ  = 10.0
 #time evolution parameters
   ti = 0.0
   tf = 3.0/γ  #evolve for 2 damping times
@@ -45,7 +45,7 @@ sinfo = Params()
   Ω = [ωx; ωy]*t0
   cinfo = makecinfo(ecut,Ω,basis)
   tinfo = maketinfo(cinfo,4)
-  @unpack en,P,M = cinfo;
+  @unpack en,P,M = cinfo
   #x,wx,Tx,y,wy,Ty = makealltrans(M,4,Ω)
   #W = wx.*wy'
 #test transform
@@ -53,13 +53,12 @@ sinfo = Params()
   ψ0  = c2x(c0,tinfo) #initial condition
   ψ = similar(ψ0)  #a field to write to in place
 
-#equation of motion
+#equation of motion (in place)
   function nlin!(dc,c,tinfo)
       c2x!(ψ,c,tinfo)
       x2c!(dc,abs2.(ψ).*ψ,tinfo)
   end
 
-  #in place
   function Lgp!(dc,c,p,t)
       nlin!(dc,c,tinfo)
       dc .= P.*(-im*(1-im*γ)*((en - μ).*c .+ g*dc))
@@ -83,7 +82,7 @@ sinfo,cinfo,sol = timeevolution2()
 @unpack ħ,m,ωx,ωy,ωz,γ,ℳ,g,x0,t0,E0,μ,ti,tf,Nt,t,dt = sinfo
 #@unpack M,Ω,ecut,P,en = cinfo
 
-#examine solution
+#= Plot solution =#
 using PyPlot
 
 #lets be explicit about units:
@@ -100,7 +99,7 @@ tinfop = maketinfoplot(cinfo,x/x0,y/x0)
 
 #Plot
 #using PyPlot
-f=figure(figsize=(12,3))
+#f=figure(figsize=(12,3))
 #@manipulate for i=1:length(t) withfig(f,clear=true) do
     ψ = c2x(sol[end],tinfop);
     pcolormesh(x/x0,y/x0,g*abs2.(ψ'))
