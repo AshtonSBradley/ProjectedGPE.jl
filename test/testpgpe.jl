@@ -2,7 +2,7 @@
 using Revise, ProjectedGPE
 
 function timeevolution2()
-siminfo = Params()
+sinfo = Params()
 
 #== start template ==#
 #fundamental constants/units
@@ -37,7 +37,7 @@ siminfo = Params()
   dt = 0.01π/μ #integrate step size [ - should have dt ≪ 2π/μ]
 #== end template ==#
 
-@pack siminfo = ωx,ωy,ωz,γ,ℳ,g,t0,x0,E0,μ,ti,tf,Nt,t,dt
+@pack sinfo = ωx,ωy,ωz,γ,ℳ,g,t0,x0,E0,μ,ti,tf,Nt,t,dt
 
 #Initialize CField (dimensionless)
   basis = "Hermite"
@@ -73,7 +73,7 @@ end
 #dPGPE in reservoir "frame"
 #out of place
 function Lgp(c,p,t)
-     P.*(-im*(1-im*γ)*((en - μ).*c .+ g*nlin(c)))
+     return P.*(-im*(1-im*γ)*((en - μ).*c .+ g*nlin(c)))
 end
 
 #in place
@@ -93,22 +93,22 @@ println("Started evolution ...")
 #@time sol = solve(prob,alg,dt=dt,saveat=t,alg_hints=[:stiff],save_everystep=false,dense=false);
 @time sol = solve(prob,alg,dt=dt,saveat=t);
 println("... Finished.")
-return siminfo,cinfo,sol
+return sinfo,cinfo,sol
 end
 
-siminfo,cinfo,sol = timeevolution2()
+sinfo,cinfo,sol = timeevolution2()
 
 #plot solution for 2D
 ## Transform to cartesian grid
-@unpack ħ,m,ωx,ωy,ωz,γ,ℳ,g,x0,t0,E0,μ,ti,tf,Nt,t,dt = siminfo
+@unpack ħ,m,ωx,ωy,ωz,γ,ℳ,g,x0,t0,E0,μ,ti,tf,Nt,t,dt = sinfo
 @unpack M,Ω,ecut,P,en = cinfo; Mx,My = M;
 
 #examine solution
 using PyPlot
 
 #lets be explicit about units:
-Rx = sqrt(2μ*E0/m/ωx^2)/x0
-Ry = sqrt(2μ*E0/m/ωy^2)/x0
+Rx = sqrt(2μ*E0/m/ωx^2)
+Ry = sqrt(2μ*E0/m/ωy^2)
 yMax=1.5Ry
 xMax=1.5Rx
 
@@ -116,18 +116,16 @@ Nx = 400
 Ny = Nx
 x = collect(linspace(-xMax,xMax,Nx))
 y = collect(linspace(-yMax,yMax,Ny))
-Tx = eigmat(Mx,x,ω=ωx/ωy)
-Ty = eigmat(My,y,ω=1); #units of ωy
-#θ = unwrap(angle(ψ));
+tinfop = maketinfoplot(cinfo,x/x0,y/x0)
 
 #Plot
-using PyPlot, Interact
+#using PyPlot
 f=figure(figsize=(12,3))
-@manipulate for i=1:length(t) withfig(f,clear=true) do
-    c2x!(ψ,sol[i],tinfo);
-    pcolormesh(x,y,g*abs2.(ψ'))
+#@manipulate for i=1:length(t) withfig(f,clear=true) do
+    ψ = c2x(sol[end],tinfop);
+    pcolormesh(x/x0,y/x0,g*abs2.(ψ'))
     xlabel("x/x0")
     ylabel("y/x0")
     colorbar()
-    end
-end
+    #end
+#end
