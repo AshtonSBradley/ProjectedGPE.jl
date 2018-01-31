@@ -2,11 +2,12 @@
         error("implement")
     end
 
-    function xgrid2c(ψ::Array{Complex{Float64},2},cinfo::ProjectedGPE.Cinfo)
+    function xgrid2c(ψ::Array{Complex{Float64},2},x,y,cinfo::ProjectedGPE.Cinfo)
         Mx,My = cinfo.M
-        Tx = eigmat(Mx,x/x0)
-        Ty = eigmat(My,y/x0)
-        return Tx'*(ψ*Ty)*Δx*Δy/x0^2
+        Δx = x[2]-x[1];Δy = y[2]-y[1]
+        Tx = eigmat(Mx,x)
+        Ty = eigmat(My,y)
+        return Tx'*(ψ*Ty)*Δx*Δy
     end
 
     function x2c(ψ::Array{Complex{Float64},3},cinfo::ProjectedGPE.Cinfo)
