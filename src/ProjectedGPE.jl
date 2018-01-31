@@ -73,19 +73,21 @@ include("angularmomentum.jl")
 include("nfieldtrans.jl")
 include("x2c!.jl")
 include("c2x!.jl")
+include("c2x.jl")
 include("growthrate.jl")
 include("scatteringkernel.jl")
 include("makescatteringtrans.jl")
 include("makescatteringnoisetrans.jl")
 include("makecinfo.jl")
 include("maketinfo.jl")
+include("maketinfoplot.jl")
 include("makealltrans.jl")
 include("pgpe.jl")
 include("evolve.jl")
 
-export eigmat, nfieldtrans, x2c!, c2x!, growthrate,
+export eigmat, nfieldtrans, x2c!, c2x!, c2x, growthrate,
 scatteringkernel, makescatteringtrans, makescatteringnoisetrans,
-makecinfo, maketinfo, makealltrans, makespecops, ladderops, angularmomentum, nenergy,
+makecinfo, maketinfo, maketinfoplot, makealltrans, makespecops, ladderops, angularmomentum, nenergy,
 gausshermite, evolve, evolve, Cinfo, Params, Tinfo
 nlin!, Lgp!
 
