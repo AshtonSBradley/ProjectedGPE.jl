@@ -6,7 +6,7 @@ using Revise, ProjectedGPE, VortexDistributions
 ENV["MPLBACKEND"]="tkagg"
 using PyPlot
 
-function timeevolution2()
+function timeevolution2(γ,tf,Ncut)
 sinfo = Params()
 
 #== start template ==#
@@ -30,13 +30,13 @@ sinfo = Params()
   #g  = (4*pi*ħ^2*as/m)*x0^3/E0 #dimensionless 3D
   g = 0.1 #test 2D
 #damping parameters (dimensionless)
-  γ = 0.5
+  #γ = 0.5
   ℳ  = 0.0
 #chemical potential (dimensionless)
   μ  = 10.0
 #time evolution parameters
   ti = 0.0
-  tf = 10.0/γ  #evolve for 2 damping times
+  #tf = 10.0/γ  #evolve for 2 damping times
   Nt = 50
   t = collect(linspace(ti,tf,Nt))
   dt = 0.01π/μ #integrate step size [ - should have dt ≪ 2π/μ]
