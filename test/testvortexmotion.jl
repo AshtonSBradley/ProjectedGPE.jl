@@ -186,7 +186,7 @@ mask = complex(Float64.(sqrt.(x.^2.+y'.^2).<0.7*Rx*ones(real(ψ))))
 
 xt = zeros(t)
 yt = zeros(t)
-for j=1:length(t)
+for j in eachindex(t)
     c2x!(ψ,sol2[j],tinfop)
     xt[j], yt[j], _ = findvortices(x,y,ψ.*mask)
 end
