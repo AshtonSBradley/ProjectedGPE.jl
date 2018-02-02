@@ -7,9 +7,9 @@ ENV["MPLBACKEND"]="tkagg"
 using PyPlot
 
 function groundstate(γ,tf,Ncut)
-sinfo = Params()
 
-#== start template ==#
+#== start parameters ==#
+sinfo = Params()
 #fundamental constants/units
   ħ = 1.0545718e-34; kB = 1.38064852e-23; amu = 1.660339040e-27; Bohr = 5.29e-11
 #Rb87 mass and scattering length
@@ -18,8 +18,7 @@ sinfo = Params()
   ωx = 2π; ωy = ωx; ωz = 0.
 #choice of time, length, energy units
   t0 = 1.0/ωy; x0 = sqrt(ħ*t0/m); E0 = ħ/t0
-#interactions and chemical potential
-  #g  = (4*pi*ħ^2*as/m)*x0^3/E0 #dimensionless 3D
+#interactions and chemical potential, e.g., g  = (4*pi*ħ^2*as/m)*x0^3/E0 (dimensionless 3D)
   g = 0.1; μ  = 10.0
 #damping parameters (dimensionless)
   #γ = 0.5
@@ -27,34 +26,34 @@ sinfo = Params()
 #time evolution parameters
   ti = 0.0; #tf = 10.0/γ  #evolve for 2 damping times
   Nt = 50; t = collect(linspace(ti,tf,Nt)); dt = 0.01π/μ #integrate step size [ - should have dt ≪ 2π/μ]
-#== end template ==#
-
+#
 @pack sinfo = ωx,ωy,ωz,γ,ℳ,g,t0,x0,E0,μ,ti,tf,Nt,t,dt
+#== end parameters ==#
 
-#Initialize CField (dimensionless)
+#= Initialize cfield (dimensionless) =#
   basis = "Hermite"
   ecut = Ncut*ħ*ωy/E0
   Ω = [ωx; ωy]*t0
   cinfo = makecinfo(ecut,Ω,basis)
   tinfo = maketinfo(cinfo,4)
   @unpack en,P,M = cinfo
-  #x,wx,Tx,y,wy,Ty = makealltrans(M,4,Ω)
-  #W = wx.*wy'
-#test transform
+
+#= create initial state and extra fields =#
   c0  = randn(M...)+im*randn(M...); c0=P.*c0
   ψ0  = c2x(c0,tinfo) #initial condition
   ψ = similar(ψ0)  #a field to write to in place
 
-#equation of motion (in place)
-  function nlin!(dc,c,tinfo)
-      c2x!(ψ,c,tinfo)
-      x2c!(dc,abs2.(ψ).*ψ,tinfo)
-  end
-
+#= PGPE (in place)       =#
+#add spectral terms into Lgp!, or x-space terms into nlin!
   function Lgp!(dc,c,p,t)
       nlin!(dc,c,tinfo)
       dc .= P.*(-im*(1-im*γ)*((en - μ).*c .+ g*dc))
   end
+  function nlin!(dc,c,tinfo)
+      c2x!(ψ,c,tinfo)
+      x2c!(dc,abs2.(ψ).*ψ,tinfo)
+  end
+#========================#
 
 tspan = (t[1],t[end])
 prob = ODEProblem(Lgp!,c0,tspan)
@@ -119,10 +118,10 @@ iy = find(abs.(y-yv).<=dy);iy = iy[1]
 makevortex!(ψ,testvort,x,y',ξ)
 
 #project back to cfield
-c0 = xgrid2c(ψ,x,y,cinfo)
+return xgrid2c(ψ,x,y,cinfo)
 end
 
-addvortex()
+c0 = addvortex()
 
 #sum(abs2.(sol[end]))
 #sum(abs2.(c0))
@@ -149,9 +148,9 @@ plot(x,g*abs2.(ψ0[:,300]))
 #plot(x,μ*(1-x.^2/Rx^2).*vortexcore(x-xv,ξ).^2)
 
 function realtime(tf,Ncut)
-sinfo = Params()
 
-#== start template ==#
+#== start parameters ==#
+sinfo = Params()
 #fundamental constants/units
   ħ = 1.0545718e-34; kB = 1.38064852e-23; amu = 1.660339040e-27; Bohr = 5.29e-11
 #Rb87 mass and scattering length
@@ -160,8 +159,7 @@ sinfo = Params()
   ωx = 2π; ωy = ωx; ωz = 0.
 #choice of time, length, energy units
   t0 = 1.0/ωy; x0 = sqrt(ħ*t0/m); E0 = ħ/t0
-#interactions and chemical potential
-  #g  = (4*pi*ħ^2*as/m)*x0^3/E0 #dimensionless 3D
+#interactions and chemical potential, e.g., g  = (4*pi*ħ^2*as/m)*x0^3/E0 (dimensionless 3D)
   g = 0.1; μ  = 10.0
 #damping parameters (dimensionless)
   γ = 0.0
@@ -169,30 +167,33 @@ sinfo = Params()
 #time evolution parameters
   ti = 0.0; #tf = 10.0/γ  #evolve for 2 damping times
   Nt = 50; t = collect(linspace(ti,tf,Nt)); dt = 0.01π/μ #integrate step size [ - should have dt ≪ 2π/μ]
-#== end template ==#
-
+#
 @pack sinfo = ωx,ωy,ωz,γ,ℳ,g,t0,x0,E0,μ,ti,tf,Nt,t,dt
+#== end parameters ==#
 
-#Initialize CField (dimensionless)
+#= Initialize cfield (dimensionless) =#
   basis = "Hermite"
   ecut = Ncut*ħ*ωy/E0
   Ω = [ωx; ωy]*t0
   cinfo = makecinfo(ecut,Ω,basis)
   tinfo = maketinfo(cinfo,4)
   @unpack en,P,M = cinfo
+
+#= create initial state and extra fields =#
   ψ0  = c2x(c0,tinfo) #initial condition
   ψ = similar(ψ0)  #a field to write to in place
 
-#equation of motion (in place)
-  function nlin!(dc,c,tinfo)
-      c2x!(ψ,c,tinfo)
-      x2c!(dc,abs2.(ψ).*ψ,tinfo)
-  end
-
+#= PGPE (in place)       =#
+#add spectral terms into Lgp!, or x-space terms into nlin!
   function Lgp!(dc,c,p,t)
       nlin!(dc,c,tinfo)
       dc .= P.*(-im*(1-im*γ)*((en - μ).*c .+ g*dc))
   end
+  function nlin!(dc,c,tinfo)
+      c2x!(ψ,c,tinfo)
+      x2c!(dc,abs2.(ψ).*ψ,tinfo)
+  end
+#========================#
 
 tspan = (t[1],t[end])
 prob = ODEProblem(Lgp!,c0,tspan)
@@ -223,13 +224,15 @@ Nx = 600
 Ny = Nx
 x = collect(linspace(-xMax,xMax,Nx))
 y = collect(linspace(-yMax,yMax,Ny))
-tinfop = maketinfoplot(cinfo2,x,y)
+tinfop = maketinfoplot(cinfo,x,y)
+ψ = c2x(sol2[1],tinfop)
+mask = sqrt.(x.^2.+y'.^2).<0.7*Rx*ones(real(ψ))
 
 xt = zeros(t)
 yt = zeros(t)
 for j in eachindex(t)
     ψ = c2x(sol2[j],tinfop)
-    xt[j], yt[j], _ = findvortices(x,y',ψ)
+    xt[j], yt[j], _ = findvortices(x,y',ψ.*mask)
 end
 return xt, yt
 end
@@ -238,6 +241,9 @@ xt,yt = findvortex()
 
 plot(t,xt)
 plot(t,yt)
+
+figure()
+pcolormesh(x,y,angle.(ψ').*mask)
 #=
 figure(figsize=(15,5))
 subplot(1,2,1)
