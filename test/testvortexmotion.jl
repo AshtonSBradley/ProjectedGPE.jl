@@ -7,7 +7,6 @@ ENV["MPLBACKEND"]="tkagg"
 using PyPlot
 
 function groundstate(γ,tf,Ncut)
-
 #== start parameters ==#
 sinfo = Params()
 #fundamental constants/units
@@ -70,8 +69,6 @@ end
 sinfo,cinfo,sol = groundstate(0.3,10/γ,30.5)
 
 function addvortex()
-#plot solution for 2D
-## Transform to cartesian grid
 @unpack ħ,m,ωx,ωy,ωz,γ,ℳ,g,x0,t0,E0,μ,ti,tf,Nt,t,dt = sinfo
 #@unpack M,Ω,ecut,P,en = cinfo
 
@@ -89,21 +86,6 @@ y = collect(linspace(-yMax,yMax,Ny))
 tinfop = maketinfoplot(cinfo,x,y)
 ψ = c2x(sol[end],tinfop)
 
-#PLOT
-#=
-figure(figsize=(15,5))
-subplot(1,2,1)
-pcolormesh(x,y,g*abs2.(ψ'))
-xlabel("x/x0")
-ylabel("y/x0")
-colorbar()
-subplot(1,2,2)
-pcolormesh(x,y,angle.(ψ'))
-xlabel("x/x0")
-ylabel("y/x0")
-colorbar()
-=#
-
 #= imprint vortex =#
 xv = 0.2*Rx; yv = 0.0; σv = 1
 testvort = [xv yv σv]
@@ -113,39 +95,13 @@ ix = find(abs.(x-xv).<=dx);ix = ix[1]
 iy = find(abs.(y-yv).<=dy);iy = iy[1]
 #ξ = x0/(sqrt(μ))
 ξ = 1/(sqrt(g*abs2.(ψ)[ix,iy]))
-#g*abs2.(ψ)[ix,iy]
 
-makevortex!(ψ,testvort,x,y',ξ)
-
+makevortex!(ψ,testvort,x,y,ξ)
 #project back to cfield
 return xgrid2c(ψ,x,y,cinfo)
 end
 
 c0 = addvortex()
-
-#sum(abs2.(sol[end]))
-#sum(abs2.(c0))
-
-#=
-ψ0 = c2x(c0,tinfop)
-figure(figsize=(15,5))
-subplot(1,2,1)
-pcolormesh(x,y,g*abs2.(ψ0'))
-xlabel("x/x0")
-ylabel("y/x0")
-colorbar()
-subplot(1,2,2)
-pcolormesh(x,y,angle.(ψ0'))
-xlabel("x/x0")
-ylabel("y/x0")
-colorbar()
-
-figure()
-plot(x,g*abs2.(ψ0[:,300]))
-=#
-
-#= TIME EVOLVE (real time) =#
-#plot(x,μ*(1-x.^2/Rx^2).*vortexcore(x-xv,ξ).^2)
 
 function realtime(tf,Ncut)
 
@@ -207,9 +163,9 @@ return sinfo,cinfo,sol
 end
 
 #should probably be careful not to write over initial state here
-sinfo2,cinfo2,sol2 = realtime(30.,30.5)
+sinfo2,cinfo2,sol2 = realtime(60.,30.5)
 
-#function findvortex()
+function findvortex()
 ## Transform to cartesian grid
 @unpack ħ,m,ωx,ωy,ωz,γ,ℳ,g,x0,t0,E0,μ,ti,tf,Nt,t,dt = sinfo2
 #@unpack M,Ω,ecut,P,en = cinfo
@@ -226,24 +182,22 @@ x = collect(linspace(-xMax,xMax,Nx))
 y = collect(linspace(-yMax,yMax,Ny))
 tinfop = maketinfoplot(cinfo,x,y)
 ψ = c2x(sol2[1],tinfop)
-mask = sqrt.(x.^2.+y'.^2).<0.7*Rx*ones(real(ψ))
+mask = complex(Float64.(sqrt.(x.^2.+y'.^2).<0.7*Rx*ones(real(ψ))))
 
 xt = zeros(t)
 yt = zeros(t)
-for j=1 # in eachindex(t)
-    ψ = c2x(sol2[j],tinfop)
-    xt[j], yt[j], _ = findvortices(x,y',ψ.*mask)
+for j=1:length(t)
+    c2x!(ψ,sol2[j],tinfop)
+    xt[j], yt[j], _ = findvortices(x,y,ψ.*mask)
 end
-#return xt, yt
-#end
+return xt, yt
+end
 
 xt,yt = findvortex()
 
+@unpack ħ,m,ωx,ωy,ωz,γ,ℳ,g,x0,t0,E0,μ,ti,tf,Nt,t,dt = sinfo2
 plot(t,xt)
 plot(t,yt)
-
-figure()
-pcolormesh(x,y,angle.(ψ').*mask)
 #=
 figure(figsize=(15,5))
 subplot(1,2,1)
