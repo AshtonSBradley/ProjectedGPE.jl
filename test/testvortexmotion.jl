@@ -209,7 +209,7 @@ end
 #should probably be careful not to write over initial state here
 sinfo2,cinfo2,sol2 = realtime(30.,30.5)
 
-function findvortex()
+#function findvortex()
 ## Transform to cartesian grid
 @unpack ħ,m,ωx,ωy,ωz,γ,ℳ,g,x0,t0,E0,μ,ti,tf,Nt,t,dt = sinfo2
 #@unpack M,Ω,ecut,P,en = cinfo
@@ -230,12 +230,12 @@ mask = sqrt.(x.^2.+y'.^2).<0.7*Rx*ones(real(ψ))
 
 xt = zeros(t)
 yt = zeros(t)
-for j in eachindex(t)
+for j=1 # in eachindex(t)
     ψ = c2x(sol2[j],tinfop)
     xt[j], yt[j], _ = findvortices(x,y',ψ.*mask)
 end
-return xt, yt
-end
+#return xt, yt
+#end
 
 xt,yt = findvortex()
 
