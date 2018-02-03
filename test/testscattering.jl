@@ -44,7 +44,7 @@ c=randn(20)+im*randn(20)
 
 #test derivatives for 2-field product
 c=complex(zeros(20))
-c[1] = 1.0
+c[10] = 1.0
 ψ=Tx*c
 ϕ=Txk*(wx.*ψ)
 ψx = Txk'*(wk.*(im*k.*ϕ))
