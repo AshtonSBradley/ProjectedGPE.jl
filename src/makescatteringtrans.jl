@@ -14,15 +14,13 @@ evaluation of the scattering potential ``V_\\epsilon(x,t)`` of the energy-damped
 
  `Na`: number of auxiliary oscillator states.
 
- `Nk`: number of `k`-space points.
-
  External links
 
  [Numerical method for the stochastic projected Gross-Pitaevskii equation, Physical Review E 89, 013302 (2014)](https://arxiv.org/abs/1310.0161)
 
 """
 
-function makescatteringtrans(M;n=4,ω=1.0,basis="Hermite",Na=M,Nk=M)
+function makescatteringtrans(M;n=4,ω=1.0,basis="Hermite",Na=M)
 
     #n-field to x-space
     x,wx,Tx = nfieldtrans(M,n,ω=ω)
