@@ -33,7 +33,7 @@ function makescatteringtrans(M;n=4,ω=1.0,basis="Hermite",Na=M)
 
     #n-field aux transform to k
     ka,wak,Tak = nfieldtrans(Na,n,ω = 1/ω)
-    Tak = Tak*diagm((im).^(0:Na-1))
+    Tak = Tak*diagm((-im).^(0:Na-1))
 
     #n-field transform from x --> k via auxiliary states.
     Txk = Tak*Tax'
