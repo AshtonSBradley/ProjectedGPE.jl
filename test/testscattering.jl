@@ -27,14 +27,14 @@ semilogy(k,f3(k))
 xlabel("k")
 legend(["1D","2D","3D"])
 
-
+#test derivatives and energies
 M=20
 n=4
-ω=1.
+ω=2.
 basis="Hermite"
 Na=43
 
-x,wx,Tx,k,wk,Txk = makescatteringtrans(20,n=2)
+x,wx,Tx,k,wk,Txk = makescatteringtrans(20,n=2,ω=ω)
 
 c=randn(20)+im*randn(20)
 ψ=Tx*c
@@ -44,10 +44,15 @@ c=randn(20)+im*randn(20)
 
 #test derivatives for 2-field product
 c=complex(zeros(20))
-c[10] = 1.0
+c[1] = 1.0
 ψ=Tx*c
 ϕ=Txk*(wx.*ψ)
 ψx = Txk'*(wk.*(im*k.*ϕ))
+ψxx= Txk'*(wk.*(-k.^2).*ϕ)
+V = 0.5*sum(Tx'*(wx.*x.^2.*ψ).*conj(c))
+K = -0.5*sum(Tx'*(wx.*ψxx).*conj(c))
+
+E = V+K
 
 figure()
 plot(x,abs2.(ψ))

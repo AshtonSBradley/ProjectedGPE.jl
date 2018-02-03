@@ -25,13 +25,13 @@ evaluation of the scattering potential ``V_\\epsilon(x,t)`` of the energy-damped
 function makescatteringtrans(M;n=4,ω=1.0,basis="Hermite",Na=M,Nk=M)
 
     #n-field to x-space
-    x,wx,Tx = nfieldtrans(M,n)
+    x,wx,Tx = nfieldtrans(M,n,ω=ω)
 
     #n-field to k-space. To include Nk need low level call to eigmat
     k,wk,Tk = nfieldtrans(M,n,ω=1/ω)
 
     #n-field aux transforms to x
-    xa,wax,Tax = nfieldtrans(Na,n)
+    xa,wax,Tax = nfieldtrans(Na,n,ω=ω)
 
     #n-field aux transform to k
     ka,wak,Tak = nfieldtrans(Na,n,ω = 1/ω)
