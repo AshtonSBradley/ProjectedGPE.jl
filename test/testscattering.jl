@@ -30,7 +30,7 @@ legend(["1D","2D","3D"])
 #test derivatives and energies
 M=20
 n=4
-ω=2.
+ω=2.             #test freq. dependence
 basis="Hermite"
 Na=43
 
