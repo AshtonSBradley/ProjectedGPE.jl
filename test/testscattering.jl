@@ -58,3 +58,31 @@ figure()
 plot(x,abs2.(ψ))
 plot(x,real.(ψx))
 plot(x,imag.(ψx))
+
+#test 4-field term ∇⋅j
+#3-field transform to k space
+x,wx,Tx,k,wk,Txk = makescatteringtrans(20,n=3)
+
+c=complex(zeros(20))
+c[1] = 1.0
+ψ = Tx*c
+ϕ = Txk*(wx.*ψ)
+ψx = Txk'*(wk.*(im*k.*ϕ))
+ψxx= Txk'*(wk.*(-k.^2).*ϕ)
+
+divj = im*0.5(ψ.*conj(ψxx)-conj(ψ).*ψxx)
+divjk = Txk*(wx.*divj)
+# then multiply by scattering scatteringkernel
+divjkS = f1(k).*divjk
+# then invert
+divjkSx = Txk'*(wk.*divjkS)
+# then × by ψ
+Vψ = divjkSx.*ψ
+# then project back to c-space to get term in EOM
+dψᵥ = Tx'*(wx.*Vψ)
+
+
+figure()
+plot(x,abs2.(ψ))
+plot(x,real.(ψx))
+plot(x,real.(divj))
