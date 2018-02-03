@@ -9,7 +9,7 @@ basis = "Hermite"
 #test 3D
 Ω=[ωx, ωy, ωz]
 M=[25,17,33]
-x,wx,Tx,y,wy,Ty,z,wz,Tz = makealltrans(M,Ω,n=4,basis=basis)
+x,wx,Tx,y,wy,Ty,z,wz,Tz = makealltrans(M,4,Ω,basis)
 x,wx,Tx,k,wk,Txk = makescatteringtrans(ecut,n=4,ω=1.0,basis=basis)
 
 k = collect(linspace(0,10,200))
@@ -27,15 +27,29 @@ semilogy(k,f3(k))
 xlabel("k")
 legend(["1D","2D","3D"])
 
+
 M=20
 n=4
 ω=1.
 basis="Hermite"
 Na=43
 
-x,wx,Tx,k,wk,Txk=makescatteringtrans(20,n=2)
+x,wx,Tx,k,wk,Txk = makescatteringtrans(20,n=2)
 
 c=randn(20)+im*randn(20)
 ψ=Tx*c
 ϕ=Txk*(wx.*ψ)
 ψinv=Txk'*(wk.*ϕ)
+#uniterity test passes.
+
+#test derivatives for 2-field product
+c=complex(zeros(20))
+c[1] = 1.0
+ψ=Tx*c
+ϕ=Txk*(wx.*ψ)
+ψx = Txk'*(wk.*(im*k.*ϕ))
+
+figure()
+plot(x,abs2.(ψ))
+plot(x,real.(ψx))
+plot(x,imag.(ψx))
