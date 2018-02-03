@@ -70,7 +70,9 @@ c[1] = 1.0
 ψx = Txk'*(wk.*(im*k.*ϕ))
 ψxx= Txk'*(wk.*(-k.^2).*ϕ)
 
+#construct x-space term
 divj = im*0.5(ψ.*conj(ψxx)-conj(ψ).*ψxx)
+# transform to k-space with 3-field transform
 divjk = Txk*(wx.*divj)
 # then multiply by scattering scatteringkernel
 divjkS = f1(k).*divjk
