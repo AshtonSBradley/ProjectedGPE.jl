@@ -1,8 +1,8 @@
-using Revise, ProjectedGPE, PyPlot
+using Revise, ProjectedGPE, Plots
 ecut = 20
 basis = "Hermite"
 
-ωx = 1
+ωx = 1.
 ωy = π
 ωz = 5
 
@@ -54,10 +54,9 @@ K = -0.5*sum(Tx'*(wx.*ψxx).*conj(c))
 
 E = V+K
 
-figure()
 plot(x,abs2.(ψ))
-plot(x,real.(ψx))
-plot(x,imag.(ψx))
+plot!(x,real.(ψx))
+plot!(x,imag.(ψx))
 
 #test 4-field term ∇⋅j
 #3-field transform to k space
@@ -84,7 +83,6 @@ Vψ = divjkSx.*ψ
 dψᵥ = Tx'*(wx.*Vψ)
 
 
-figure()
 plot(x,abs2.(ψ))
-plot(x,real.(ψx))
-plot(x,real.(divj))
+plot!(x,real.(ψx))
+plot!(x,real.(divj))
