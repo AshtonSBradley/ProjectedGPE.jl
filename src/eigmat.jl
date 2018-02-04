@@ -26,11 +26,6 @@ where `c` is a column vector of coefficients in the basis.
 function eigmat(M,x;ω=1.0,basis="Hermite",α=0.0)
   if basis=="Hermite"
     M > 371 && error("Float64 Quadrature does not converge for M > 371.")
-    #some BigFloat code, doesn't seem to change anything
-    #x = convert(Vector{BigFloat},x)
-    #ψ0 = exp.(-(√ω*x).^2/2)*BigFloat((ω/π)^(1/4))
-    #ψ1 = BigFloat(sqrt(2))*exp.(-(√ω*x).^2/2).*(√ω*x)*BigFloat((ω/π)^(1/4))
-    #n = convert(Vector{BigFloat},collect(0:M-1))
     ψ0 = exp.(-(√ω*x).^2/2)*(ω/π)^(1/4)
     ψ1 = sqrt(2)*exp.(-(√ω*x).^2/2).*(√ω*x)*(ω/π)^(1/4)
     n = collect(0:M-1)
@@ -40,9 +35,6 @@ function eigmat(M,x;ω=1.0,basis="Hermite",α=0.0)
     for m=1:M-2
       T[:,m+2]=sqrt(2/(n[m+2]))*(√ω*x).*T[:,m+1]-sqrt(n[m+1]/n[m+2])T[:,m]
     end
-    #x = convert(Vector{Float64},x)
-    #T = convert(Matrix{Float64},T)
-
   elseif basis=="Laguerre"
     error(basis," ","basis not implemented")
     #M>26 && error("recursion unstable for M >=27")
