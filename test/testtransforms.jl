@@ -15,7 +15,7 @@ n=0:BigFloat(M)-1;
 Hnorm = sqrt(BigFloat(π))*BigFloat(2).^n.*factorial.(n)
 
 #Inserting norm.
-f=Fun(Hermite(),c./sqrt(Hnorm))
+f=Fun(Hermite(),c./sqrt.(Hnorm))
 f2=Fun(GaussWeight(Hermite()),c./sqrt.(Hnorm))
 x=linspace(-1.5sqrt(2M),1.5sqrt(2M),1000)
 plot(x,abs.(f.(x)).^2.*exp.(-x.^2))
@@ -97,14 +97,14 @@ Lnorm
 
 #------------------------------------
 #test Laguerre
-M=27
+M=26
 α = 0.
 ω = 1.
 #x,w=gausslaguerre(M,α)
 
 #T = eigmat("Laguerre",M,x/ω,ω,α)
 
-x,w,T=nfieldtrans("Laguerre",M,2,ω,α)
+x,w,T=nfieldtrans(M,2;basis="Laguerre")
 #norm test
 
 c=zeros(M);
