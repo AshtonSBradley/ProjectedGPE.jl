@@ -20,7 +20,7 @@ evaluation of the scattering potential ``V_\\epsilon(x,t)`` of the energy-damped
 
 """
 
-function makescatteringtrans(M;n=4,ω=1.0,basis="Hermite",Na=M)
+function makescatteringtrans(M;n=3,ω=1.0,basis="Hermite",Na=M)
 
     #n-field to x-space
     x,wx,Tx = nfieldtrans(M,n,ω=ω)
