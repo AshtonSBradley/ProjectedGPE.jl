@@ -69,7 +69,7 @@ include("eigmat.jl")
 include("makespecops.jl")
 include("nenergy.jl")
 include("ladderops.jl")
-include("angularmomentum.jl")
+include("makeangularmomentum.jl")
 include("nfieldtrans.jl")
 include("x2c.jl")
 include("x2c!.jl")
@@ -89,7 +89,7 @@ include("evolve.jl")
 
 export eigmat, nfieldtrans, c2x, c2x!, x2c, x2c!, xgrid2c, growthrate,
 scatteringkernel, makescatteringtrans, makescatteringnoisetrans,
-makecinfo, maketinfo, maketinfoplot, makealltrans, makespecops, ladderops, angularmomentum, nenergy,
-gausshermite, evolve, evolve, Cinfo, Params, Tinfo
+makecinfo, maketinfo, maketinfoplot, makealltrans, makespecops, ladderops,
+makeangularmomentum, nenergy, gausshermite, evolve, evolve, Cinfo, Params, Tinfo
 
 end # module
