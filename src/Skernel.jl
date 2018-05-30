@@ -18,10 +18,10 @@ function Skernel1(k,σ=1.0)
     erfcx(abs(k)*σ/sqrt(2))/sqrt(8*π*σ^2)
 end
 function Skernel2(k,σ=1.0)
-    exp(abs(k*σ/2)^2)*besselk(0,abs(k*σ/2)^2)/(2*π)
+    k==0.0 ? 0.0 : exp(abs(k*σ/2)^2)*besselk(0,abs(k*σ/2)^2)/(2*π)
 end
 function Skernel3(k)
-    1/abs(k)
+    k==0.0 ? 0.0 : 1/abs(k)
 end
 
 Skernel(k::Array{Float64,1},σ=1.0) = Skernel1.(k,σ)
