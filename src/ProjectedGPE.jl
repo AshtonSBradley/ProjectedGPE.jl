@@ -77,7 +77,7 @@ include("xgrid2c.jl")
 include("c2x!.jl")
 include("c2x.jl")
 include("growthrate.jl")
-include("scatteringkernel.jl")
+include("Skernel.jl")
 include("makescatteringtrans.jl")
 include("makescatteringnoisetrans.jl")
 include("makecinfo.jl")
@@ -88,8 +88,8 @@ include("makealltrans.jl")
 include("evolve.jl")
 
 export eigmat, nfieldtrans, c2x, c2x!, x2c, x2c!, xgrid2c, growthrate,
-scatteringkernel, makescatteringtrans, makescatteringnoisetrans,
+Skernel, makescatteringtrans, makescatteringnoisetrans,
 makecinfo, maketinfo, maketinfoplot, makealltrans, makespecops, ladderops,
-makeangularmomentum, nenergy, gausshermite, evolve, evolve, Cinfo, Params, Tinfo
+makeangularmomentum, nenergy, gausshermite, evolve, Cinfo, Params, Tinfo
 
 end # module

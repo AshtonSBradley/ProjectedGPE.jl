@@ -1,7 +1,7 @@
 """
-    kernel = scatteringkernel(k,σ=1.0)
+    kernel = Skernel(k,σ=1.0)
 
-Construct the scattering kernel in momentum space and return on the same `k`-grid.
+Construct the scattering kernel functions in momentum space.
 The kernel function is used to construct both the energy-damping term, and noise in the energy-damped
 stochastic projected Gross-Pitaevskii equation.
 
@@ -14,12 +14,16 @@ External links
 [Low-Dimensional Stochastic Projected Gross-Pitaevskii Equation, Bradley, Rooney, MacDonald, Physical Review A 92, 033631 (2015)](https://arxiv.org/abs/1507.02023)
 
 """
-function scatteringkernel(k,σ=1.0)
-if ndims(k) == 1
-  return @. erfcx(abs(k)*σ/sqrt(2))/sqrt(8*π*σ^2)
-elseif ndims(k) == 2
-  return @. exp(abs(k*σ/2)^2)*besselk(0,abs(k*σ/2)^2)/(2*π)
-elseif ndims(k) == 3
- return @. 1/abs(k)
+function Skernel1(k,σ=1.0)
+    erfcx(abs(k)*σ/sqrt(2))/sqrt(8*π*σ^2)
 end
+function Skernel2(k,σ=1.0)
+    exp(abs(k*σ/2)^2)*besselk(0,abs(k*σ/2)^2)/(2*π)
 end
+function Skernel3(k)
+    1/abs(k)
+end
+
+Skernel(k::Array{Float64,1},σ=1.0) = Skernel1.(k,σ)
+Skernel(k::Array{Float64,2},σ=1.0) = Skernel2.(k,σ)
+Skernel(k::Array{Float64,3},σ=1.0) = Skernel3.(k)
