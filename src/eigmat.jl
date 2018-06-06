@@ -24,6 +24,7 @@ where `c` is a column vector of coefficients in the basis.
 """
 
 function eigmat(M,x;ω=1.0,basis="Hermite",α=0.0)
+        @assert M>=1
   if basis=="Hermite"
     M > 371 && error("Float64 Quadrature does not converge for M > 371.")
     ψ0 = exp.(-(√ω*x).^2/2)*(ω/π)^(1/4)
@@ -31,7 +32,9 @@ function eigmat(M,x;ω=1.0,basis="Hermite",α=0.0)
     n = collect(0:M-1)
     T = zeros(x*ones(1,M))
     T[:,1] = ψ0
-    T[:,2] = ψ1
+    M >= 2 && (T[:,2] = ψ1)
+    #T[:,1] = ψ0
+    #T[:,2] = ψ1
     for m=1:M-2
       T[:,m+2]=sqrt(2/(n[m+2]))*(√ω*x).*T[:,m+1]-sqrt(n[m+1]/n[m+2])T[:,m]
     end
