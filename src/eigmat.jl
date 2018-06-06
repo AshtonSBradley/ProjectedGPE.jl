@@ -33,8 +33,6 @@ function eigmat(M,x;ω=1.0,basis="Hermite",α=0.0)
     T = zeros(x*ones(1,M))
     T[:,1] = ψ0
     M >= 2 && (T[:,2] = ψ1)
-    #T[:,1] = ψ0
-    #T[:,2] = ψ1
     for m=1:M-2
       T[:,m+2]=sqrt(2/(n[m+2]))*(√ω*x).*T[:,m+1]-sqrt(n[m+1]/n[m+2])T[:,m]
     end
