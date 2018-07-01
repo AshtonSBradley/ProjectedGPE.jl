@@ -1,9 +1,9 @@
 function c2x!(ψ::Array{Complex{Float64},1},c::Array{Complex{Float64},1},tinfo::ProjectedGPE.Tinfo)
-    ψ .= tinfo.Tx*c
+    ψ = tinfo.Tx*c
 end
 
 function c2x!(ψ::Array{Complex{Float64},2},c::Array{Complex{Float64},2},tinfo::ProjectedGPE.Tinfo)
-    ψ .= tinfo.Tx*c*tinfo.Ty'
+    ψ = tinfo.Tx*c*tinfo.Ty'
 end
 
 function c2x!(ψ::Array{Complex{Float64},3},c::Array{Complex{Float64},3},tinfo::ProjectedGPE.Tinfo)
@@ -18,5 +18,5 @@ function c2x!(ψ::Array{Complex{Float64},3},c::Array{Complex{Float64},3},tinfo::
 
     Az = reshape(Ay,(sa[1],sa[2]*sa[3]))
     Az = reshape(tinfo.Tz*Az,(sz[1],sa[2],sa[3]))
-    ψ .= permutedims(Az,(2,3,1))
+    ψ = permutedims(Az,(2,3,1))
 end
