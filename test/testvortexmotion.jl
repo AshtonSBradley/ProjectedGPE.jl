@@ -3,7 +3,6 @@
 # evolve in real time
 using Revise, ProjectedGPE, VortexDistributions
 
-ENV["MPLBACKEND"]="tkagg"
 using PyPlot
 
 function groundstate(γ,tf,Ncut)
