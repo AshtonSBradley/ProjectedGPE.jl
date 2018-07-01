@@ -54,7 +54,7 @@ end
   Mmax::Number=10
   Mult::Number=10
   M::Vector=[10]
-  en::Array=collect(1:10)-0.5
+  en::Array=collect(0:9)+0.5
   P::BitArray=[true]
 end
 
