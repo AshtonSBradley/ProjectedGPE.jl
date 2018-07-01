@@ -3,7 +3,7 @@ function x2c!(c::Array{Complex{Float64},1},ψ::Array{Complex{Float64},1},tinfo::
 end
 
 function x2c!(c::Array{Complex{Float64},2},ψ::Array{Complex{Float64},2},tinfo::ProjectedGPE.Tinfo)
-    c = tinfo.Tx'*(ψ.*tinfo.W)*tinfo.Ty
+    c .= tinfo.Tx'*(ψ.*tinfo.W)*tinfo.Ty
 end
 
 function x2c!(c::Array{Complex{Float64},3},ψ::Array{Complex{Float64},3},tinfo::ProjectedGPE.Tinfo)

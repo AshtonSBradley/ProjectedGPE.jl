@@ -3,7 +3,7 @@ function c2x!(ψ::Array{Complex{Float64},1},c::Array{Complex{Float64},1},tinfo::
 end
 
 function c2x!(ψ::Array{Complex{Float64},2},c::Array{Complex{Float64},2},tinfo::ProjectedGPE.Tinfo)
-    ψ = tinfo.Tx*c*tinfo.Ty'
+    ψ .= tinfo.Tx*c*tinfo.Ty'
 end
 
 function c2x!(ψ::Array{Complex{Float64},3},c::Array{Complex{Float64},3},tinfo::ProjectedGPE.Tinfo)
