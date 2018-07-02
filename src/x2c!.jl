@@ -1,14 +1,14 @@
 function x2c!(c::Array{Complex{Float64},1},ψ::Array{Complex{Float64},1},tinfo::ProjectedGPE.Tinfo)
-    c = tinfo.Tx'*(ψ.*tinfo.W)
+    c = tinfo.Tx'*(tinfo.W.*ψ)
 end
 
 function x2c!(c::Array{Complex{Float64},2},ψ::Array{Complex{Float64},2},tinfo::ProjectedGPE.Tinfo)
-    c .= tinfo.Tx'*(ψ.*tinfo.W)*tinfo.Ty
+    c .= tinfo.Tx'*(tinfo.W.*ψ)*tinfo.Ty
 end
 
 function x2c!(c::Array{Complex{Float64},3},ψ::Array{Complex{Float64},3},tinfo::ProjectedGPE.Tinfo)
     sa = size(ψ);sx = size(tinfo.Tx');sy = size(tinfo.Ty');sz = size(tinfo.Tz')
-    Ax = reshape(ψ.*tinfo.W,(sa[1],sa[2]*sa[3]))
+    Ax = reshape(tinfo.W.*ψ,(sa[1],sa[2]*sa[3]))
     Ax = reshape(tinfo.Tx'*Ax,(sx[1],sa[2],sa[3]))
     Ax = permutedims(Ax,(2,3,1));sa = size(Ax)
 
